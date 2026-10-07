@@ -1,0 +1,267 @@
+---
+title: "Tutorial 2"
+subtitle: "Introduction to Data Science for Health and Social Care Week 3"
+author: "YOUR NAME HERE"
+date: now
+date-format: "MMM D, YYYY hh:mm"
+format: html
+---
+
+Welcome to this tutorial pair-programming practice document! 
+
+In pairs, work through this document. A sample completed document will be available under the Week 3 Tutorial folder on Learn as well. 
+
+# Task 0
+
+Before getting started, I have a sneaky Task 0 for you. (a) Load the Markdown Quick Reference Guide by clicking the "Help" tab at the top of your screen and (b) put your names in the author element of the YAML.
+
+# Task 1 
+
+Install the following packages if you do not have them already, and load them with the `library()` function  
+
+* tidyverse 
+* gapminder 
+* knitr 
+* kableExtra 
+
+```{r}
+#| label: task-1
+
+# your code here: 
+
+```
+
+# Task 2 
+
+We are using the gapminder dataset, which we can load from the `{gapminder}` package by calling the function `gapminder`. Save the data into an object called `gap_data` and find out more about the dataset by pulling up its documentation using the `?` function we learned about in last week's tutorial. 
+
+```{r}
+#| label: task-2
+# your code here 
+
+  
+```
+
+## Task 2.2
+
+If you render the file after having included the code in Task 1 to load the libraries, you will notice that printed out are some messages from the packages being loaded. You can prevent this from happening with the `message: false` code chunk option. Add this to your `task-1` code chunk above and render the file again to see the difference.
+
+# Task 3 
+
+Now that we have `gap_data` saved to our global environment, pick a few functions to check what the data looks like and what variables we have to work with.
+
+::: {.callout-tip}
+## 💡 Hint
+ 
+Look at the code shared in the Week 2 Tutorial for some inspiration.
+:::
+
+```{r}
+#| label: task-3
+
+# your code here 
+
+```
+
+
+# Task 4 
+
+When making tables, it is a good idea to use the `kbl()` function from the `{knitr}` package to produce nice looking tables rather than the usual r output. 
+
+Un-comment (delete the #) and run the code below to see the output: 
+
+```{r}
+#| label: table-data-plain
+
+#gap_data |> 
+#  select(-pop) |> 
+#  sample_n(10) 
+```
+
+Copy the code above and add a pipe with the `kble()` function and render the file, comparing the two outputs. Which do you prefer? 
+
+```{r}
+#| label: task-4
+
+# your code here 
+
+```
+
+
+For further styling options, the [`kableExtra` package](https://haozhu233.github.io/kableExtra/awesome_table_in_html.html#Overview) can help!
+
+::: {.callout-tip}
+Render the document to see how the code above becomes a hyperlink in the rendered report - so useful! 
+:::
+
+When using an HTML document/table, even just including one more line of code significantly improves the formatting. There are 6 additional alternative HTML table theme options apart from the default bootstrap theme: 
+
+* `kable_styling()` for the bootstrap theme 
+1. `kable_classic()`
+2. `kable_classic2()`
+3. `kable_paper()`
+4. `kable_minimal()`
+5. `kable_material()`
+6. `kable_material_dark()`
+
+
+::: {.callout-important}
+The majority of `{kableExtra}` functions will work in [both HTML and PDF rendered files](https://github.com/haozhu233/kableExtra#basic-usage). When using a PDF file, you need to use the argument `latex_options` instead as you are producing LaTeX tables. When using `{kableExtra}` functions, it is recommended by the package authors to use the wrapper function `kbl()` instead of `kable()`. Pull up the documentation of `kbl()` with the using the `?` function to learn more. 
+:::
+
+# Task 5 
+
+Explore some of the `{kableExtra}` styling options and further customise the table output when rendering to HTML 
+
+```{r}
+#| label: task-5
+
+# your code here 
+
+```
+
+## Top tip - document and chunk outlines 
+
+Once your Quarto document starts to get quite long (you've been working hard!), with several different headings and perhaps various subheadings too, it can start to get slightly tricky to quickly scroll and find the various sections in your raw document.
+
+To help with this, RStudio have a helpful tool, the **Show document outline** (which is the button with various lines stacked on top of each other) option which you can find near the **Run** menu. This will show you an interactive outline of your document by the different headers/sections you have created. 
+
+This lets you quickly jump between sections in your document and see the outline of your structure at a glance. A similar interactive outline feature can be found at the bottom of your document/source pane, and code chunks are included here too.
+
+# Task 6 
+
+You can easily integrate figures into your report as well using a code chunk dedicated to the figure of interest. In @fig-task-6, we have provided some example figure code below so you can see how figure seamlessly integrate into the rendered report. 
+
+Un-comment (delete the #) in the code below and render the file. 
+
+::: {.callout-tip}
+## 💡 Keyboard shortcut hint
+ 
+One of the most useful keyboard shortcuts I use in my own coding to edit multiple lines of code at one time is to elongate the cursor by holding down the `alt` (on a Mac `option`) key then click and drag the cursor down as far as you would like to go. Try this to delete the comments rather than clicking on each line individually 
+:::
+
+```{r}
+#| label: fig-task-6
+#| fig-cap: "Example figure made with {ggplot2} code"
+#| message: false
+
+#gap_data |>
+#  filter(year == 1977) |>
+#  ggplot(aes(y = lifeExp, 
+#             x = gdpPercap, 
+#             color = continent)) +
+#  geom_point(alpha = 0.3) +
+#  theme_bw() +
+#  geom_smooth(method = "lm", se = FALSE) +
+#  scale_colour_brewer(palette = "Set1") + 
+#  labs(x = "Gross domestic product per capita",
+#       y = "Life expectancy",
+#       color = "Continent",
+#       title = "Health and economics",
+#       subtitle = "Gapminder dataset, 1977")
+
+```
+
+## Task 6.2 
+In order to have automatic figure labels and cross referencing in the rendered document, you need to providing a code chunk `label` starting with "fig-" and should specify `fig-cap`. Change the code chunk label below to "task-6" instead of "fig-task-6" and re-render the document. What happens? 
+
+Remove the `fig-cap` chunk option while keeping the `label` as "fig-task-6" and re-render the document. What happens? 
+
+# Task 7
+
+In some reports you may also wish to include images related to the your stakeholders or other information beyond data visualisation. You can easily insert images into your Quarto file either from a webpage or from a file in the same directory: 
+
+### 1. From a webpage 
+
+![Halloween Pumpkins](https://hips.hearstapps.com/hmg-prod/images/halloween-pumpkins-royalty-free-image-1686938575.jpg)
+
+To get the link to a picture from a webpage go to your internet browser of choice, Images, and right click on the image and select "Copy Image Link" or "Copy Image Address".
+
+### 2. From a file 
+
+::: {.callout-caution}
+Make sure that you have saved the Rlogo.png file in the same folder as your .qmd file. We will discuss folder structure and related topics in more detail in the coming weeks.
+:::
+
+![R logo](Rlogo.png)
+
+Try to include an image of your choosing either from a saved file or a webpage on the lines below: 
+
+**YOUR CODE HERE**
+
+# Task 8 
+
+You can also use r code directly in text. For example: 
+
+> There are `{r} gap_data |> nrow()` observations in the data set. 
+
+*📝 Note:* above I have put the inline code as a blockquote just to make it standout when the file is rendered. This is not required for inline code. 
+
+This can be an incredible time saver if you are creating a report where the data itself might still be coming in. Rather than needing to manually update descriptive information such as how many observations there are in the data set, let R do it for you! 
+
+Try to write your own inline code in the following statement 
+
+The gapminder dataset has variables with the following names: **YOUR CODE HERE** 
+
+# Functionalities of different output formats 
+
+In Quarto, HTML and PDF files are the richest formats for document rendering. In general, when rendering to an `html` there are more interesting functionalities. Indeed, Markdown was originally designed for HTML output so the HTML format has the richest features. 
+
+There are some features that you can add to your YAML document options that are shared across both HTML and PDF outputs; these should be specified at **root level**. Root level means that the option applies to all formats (e.g. where `title` and `author` go, before the `format` options are specified). The `format` option is where we provide format-specific options (aptly named). 
+
+These include:
+
+* table of contents
+* syntax-highlighting 
+* section numbering 
+
+## HTML 
+
+You can have a look at some of the options when rendering to HTML in the [Quarto documentation](https://quarto.org/docs/reference/formats/html.html). 
+
+::: {.callout-tip}
+## Where to start with HTML documentation 
+ 
+As a suggested starting point, look at the options around **table of contents**, **numbering**, and **code**. 
+:::
+
+There are also HTML specific code block options, which [you can review here](https://quarto.org/docs/output-formats/html-code.html). Pay particular attention to **folding code** and **code tools** for some really cool interactive options. 
+
+## Task 9 
+
+Look through some of the different customisation options and customise the HTML report. You may not get to this task in the tutorial, in which case try it on your own and have a look at the sample completed Quarto file to see some examples of different ways to customise, including the very cool code tools! 
+
+## PDF 
+
+PDFs in Quarto also have a variety of features. To find out more, check out the [Quarto documentation around PDF format options](https://quarto.org/docs/reference/formats/pdf.html) 
+
+## Themes 
+
+In general, there are a [variety of theme options available](https://quarto.org/docs/output-formats/html-themes.html) to use with Quarto HTML documents. More advanced use cases around themeing involve custom CSS files, **which we will not be covering and is not permitted in this course**. Quarto includes 25 themes from the Bootswatch project built in - no further customisation needed. These range from light to dark themes. 
+
+## Task 10 
+
+Choose a few different theme options of the 25 built-in/available and update the YAML accordingly. 
+
+# Reproducibility! 
+
+In practice, depending on your audience, you will need to decide to show your code or not. It is unlikely that you will want to show the code used to produce your analysis, tables, or figures to an audience unfamiliar with R and would therefore set `echo: false` in the set-up chunk. For this course, though, and in particular for the datathon report, you will need to set `echo: true` so that we can see your code and the product of that code. 
+
+While it can take up space, it is good practice to finish a document calling the `sessionInfo()` function, which lists all of the packages you used, their versions, and more. 
+
+```{r}
+#| label: session-info
+#| echo: false
+
+sessionInfo()
+
+```
+
+# An Optional Extra Task  
+
+Throughout this document, you will have encountered a few **callout blocks**. Below, create a new callout block without the icon that says "Quarto is fun". 
+
+**YOUR CODE HERE** 
+
+## That's all for now!
+
