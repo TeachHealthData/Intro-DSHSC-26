@@ -78,7 +78,7 @@ Un-comment (delete the #) and run the code below to see the output:
 #  sample_n(10) 
 ```
 
-Copy the code above and add a pipe with the `kble()` function and render the file, comparing the two outputs. Which do you prefer? 
+Copy the code above and add a pipe with the `kbl()` function and render the file, comparing the two outputs. Which do you prefer? 
 
 ```{r}
 #| label: task-4
