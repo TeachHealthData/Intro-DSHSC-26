@@ -1,0 +1,377 @@
+---
+title: "Week 02 Bar Chart Demo"
+subtitle: "Introduction to Data Science in Health and Social Care"
+author: "Dr Brittany Blankinship"
+date: last-modified
+date-format: "YYYY"
+toc: true 
+format: 
+  html:
+    code-fold: show
+    code-tools: true
+---
+
+### 📝 NOTE before you get started 
+We are not expecting you to understand the code shown here, it is for demonstration purposes. In the coming weeks we will learn how to do all of the things shown here in detail. And by the end of the course you will be able to produce a workflow and report document like this on your own! 
+
+## Bar Chart Workflow Demo 
+Remember to run the below commands only once to install the libraries. You don't have to install them every time, but you have to load them once per session
+
+### Step 1: Load the required packages 
+
+Remember if you get an error like this ->
+`"Error: package or namespace load failed for '[name of the package]' in loadNamespace` to install the package with `install.packages()`
+
+```{r}
+#| label: load-packages
+#| output: false
+
+# install.packages("tidyverse")
+# install.packages("here")
+# install.packages("skimr")
+
+library(tidyverse)
+library(here) # tells us where the working directory starts
+# useful when you are working with downloaded data on your device 
+```
+
+Outside of the `{here}` package, you can also get working directory with 
+
+```{r}
+#| label: wd
+#| output: false
+
+getwd()
+```
+
+### Step 2. Import the data 
+
+We have 3 dataframes:
+
+1. heart disease mortality by health board
+2. heart disease activity by health board
+3. health board look up codes 
+
+You can read more about the datasets from Public Health Scotland here if you are interested 
+
+1. [mortality by health board](https://www.opendata.nhs.scot/dataset/scottish-heart-disease-statistics/resource/dc0512a8-eb49-43b9-84f1-17ef95365d57)
+2. [activity by health board](https://www.opendata.nhs.scot/dataset/scottish-heart-disease-statistics/resource/748e2065-b447-4b75-99bd-f17f26f3eaef)
+
+Let's load data from a saved file. In this case my saved file lives in a folder called raw_data in my working directory
+
+```{r}
+#| label: load-data-file
+
+mortality_raw <- read_csv(here::here("raw_data/hd_mortalitybyhbr.csv"))
+
+### Note: There is a deprecated function in the lubridate packaged called here which can cause problems sometimes
+# so it is best to specify you want to use here from the here package. 
+# Loading the libraries with here last will also avoid this problem  
+```
+
+For your own practice, the webpage to download the mortality data is https://www.opendata.nhs.scot/dataset/0e17f3fc-9429-48aa-b1ba-2b7e55688253/resource/dc0512a8-eb49-43b9-84f1-17ef95365d57/download/hd_mortalitybyhbr.csv
+
+If you are getting an error with the file path - check what your working directly is with `get_wd()` in the code above on line 44, I have the data csv file saved in a folder called raw_data.
+
+To load data from a website, it is a similar process: 
+
+```{r}
+#| label: load-data-web
+
+activity_raw <- read_csv("https://www.opendata.nhs.scot/dataset/0e17f3fc-9429-48aa-b1ba-2b7e55688253/resource/748e2065-b447-4b75-99bd-f17f26f3eaef/download/hd_activitybyhbr.csv")
+
+hb <- read_csv("https://www.opendata.nhs.scot/dataset/9f942fdb-e59e-44f5-b534-d6e17229cc7b/resource/652ff726-e676-4a20-abda-435b98dd7bdc/download/hb14_hb19.csv")
+```
+
+### Step 3. Check the data has imported as expected  
+
+```{r}
+#| label: data-check-view
+#| eval: false
+
+## view the data frame in a new window 
+View(mortality_raw)
+View(activity_raw)
+View(hb)
+```
+
+```{r}
+#| label: data-checks
+
+## look at first few rows of the data 
+head(mortality_raw)
+head(activity_raw)
+head(hb)
+
+## glimpse at the data show all columns and a preview of some of the responses 
+glimpse(mortality_raw)
+glimpse(activity_raw)
+glimpse(hb)
+
+## summarize the dataframe 
+summary(mortality_raw)
+summary(activity_raw)
+summary(hb)
+
+## skim dataframe to get an overview in more detail 
+skimr::skim(mortality_raw)
+skimr::skim(activity_raw)
+skimr::skim(hb)
+```
+
+Notice on lines 33 and 34 I did not call `library(skimr)`, but on line 31 have code to install the package.This is because I did not want to load the whole package, but only use one function from it. You can do this with **namespacing**, which looks like this: `packagename::function()` 
+
+So lines 117-119 I am using the `skim()` function from the `{skimr}` package only, without loading the full package. 
+
+### Step 4. Join the data frames together for analysis
+
+**Note:** 'All' is an aggregate variable including all levels of the variable 
+
+```{r}
+#| label: join-activity 
+
+activity <- activity_raw |>
+  # join activity to hb 
+  left_join(hb, by = join_by("Hbr" == "HB")) |>
+  # select the variables we are interested in 
+  select(FinancialYear, 
+         HBName, 
+         AdmissionType,
+         AgeGroup,
+         Sex,
+         Diagnosis,
+         NumberOfDischarges) |>
+  # reformat the financial year column to be calendar year 
+  separate(FinancialYear, into = c("Year", NA), sep = "/", convert = TRUE) |>
+  # filter out aggregate ALL responses from the data 
+  # HB Code S92000003 is for all of Scotland
+  # under 75 years is another aggregate level variable including all people under 75
+  filter(Sex != "All" & AgeGroup != "All Ages" & AgeGroup != "under75 years" &
+           AdmissionType != "All" & HBName != "S92000003")
+```
+
+```{r}
+#| label: join-mortality 
+
+mortality <- mortality_raw |>
+  # join activity to hb 
+  left_join(hb, by = join_by("Hbr" == "HB")) |>
+  # select the variables we are interested in 
+  select(Year, 
+         HBName, 
+         AgeGroup,
+         Sex,
+         Diagnosis,
+         NumberOfDeaths) |>
+  # filter out aggregate ALL responses from the data 
+  # HB Code S92000003 is for all of Scotland
+  # under 75 years is another aggregate level variable including all people under 65
+  filter(Sex != "All" & AgeGroup != "All Ages" & AgeGroup != "under75 years" & HBName != "S92000003")
+```
+
+```{r}
+#| label: full-join
+## we could also create a single data frame combining all 3 
+full <- activity |>
+  full_join(mortality)
+```
+
+```{r}
+#| label: join-checks 
+
+## check there are 14 Health Boards in both dataframes
+activity |>
+  distinct(HBName) 
+
+mortality |>
+  distinct(HBName) 
+```
+
+### Step  5. Let's make a barplot 
+
+Lets say we are interested in finding out if there is a sex difference in discharges from hospitals based on admission type, this is visualisaed in @fig-bar-chart-stacked  
+
+```{r}
+#| label: fig-bar-chart-stacked
+#| fig-cap: "Bar chart to find out if there is a sex difference in discharges from hospitals based on admission type"
+
+activity |>
+  group_by(AdmissionType, Sex) |> 
+  mutate(total_discharges = sum(NumberOfDischarges, na.rm = TRUE)) |> 
+  ggplot(aes(x = AdmissionType, 
+             y = total_discharges, 
+             fill = Sex)) + 
+  geom_col() +
+  scale_y_continuous(labels = scales::label_comma()) + 
+  labs(title = "Heart Disease Discharges in Scotland by Sex",
+       subtitle = "2015 - 2024",
+       x = "Admission Type",
+       y = "Number of Discharges") +
+  theme_bw()
+```
+
+Another option is to have the columns side by side rather than stacked on top of each other, as in @fig-bar-chart-unstacked
+
+```{r}
+#| label: fig-bar-chart-unstacked
+#| fig-cap: "Same as Figure 1, but with an 'unstacked' barchart"
+
+activity |>
+  group_by(AdmissionType, Sex) |> 
+  mutate(total_discharges = sum(NumberOfDischarges, na.rm = TRUE)) |>
+  ggplot(aes(x = AdmissionType, 
+             y = NumberOfDischarges, 
+             fill = Sex)) + 
+  geom_col(position = "dodge",
+           #alpha = 0.5
+           ) +
+  scale_y_continuous(labels = scales::label_comma()) + 
+  labs(title = "Heart Disease Discharges in Scotland by Sex",
+       subtitle = "2015 - 2024",
+       x = "Admission Type",
+       y = "Number of Discharges") +
+  theme_bw()
+```
+
+Notice however that the total number of deaths is now much smaller on the y-axis (2,000 vs 1,000,000,000). If you uncomment the `alpha = 0.5` argument on line 226 you will see that actually what is happening is many bars are being shown on top of each other!
+
+When using `position = "dodge"`, `ggplot` expects only one y per x. This unintended stacking of bars is due the nature of the data and how it is set up, there are numerous missing values (`NA`s), so we need to summarize the data first and then pass it to `geom_col(position = dodge)`. This is done in @fig-bar-chart-unstacked-fixed
+
+```{r}
+#| label: fig-bar-chart-unstacked-fixed
+#| fig-cap: "Unstacked barchart with corrected data wrangling"
+
+activity |>
+  group_by(AdmissionType, Sex) |> 
+  mutate(total_discharges = sum(NumberOfDischarges, na.rm = TRUE)) |>
+  ggplot(aes(x = AdmissionType, 
+             y = total_discharges, 
+             fill = Sex)) + 
+  geom_col(position = "dodge",
+           #alpha = 0.5
+           ) +
+  scale_y_continuous(labels = scales::label_comma()) + 
+  labs(title = "Heart Disease Discharges in Scotland by Sex",
+       subtitle = "2015 - 2024",
+       x = "Admission Type",
+       y = "Number of Discharges") +
+  theme_bw()
+```
+
+**Crucially, this impacts our conclusions from the data! It is important to be a conscientious coder and data scientist and not rely on default behaviors.**
+
+What if we were interested in specifically the year 2017? See @fig-bar-chart-2017
+
+```{r}
+#| label: fig-bar-chart-2017
+#| fig-cap: "Bar chart focussing on data from 2017"
+
+activity |>
+  filter(Year == 2017) |>
+  group_by(AdmissionType, Sex) |> 
+  mutate(total_discharges = sum(NumberOfDischarges, na.rm = TRUE)) |>
+  ggplot(aes(x = AdmissionType, 
+             y = total_discharges, 
+             fill = Sex)) + 
+  geom_col(position = "dodge") +
+  scale_y_continuous(labels = scales::label_comma()) + 
+  labs(title = "Heart Disease Discharges in Scotland by Sex",
+       subtitle = "2017",
+       x = "Admission Type",
+       y = "Number of Discharges") +
+  theme_bw()
+```
+
+Or specifically in people aged under 45 years of age, see @fig-bar-chart-under45
+
+```{r}
+#| label: fig-bar-chart-under45
+#| fig-cap: "Bar chart focussing on discharges of patients under the age of 45 years old"
+
+activity |>
+  filter(AgeGroup == "0-44 years") |>
+  group_by(AdmissionType, Sex) |> 
+  mutate(total_discharges = sum(NumberOfDischarges, na.rm = TRUE)) |>
+  ggplot(aes(x = AdmissionType, 
+             y = total_discharges, 
+             fill = Sex)) + 
+  geom_col(position = "dodge") +
+  scale_y_continuous(labels = scales::label_comma()) + 
+  labs(title = "Heart Disease Discharges in people under 45",
+       subtitle = "2015 - 2024",
+       x = "Admission Type",
+       y = "Number of Discharges") +
+  theme_bw()
+```
+
+Or specifically in NHS Lothian, see @fig-bar-chart-lothian
+
+
+```{r}
+#| label: fig-bar-chart-lothian
+#| fig-cap: "Bar chart focussing on discharges of patients in NHS Lothian"
+
+activity |>
+  filter(HBName == "NHS Lothian") |>
+  group_by(AdmissionType, Sex) |> 
+  mutate(total_discharges = sum(NumberOfDischarges, na.rm = TRUE)) |>
+  ggplot(aes(x = AdmissionType, 
+             y = total_discharges, 
+             fill = Sex)) + 
+  geom_col(position = "dodge") +
+  scale_y_continuous(labels = scales::label_comma()) + 
+  labs(title = "Heart Disease Discharges in NHS Lothian",
+       subtitle = "2015 - 2024",
+       x = "Admission Type",
+       y = "Number of Discharges") +
+  theme_bw()
+```
+
+Lets combine them all! How might we look at people under 45, in 2017, in NHS Lothian? See @fig-bar-chart-combined
+
+```{r}
+#| label: fig-bar-chart-combined
+#| fig-cap: "Patients discharged under 45, in 2017, in NHS Lothian"
+
+activity |>
+  filter(AgeGroup == "0-44 years",
+         Year == 2017,
+         HBName == "NHS Lothian") |>
+  group_by(AdmissionType, Sex) |> 
+  mutate(total_discharges = sum(NumberOfDischarges, na.rm = TRUE)) |>
+  ggplot(aes(x = AdmissionType, 
+             y = total_discharges, 
+             fill = Sex)) + 
+  geom_col(position = "dodge") +
+  scale_y_continuous(labels = scales::label_comma()) + 
+  labs(title = "Heart Disease Discharges in Scotland",
+       subtitle = "People under 45 in NHS Lothian in 2017",
+       x = "Admission Type",
+       y = "Number of Discharges") +
+  theme_bw()
+```
+
+What if we wanted to look at 4 variables? 
+
+We can create a bar chart looking at admission type and number of discharges by sex and diagnosis, as in @fig-bar-chart-4var
+
+
+```{r}
+#| label: fig-bar-chart-4var
+#| fig-cap: "Bar chart showing four variables"
+
+activity |>
+  group_by(AdmissionType, Sex) |> 
+  mutate(total_activity = sum(NumberOfDischarges, na.rm = TRUE)) |>
+  ggplot(aes(x = AdmissionType, 
+             y = total_activity, 
+             fill = Sex)) + 
+  geom_col() + 
+  facet_wrap(~Diagnosis) + 
+  scale_y_continuous(labels = scales::label_comma()) +
+  labs(title = "Heart Disease Activity by Sex and Diagnosis in Scotland",
+       subtitle = "2015 - 2024",
+       y = "Number of Discharges",
+       x = "Admission Type") + 
+  theme_bw()
+```
