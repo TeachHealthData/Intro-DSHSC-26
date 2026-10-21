@@ -1,0 +1,861 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.10.18">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Dr Brittany Blankinship">
+
+<title>Tutorial 3 - SAMPLE COMPLETED DOCUMENT</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: 1.5em;}
+div.column{flex: auto;}
+@media screen {
+div.columns{gap: min(4vw, 1.5em);}
+div.column{overflow-x: auto;}
+}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="Week04_PracticeDocument-COMPLETED_files/libs/clipboard/clipboard.min.js"></script>
+<script src="Week04_PracticeDocument-COMPLETED_files/libs/quarto-html/quarto.js" type="module"></script>
+<script src="Week04_PracticeDocument-COMPLETED_files/libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="Week04_PracticeDocument-COMPLETED_files/libs/quarto-html/popper.min.js"></script>
+<script src="Week04_PracticeDocument-COMPLETED_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="Week04_PracticeDocument-COMPLETED_files/libs/quarto-html/anchor.min.js"></script>
+<link href="Week04_PracticeDocument-COMPLETED_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="Week04_PracticeDocument-COMPLETED_files/libs/quarto-html/quarto-syntax-highlighting-dark-b85bc7c33db8c58e0ec93c3465666fed.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="Week04_PracticeDocument-COMPLETED_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="Week04_PracticeDocument-COMPLETED_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="Week04_PracticeDocument-COMPLETED_files/libs/bootstrap/bootstrap-6c68111baf490f57fc36a2fa7689b67d.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="dark">
+
+
+</head>
+
+<body class="quarto-light">
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article toc-left">
+<div id="quarto-sidebar-toc-left" class="sidebar toc-left">
+  <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Contents</h2>
+   
+  <ul>
+  <li><a href="#task-1-yaml" id="toc-task-1-yaml" class="nav-link active" data-scroll-target="#task-1-yaml">Task 1: YAML</a></li>
+  <li><a href="#task-2-packages" id="toc-task-2-packages" class="nav-link" data-scroll-target="#task-2-packages">Task 2: Packages</a>
+  <ul class="collapse">
+  <li><a href="#tips-on-navigating-rstudio-and-quarto-documents" id="toc-tips-on-navigating-rstudio-and-quarto-documents" class="nav-link" data-scroll-target="#tips-on-navigating-rstudio-and-quarto-documents">Tips on Navigating RStudio and Quarto Documents</a></li>
+  </ul></li>
+  <li><a href="#task-3-load-in-data" id="toc-task-3-load-in-data" class="nav-link" data-scroll-target="#task-3-load-in-data">Task 3: Load in data</a>
+  <ul class="collapse">
+  <li><a href="#code-outputs-in-quarto" id="toc-code-outputs-in-quarto" class="nav-link" data-scroll-target="#code-outputs-in-quarto">Code Outputs in Quarto</a></li>
+  <li><a href="#other-tips" id="toc-other-tips" class="nav-link" data-scroll-target="#other-tips">Other tips</a>
+  <ul class="collapse">
+  <li><a href="#task-4" id="toc-task-4" class="nav-link" data-scroll-target="#task-4">Task 4</a></li>
+  <li><a href="#task-5" id="toc-task-5" class="nav-link" data-scroll-target="#task-5">Task 5</a></li>
+  </ul></li>
+  </ul></li>
+  <li><a href="#keyboard-shortcuts" id="toc-keyboard-shortcuts" class="nav-link" data-scroll-target="#keyboard-shortcuts">⌨️ Keyboard shortcuts ⌨️</a>
+  <ul class="collapse">
+  <li><a href="#running-code" id="toc-running-code" class="nav-link" data-scroll-target="#running-code">Running code</a></li>
+  <li><a href="#insert-an-r-code-chunk" id="toc-insert-an-r-code-chunk" class="nav-link" data-scroll-target="#insert-an-r-code-chunk">Insert an R code chunk</a></li>
+  <li><a href="#insert-a-pipe-operator" id="toc-insert-a-pipe-operator" class="nav-link" data-scroll-target="#insert-a-pipe-operator">Insert a pipe operator</a></li>
+  <li><a href="#format-your-code-for-readability-and-general-beauty" id="toc-format-your-code-for-readability-and-general-beauty" class="nav-link" data-scroll-target="#format-your-code-for-readability-and-general-beauty">Format your code for readability and general beauty</a>
+  <ul class="collapse">
+  <li><a href="#task-6" id="toc-task-6" class="nav-link" data-scroll-target="#task-6">Task 6</a></li>
+  </ul></li>
+  <li><a href="#render-a-document" id="toc-render-a-document" class="nav-link" data-scroll-target="#render-a-document">Render a document</a></li>
+  </ul></li>
+  </ul>
+</nav>
+</div>
+<div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
+</div>
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Tutorial 3 - SAMPLE COMPLETED DOCUMENT</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Dr Brittany Blankinship </p>
+          </div>
+  </div>
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">13 Oct, 2026</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>In this practice document, you will learn a bit more about RMarkdown and continue to get comfortable working with these documents. There are a variety of shortcuts and tips included as well! There are a few tasks for you to put these tips and tricks into the practice either in pairs or when working on your own. The document is written with plenty of markdown (free text) guidance between the code for independent study.</p>
+<div class="callout callout-style-default callout-caution no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Caution</span>📝 Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>This document contains R code to handle data and create data visualisations that we have not yet covered in the course. You are not expected to understand the code at this stage, rather focus on getting used to seeing R code and reading code comments. Starting next week we will look at how to wrangle or handle data in R.</p>
+</div>
+</div>
+<section id="task-1-yaml" class="level1">
+<h1>Task 1: YAML</h1>
+<p>Update the YAML to have the following:</p>
+<ol type="1">
+<li>your name in the author section</li>
+<li>the date set to the system date (date when rendered) in the format DD MMM, YYYY</li>
+<li>darkly theme</li>
+<li>include table of contents on the left titled “Contents”</li>
+<li>have the code folding option with the code showing when rendered</li>
+</ol>
+</section>
+<section id="task-2-packages" class="level1">
+<h1>Task 2: Packages</h1>
+<p>Load the <code>{tidyverse}</code> suite of packages in a code chunk called packages with the chunk option set <em>not</em> to show messages.</p>
+<div class="cell">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+<section id="tips-on-navigating-rstudio-and-quarto-documents" class="level2">
+<h2 class="anchored" data-anchor-id="tips-on-navigating-rstudio-and-quarto-documents">Tips on Navigating RStudio and Quarto Documents</h2>
+<p>As you navigate R Studio and Quarto documents, there are a few things to draw your attention to specifically which can streamline your workflow and coding generally.</p>
+<p>For the example data today, we will return to the <a href="https://www.opendata.nhs.scot/dataset/scottish-heart-disease-statistics">Scottish Heart Disease Statistics from Public Health Scotland</a>. There are 2 data sets we are interested in:</p>
+<ol type="1">
+<li><p><a href="https://www.opendata.nhs.scot/dataset/scottish-heart-disease-statistics/resource/748e2065-b447-4b75-99bd-f17f26f3eaef">Heart Disease Activity by Health Board</a>. The URL to load in the most recent version of the data: https://www.opendata.nhs.scot/dataset/0e17f3fc-9429-48aa-b1ba-2b7e55688253/resource/748e2065-b447-4b75-99bd-f17f26f3eaef/download/hd_activitybyhbr.csv</p></li>
+<li><p><a href="https://www.opendata.nhs.scot/dataset/9f942fdb-e59e-44f5-b534-d6e17229cc7b/resource/652ff726-e676-4a20-abda-435b98dd7bdc">Health Board look up</a>, which allows us to connect the datasets based on the Health Board codes. The URL to load in the most recent version of the data: https://www.opendata.nhs.scot/dataset/9f942fdb-e59e-44f5-b534-d6e17229cc7b/resource/652ff726-e676-4a20-abda-435b98dd7bdc/download/hb14_hb19.csv</p></li>
+</ol>
+</section>
+</section>
+<section id="task-3-load-in-data" class="level1">
+<h1>Task 3: Load in data</h1>
+<p>To load in our data, we need the <code>{tidyverse}</code> suite of package (specifically <code>{readr}</code>) loaded, which we have done in the libraries code chunk at the top. With these datasets, it is quite easy to import the data as we can use the website URLs to access the most recent version of the data.</p>
+<p>In the code chunk below load in our two data sets and call them <code>activity_raw</code> and <code>hb</code>. Use the chunk options to <em>not</em> show the messages from reading in the data when rendering the document and be sure to give the code chunk a meaningful label.</p>
+<div class="cell">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>activity_raw <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"https://www.opendata.nhs.scot/dataset/0e17f3fc-9429-48aa-b1ba-2b7e55688253/resource/748e2065-b447-4b75-99bd-f17f26f3eaef/download/hd_activitybyhbr.csv"</span>)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>hb <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"https://www.opendata.nhs.scot/dataset/9f942fdb-e59e-44f5-b534-d6e17229cc7b/resource/652ff726-e676-4a20-abda-435b98dd7bdc/download/hb14_hb19.csv"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+<section id="code-outputs-in-quarto" class="level3">
+<h3 class="anchored" data-anchor-id="code-outputs-in-quarto">Code Outputs in Quarto</h3>
+<p>When using data that is often updated, it is crucial for reproducibility of your analyses to mention the date that you accessed the data. Below I will show you how you can use R code to include the date you last ran the code in the caption of your figure, instead of hardcoding or manually writing the date.</p>
+<div class="cell">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>activity <span class="ot">&lt;-</span> activity_raw <span class="sc">|&gt;</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="co"># join activity to hb </span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(hb, <span class="at">by =</span> <span class="fu">join_by</span>(<span class="st">"Hbr"</span> <span class="sc">==</span> <span class="st">"HB"</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>  <span class="co"># select the variables we are interested in </span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(FinancialYear, </span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>         HBName, </span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>         AdmissionType,</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>         AgeGroup,</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>         Sex,</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>         Diagnosis,</span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>         NumberOfDischarges) <span class="sc">|&gt;</span></span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>  <span class="co"># reformat the financial year column to be calendar year </span></span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">separate</span>(FinancialYear, <span class="at">into =</span> <span class="fu">c</span>(<span class="st">"Year"</span>, <span class="cn">NA</span>), <span class="at">sep =</span> <span class="st">"/"</span>, <span class="at">convert =</span> <span class="cn">TRUE</span>) <span class="sc">|&gt;</span></span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>  <span class="co"># filter out aggregate ALL responses from the data </span></span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>  <span class="co"># under 75 years is another aggregate level variable including all people under 75</span></span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Sex <span class="sc">!=</span> <span class="st">"All"</span> <span class="sc">&amp;</span> AgeGroup <span class="sc">!=</span> <span class="st">"All Ages"</span> <span class="sc">&amp;</span> AgeGroup <span class="sc">!=</span> <span class="st">"under75 years"</span> <span class="sc">&amp;</span></span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>           AdmissionType <span class="sc">!=</span> <span class="st">"All"</span> <span class="sc">&amp;</span> <span class="fu">complete.cases</span>(HBName)) <span class="sc">|&gt;</span> </span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>  <span class="co"># format the Diagnosis variable for plotting later </span></span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Diagnosis =</span> <span class="fu">str_wrap</span>(Diagnosis, <span class="at">width =</span> <span class="dv">10</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+<p>You may have noticed in working through the different practice documents last week that your R output did not appear in the console or Plots tab as it does when working in Script files.</p>
+<p>This is because in Quarto the output of each code chunk is shown beneath that chunk of code (AKA <strong>inline</strong>)!</p>
+<p>Run the following code to produce <a href="#fig-output-example" class="quarto-xref">Figure&nbsp;1</a>, which we saw a version of in week 2’s tutorial bar chart data flow demo:</p>
+<div class="cell">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># here I am creating an object with today's date using Sys.Date() function which takes the system date when the code is run </span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>date_today <span class="ot">&lt;-</span> <span class="fu">Sys.Date</span>()</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>activity <span class="sc">|&gt;</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(Diagnosis, AgeGroup) <span class="sc">|&gt;</span> </span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">total_discharges =</span> <span class="fu">sum</span>(NumberOfDischarges, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> Diagnosis, </span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>             <span class="at">y =</span> total_discharges, </span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>             <span class="at">fill =</span> AgeGroup)) <span class="sc">+</span> </span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>(<span class="at">position =</span> <span class="st">"dodge"</span>) <span class="sc">+</span></span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">labels =</span> scales<span class="sc">::</span><span class="fu">label_comma</span>()) <span class="sc">+</span> </span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Heart Disease Discharges in Scotland by Diagnsosis and Age Group"</span>,</span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>       <span class="at">subtitle =</span> <span class="st">"2015 - 2024"</span>,</span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">"Diagnosis"</span>,</span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"Number of Discharges"</span>,</span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>       <span class="at">fill =</span> <span class="st">"Age Group"</span>,</span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>       <span class="co"># add a caption with the date the data was accessed </span></span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>       <span class="at">caption =</span> <span class="fu">paste</span>(<span class="st">"Data source: Public Health Scotland, accessed"</span>,</span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>                       date_today,</span>
+<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a>                       <span class="at">sep =</span> <span class="st">" "</span>)) <span class="sc">+</span></span>
+<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output-display">
+<div id="fig-output-example" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-output-example-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="Week04_PracticeDocument-COMPLETED_files/figure-html/fig-output-example-1.png" class="img-fluid figure-img" width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-output-example-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;1: Example figure made with <code>{ggplot2}</code>
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>If you would like to see the output in the console or Plots tab, you can run the code directly in the console. If you prefer this output style, you can change the settings by going to Tools &gt; Global Options &gt; R Markdown &gt; untick “Show output inline for all R Markdown documents”</p>
+</section>
+<section id="other-tips" class="level2">
+<h2 class="anchored" data-anchor-id="other-tips">Other tips</h2>
+<ul>
+<li><p>You can use the console for one off checks, but should otherwise write your code in the Quarto file for reproducibility. <em>Remember</em> any code run in the console is not saved between R sessions.</p></li>
+<li><p>If you have run code previously and want to run it again or edit one part of it, go to the console and you can use the up and down arrows on your keyboard to navigate through previously executed code.</p></li>
+<li><p>Use code completion to your advantage! As you type, you may have noticed that R suggests the function, data set, or variable you may be wishing to use. For variables and functions, only those which are loaded or active in your work space will be suggested.</p>
+<ul>
+<li>You can select from the list of suggestions with your mouse, the up and down arrows on your keyboard + Tab or Enter, or start writing the function and hit Tab.</li>
+</ul></li>
+</ul>
+<section id="task-4" class="level3">
+<h3 class="anchored" data-anchor-id="task-4">Task 4</h3>
+<ul>
+<li>For example, type lib into the R console pane and then press [Tab]. What are you presented with?</li>
+</ul>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="R-Completion-Symbol-Legend.png" class="img-fluid figure-img"></p>
+<figcaption>R Code Completion Symbol Legend</figcaption>
+</figure>
+</div>
+<div class="callout callout-style-default callout-caution callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Caution
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Make sure that you have saved the above image file in the same folder as your .qmd file, which should also be the same folder as your .RProject file. We will discuss folder structure and related topics in more detail in the coming weeks.</p>
+</div>
+</div>
+<ul>
+<li>Similarly, when you go to use a function, a yellow box will appear above with the arguments that the function can take. This is particularly helpful when using new functions.</li>
+</ul>
+</section>
+<section id="task-5" class="level3">
+<h3 class="anchored" data-anchor-id="task-5">Task 5</h3>
+<p>Type <code>read_csv()</code> into the console to see what I mean about the yellow sticky note box with arguments.</p>
+<ul>
+<li><p>In RStudio and Quarto documents, we have many different ways of specifying how our code could be run. You can run the line of code by using a <strong>keyboard shortcut</strong>, the options from the <strong>run button at the top panel</strong>, or the options within a code chunk. Within each code chunk there are two ways you can run code:</p>
+<ol type="1">
+<li>run all chunks above (particularly helpful when working in a long documents) or</li>
+<li>run the current chunk.</li>
+</ol></li>
+</ul>
+</section>
+</section>
+</section>
+<section id="keyboard-shortcuts" class="level1">
+<h1>⌨️ Keyboard shortcuts ⌨️</h1>
+<p>You can view the keyboard shortcuts available within RStudio directly by going to Tools &gt; Keyboard Shortcuts Help.</p>
+<p>You can also modify keyboard shortcuts and create your own system if you have a particular way of working in other software that you want to keep consistent.</p>
+<p>Assuming you keep with the existing keyboard short cuts, I have included a few of my most used shortcuts below:</p>
+<section id="running-code" class="level2">
+<h2 class="anchored" data-anchor-id="running-code">Running code</h2>
+<ul>
+<li><p>IOS: Cmd + Enter</p></li>
+<li><p>Windows: Ctrl + Enter</p></li>
+</ul>
+</section>
+<section id="insert-an-r-code-chunk" class="level2">
+<h2 class="anchored" data-anchor-id="insert-an-r-code-chunk">Insert an R code chunk</h2>
+<ul>
+<li><p>IOS: Option + Cmd + I</p></li>
+<li><p>Windows: Ctrl + Atl + I</p></li>
+</ul>
+<p>Why don’t you try it!</p>
+</section>
+<section id="insert-a-pipe-operator" class="level2">
+<h2 class="anchored" data-anchor-id="insert-a-pipe-operator">Insert a pipe operator</h2>
+<ul>
+<li><p>IOS: Cmd + Shift + M</p></li>
+<li><p>Windows: Ctrl + Shift + M</p></li>
+</ul>
+<p>Try inserting a pipe in the code chunk that you created above.</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>A note on pipes
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>This shortcut will automatically insert the <code>{magrittr}</code> pipe <code>%&gt;%</code>, if you want to use the native base R pipe <code>|&gt;</code> you need to change settings. Go to Tools &gt; Global Options &gt; Code &gt; Editing and check the box to “Use native pipe operator, |&gt; (requires R 4.1+)”.</p>
+</div>
+</div>
+</section>
+<section id="format-your-code-for-readability-and-general-beauty" class="level2">
+<h2 class="anchored" data-anchor-id="format-your-code-for-readability-and-general-beauty">Format your code for readability and general beauty</h2>
+<ul>
+<li><p>IOS: Cmd + Shift + A</p></li>
+<li><p>Windows: Ctrl + Shift + A</p></li>
+</ul>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Tip
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>If you are to use this shortcut, do this before adding comments to your code</p>
+</div>
+</div>
+<p>Compare the code for the plot shown below, without the helpful spacing. Not only is it less beautiful to look at, but it is also overwhelming and very difficult to read and understand what is happening. Notice though, that is does execute. It is just horrible to attempt to read.</p>
+<div class="cell">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>activity<span class="sc">|&gt;</span><span class="fu">group_by</span>(Diagnosis,AgeGroup)<span class="sc">|&gt;</span><span class="fu">mutate</span>(<span class="at">total_discharges=</span><span class="fu">sum</span>(NumberOfDischarges,<span class="at">na.rm=</span><span class="cn">TRUE</span>))<span class="sc">|&gt;</span><span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x=</span>Diagnosis,<span class="at">y=</span>total_discharges,<span class="at">fill=</span>AgeGroup))<span class="sc">+</span><span class="fu">geom_col</span>(<span class="at">position=</span><span class="st">"dodge"</span>)<span class="sc">+</span><span class="fu">scale_y_continuous</span>(<span class="at">labels=</span>scales<span class="sc">::</span><span class="fu">label_comma</span>())<span class="sc">+</span><span class="fu">labs</span>(<span class="at">title=</span><span class="st">"Heart Disease Discharges in Scotland by Diagnsosis and Age Group"</span>,<span class="at">subtitle=</span><span class="st">"2015 - 2024"</span>,<span class="at">x=</span><span class="st">"Diagnosis"</span>,<span class="at">y=</span><span class="st">"Number of Discharges"</span>,<span class="at">fill=</span><span class="st">"Age Group"</span>,<span class="at">caption=</span><span class="fu">paste</span>(<span class="st">"Data source: Public Health Scotland, accessed"</span>,date_today,<span class="at">sep =</span> <span class="st">" "</span>))<span class="sc">+</span><span class="fu">theme_bw</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Week04_PracticeDocument-COMPLETED_files/figure-html/messy-code-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>You may also notice that when the spacing formatting is not used, the whole chunk of code is treated as a single line of code (line 221).</p>
+<p>➡️ Try highlighting all of the code in <code>messy-code</code> and use the keyboard short cut. What do you notice? It helps, certainly, but is not as useful as intentionally formatting your code for readability as in <code>pretty-code</code>.</p>
+<p>It is good practice to <strong>“let our code breathe”</strong> and have spaces around the operators (e.g., either side of the equal sign, before a pipe, etc.). In R, you can format code by hitting “Enter” after a comma, pipe, or plus sign in <code>{ggplot2}</code> code. For readability, it is a good idea to have each line be essentially a new element or argument within the larger function. Notice how R automatically takes care of the spacing for us (so helpful!).</p>
+<div class="cell">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>activity <span class="sc">|&gt;</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(Diagnosis, AgeGroup) <span class="sc">|&gt;</span> </span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">total_discharges =</span> <span class="fu">sum</span>(NumberOfDischarges, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> Diagnosis, </span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>             <span class="at">y =</span> total_discharges, </span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>             <span class="at">fill =</span> AgeGroup)) <span class="sc">+</span> </span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>(<span class="at">position =</span> <span class="st">"dodge"</span>) <span class="sc">+</span></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">labels =</span> scales<span class="sc">::</span><span class="fu">label_comma</span>()) <span class="sc">+</span> </span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Heart Disease Discharges in Scotland by Diagnsosis and Age Group"</span>,</span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>       <span class="at">subtitle =</span> <span class="st">"2015 - 2024"</span>,</span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">"Diagnosis"</span>,</span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"Number of Discharges"</span>,</span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>       <span class="at">fill =</span> <span class="st">"Age Group"</span>,</span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>       <span class="at">caption =</span> <span class="fu">paste</span>(<span class="st">"Data source: Public Health Scotland, accessed"</span>,</span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>                       date_today,</span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a>                       <span class="at">sep =</span> <span class="st">" "</span>)) <span class="sc">+</span></span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>()  </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Week04_PracticeDocument-COMPLETED_files/figure-html/pretty-code-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>We can see above that the code begins with the dataset <code>activity</code> being piped (which we can read in plain English as saying “and then do this”) into the <code>groupby</code> function. As this is the start of our code, everything is indented for us from there. In this way, we can quickly scan the code and see that 7 functions have been used (<code>groupby</code>, <code>mutate</code>, <code>ggplot</code>, <code>geom_col</code>, <code>scale_y_continuous</code>, <code>labs</code> and <code>theme_minimal</code>).</p>
+<section id="task-6" class="level3">
+<h3 class="anchored" data-anchor-id="task-6">Task 6</h3>
+<p>Another benefit of formatting your code like this is you can comment out specific arguments. Try to comment out the subtitle argument on line 242, rerun the code, and see what happens.</p>
+</section>
+</section>
+<section id="render-a-document" class="level2">
+<h2 class="anchored" data-anchor-id="render-a-document">Render a document</h2>
+<p>If you do not want to click on the <code>Render</code> button and would prefer to stick to the keyboard the following shortcut is useful</p>
+<ul>
+<li><p>IOS: Cmd + Shift + K</p></li>
+<li><p>Windows: Ctrl + Shift + K</p></li>
+</ul>
+<p>That’s all for now! Happy coding :)</p>
+</section>
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
