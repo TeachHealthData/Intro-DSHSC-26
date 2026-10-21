@@ -1,0 +1,309 @@
+---
+title: "Tutorial 4"
+author: Dr Brittany Blankinship
+date: today
+toc: true
+format: 
+  html:
+    theme: paper
+    toc-location: left
+    code-fold: show
+---
+
+Before we get started, change the YAML to have your name as the author instead of mine.
+
+This week we have explored some of the data wrangling functions in R, focusing specifically on the `{tidyverse}` set of packages. So, first off we need to load the `{tidyverse}` packages. 
+
+```{r}
+#| label: load-packages
+
+library(tidyverse)
+```
+
+:::{.callout-tip title="💡 Remember 💡" icon=false}
+If you get an error such as `"Error: package or namespace load failed for '[name of the package]' in loadNamespace"` this means you do not have the package installed on your computer. You can always check which packages are installed by going to the "Packages" tab in RStudio. If the package is listed, you have it installed. If there is a tick mark by the name, it is loaded and active in your current R session. 
+:::
+
+In this practice document we will be using a familiar set of data from Public Health Scotland (Scottish Heart Disease activity and morality by health board) that we have used in previous tutorials in Week 2 and Week 4. Only now, you have the tools to understand all of the wrangling code - how exciting! 🎉
+
+For the example data today, we will return to the [Scottish Heart Disease Statistics from Public Health Scotland](https://www.opendata.nhs.scot/dataset/scottish-heart-disease-statistics). There are 2 datasets we are interested in:
+
+1. [Heart Disease Activity by Health Board]("https://www.opendata.nhs.scot/dataset/0e17f3fc-9429-48aa-b1ba-2b7e55688253/resource/748e2065-b447-4b75-99bd-f17f26f3eaef/download/hd_activitybyhbr.csv")
+
+2. [Health Board look up](https://www.opendata.nhs.scot/dataset/9f942fdb-e59e-44f5-b534-d6e17229cc7b/resource/652ff726-e676-4a20-abda-435b98dd7bdc), which allows us to connect the datasets based on the Health Board codes.
+
+:::{.callout-note title="Navigating the Document"}
+Work through the following tasks with your partner, or on your own. There is a sample completed practice document on Learn under Week 5 Tutorial Resources that you can check later for example solutions - remember, there are many different ways of doing the same thing in R! 
+
+If you wrote code that works, and the example solution is different, both may very well be correct. The most important thing is that **you** understand your code and that it runs effectively (doing what you want it to do).
+:::
+
+# Wrangling Practice 
+
+## Task 1
+
+Load in the data sets and save them in your working environment. Call them `activity_raw `and `hb`. 
+
+To load in our data, we need the `{tidyverse}` suite of package (specifically `{readr}`) loaded, which we have done in the libraries code chunk at the top. With these data sets, it is quite easy to import the data as we can use the website URLs to access the most recent version of the data. 
+
+The URLs to access the data are
+
+* Activity data: https://www.opendata.nhs.scot/dataset/0e17f3fc-9429-48aa-b1ba-2b7e55688253/resource/748e2065-b447-4b75-99bd-f17f26f3eaef/download/hd_activitybyhbr.csv
+
+* Health Board look-up: https://www.opendata.nhs.scot/dataset/9f942fdb-e59e-44f5-b534-d6e17229cc7b/resource/652ff726-e676-4a20-abda-435b98dd7bdc/download/hb14_hb19.csv
+
+```{r}
+#| label: task-1
+#| message: false
+
+# your code here 
+
+```
+
+
+## Task 2
+
+Now that we have our 2 data sets saved to our global environment, use your favourite functions for eyeballing data and write a couple of sentences about each data set (its dimensions, the variables inside, types of data, etc.)
+
+```{r}
+#| label: task-2
+
+# your code here 
+
+```
+
+
+## Task 3 
+
+Our second data set, `hb`, helps us to identify what the health board codes mean in the `activity_raw` data set. Lets join the `hb` data set to the `activity_raw` data set, calling the new data set `activity_joined`. 
+
+What type of join do you think would be best to use? 
+
+➡️ **Answer**: 
+
+:::{.callout-tip}
+## ❓ Hint 
+
+Now that you have decided on the type of join, have a look at the data frames you want to join and look for the **key** - the variable present in both datasets that they will be joined by. They may not have the same name, but represent the same data 
+:::
+
+```{r}
+#| label: task-3
+
+# your code here 
+
+```
+
+
+## Task 4 
+
+Notice that we now have 43,200 observations or rows in our data (as we did with `activity_raw`). However, now we have 19 variables or columns. Do we need all of these variables if we are interested in the Health Board name, year, admission type, diagnosis, number of discharges, and demographic variables of the patients? I do not think so. 
+
+To check the names of columns in your data object, you can use the `names()` function.
+
+Select only the variables of interest and save this in a new data set called `activity_selected`. 
+
+:::{.callout-caution title="📝 Note" icon="false"}
+Remember, we want to use our joined data set we created in Task 3, not the original data set. 
+:::
+
+```{r}
+#| label: task-4
+
+# your code here 
+
+```
+
+
+## Task 4.2 
+
+What format is the data currently in? Long or wide? 
+
+➡️ **Answer**: 
+
+
+## Task 5
+
+Now that we have our variables of interest in our data set, how might we get a summary of the `NumberofDischarges` variable? What about the `AdmissionType` variable? 
+
+Do you notice any differences between the summary information available? Why might this be? 
+
+➡️ **Answer**: 
+
+```{r}
+#| label: task-5
+
+# your code here 
+
+```
+
+
+## Task 5.2 
+
+Change the `AdmissionType` variable to be a factor and then look at the summary 
+
+:::{.callout-tip}
+## ❓ Hint 
+
+You can use the same answer as above, but need to add a function to change the variable class in the workflow/pipeline 
+:::
+
+```{r}
+#| label: task-5-2
+
+# your code here 
+
+```
+
+
+## Task 6 
+
+We can see from our result in Task 5.2 that there are aggregate levels of the variable "All" included with the specific levels "Elective", "Emergency", and "Transfer". How might we look look at only the aggregate levels of the variable?
+
+:::{.callout-tip}
+## ❓ Hint 
+
+Make sure you check how the different levels of the variable are spelled. R will treat "all" differently from "All" - but you will not get an error in this case. Try your code with "all" and "All" to see what I mean. 
+:::
+
+
+```{r}
+#| label: task-6
+
+# your code here 
+
+```
+
+
+## Task 6.2 
+
+How might we look look at only the non-aggregate levels of the variable `AdmissionType`?
+
+```{r}
+#| label: task-6-2
+
+# your code here 
+
+```
+
+
+## Task 6.3 
+
+What if we wanted to remove all of the aggregate levels from all of our variables of interest? 
+
+:::{.callout-tip}
+## ❓ Hint 
+
+Go back to Task 5 and Task 5.2 and repeat these steps for the other character variables in our data set `activity_selected`
+:::
+
+
+```{r}
+#| label: task-6-3
+
+# your code here 
+
+```
+
+
+## Task 7 
+
+As we discussed in the tutorial, `mutate()` and `summarise()` are similar though distinct functions. Change the mutate function below to be summarise instead - what do you expect to see? 
+
+```{r}
+#| label: task-7
+
+activity_selected |> 
+  mutate(mean_discharge = mean(NumberOfDischarges, na.rm = TRUE)) 
+
+# your code here 
+
+```
+
+## Additional note around descriptive statistics 
+
+While there are not any `NA` values in the `NumberOfDischarges` column, it is a good idea to include the `na.rm = TRUE` argument when computing the mean or standard deviation to make your code robust to any data updates (where NAs might appear). This argument is a logical (taking `TRUE` or `FALSE` in response) argument to remove `NA` values in the calculation. If there are missing values when calculating the mean or standard deviation, you will not receive an error but instead your outcome will be an `NA`, even when there is data there and it is an applicable function.
+
+In the code chunk below I have created a simple tibble with some `NA` values so that you can see this in practice. 
+
+```{r}
+#| label: mean-with-na
+
+jackolantern_data <- tibble(pumpkins = 1:5,
+                            carvings = c(1,2,NA,4,NA),
+                            tea_lights = c(NA,2,3,NA,NA))
+
+# lets have a look at the data by printing it 
+jackolantern_data
+
+# now lets summarise the toy dataset into the mean of each column 
+jackolantern_data |> 
+  summarise(mean_pumpkins = mean(pumpkins),
+            mean_carvings = mean(carvings),
+            mean_tea_lights = mean(tea_lights))
+```
+
+The `NA`s have disrupted our calculations for `mean_carvings` and `mean_tea_lights`! But we did not get an error. And we know there are values in some of the rows. 
+
+## Task 8
+
+Add in the argument to have the `NA`s ignored into the code and run it again. 
+
+If you want to challenge yourself, format the mean values to 1 decimal place for all columns int the summary tibble. 
+
+```{r}
+#| label: task-8 
+
+# your code here 
+
+```
+
+
+# Benefits and considerations of a tidy workflow 
+
+A very cool aspect of working with the `{tidyverse}` is that you can immediately use a variable you have created through the `mutate()` function without having to save it into an object or data frame. 
+
+For example, in the solution code to Task 5.2, I created a new variable called `AdmissionType_f` and immediately used in the following line of code in the select function.
+
+```{r}
+#| label: ex-1
+
+activity_selected |> 
+  mutate(AdmissionType_f = fct(AdmissionType)) |>  
+  select(AdmissionType_f) |> 
+  summary()
+```
+
+This can be super useful when wrangling data for plotting (which we will explore next week), or creating tables. 
+
+One of the things to note is that in a tidy work flow, the code is executed in order. Remember, you can read the `|>` as saying "and then". So the following code in the `ex-2` code chunk in plain language would be "Take the `activity_select` data set and then select the variables `AgeGroup`, `Diagnosis`, and `HBName` and then mutate or change the `HBName` variable to be a factor" 
+
+```{r}
+#| label: ex-2
+
+activity_joined |>  
+  select(AgeGroup, Diagnosis, HBName) |> 
+  mutate(HBName = factor(HBName))
+```
+
+:::{.callout-important}
+‼️ This means that **the order of your code matters!**. You must thinking logically about the order in which you are asking R to do things. ‼️
+:::
+
+You can only mutate variables which are currently selected - see the error in the code below 
+
+```{r}
+#| label: tidyflow-error
+
+#activity_joined |>  
+#  select(AgeGroup, Diagnosis) |>  
+#  mutate(HBName = factor(HBName))
+
+#I have commented out the code here in order for the file to render. A Quarto document will not render if there are errors in the code. Remove the comments and try and render the file to see what I mean! 
+```
+
+The error code here is actually quite helpful `"! object HBName not found"`. This tells us that the `mutate()` function cannot do as we are asking it to do because R cannot find the variable called `HBName`. This is because we have selected only `AgeGroup` and `Diagnosis` from the data set, meaning we can now only work with those variables. 
+
+To solve this error we can (a) add `HBName` to our select function or (b) move the mutate function before the select function. 
+
+That's all for now! :) 
