@@ -1,0 +1,488 @@
+---
+title: "Week 6"
+subtitle: "Introduction to Data Science in Health and Social Care HEIN11037"
+author: Dr Brittany Blankinship
+format:
+  revealjs: 
+    theme: dark
+    slide-number: c/t
+    incremental: false
+    embed-resources: true
+    logo: images/logo.png
+    footer: "[Course GitHub Repo](https://github.com/TeachHealthData/Intro-DSHSC-26)"
+    title-slide-attributes:
+     data-background-image: images/MainLibrary.jpg
+     data-background-opacity: "0.5"
+---
+
+```{r}
+#| label: setup 
+#| include: false
+
+# (1) tidyverse includes ggplot2 and lubridate, which we need for this demo 
+library(tidyverse)
+
+# (2) load data for the ggplot demos 
+cancelled_raw <- read_csv("https://www.opendata.nhs.scot/dataset/479848ef-41f8-44c5-bfb5-666e0df8f574/resource/0f1cf6b1-ebf6-4928-b490-0a721cc98884/download/cancellations_by_board_august_2025.csv")
+
+hb <- read_csv("https://www.opendata.nhs.scot/dataset/9f942fdb-e59e-44f5-b534-d6e17229cc7b/resource/652ff726-e676-4a20-abda-435b98dd7bdc/download/hb14_hb19.csv")
+
+# (3) do some data wrangling to make the data ready for plotting 
+cancelled <- cancelled_raw |>
+  # Join cancelled to hb
+  left_join(hb, by = join_by(HBT == HB)) |>
+  # Select the variables we're interested in
+  select(Month,
+         HBName,
+         TotalOperations,
+         TotalCancelled) |>
+  # Filter out/remove NA values (which were the code for a specific hospital) from HBName (SB0801 before the join) 
+  filter(HBName != "NA") |>
+  # Reformat the month column to separate out year, month, day using lubridate ymd()
+  mutate(Month = ymd(Month, truncated = TRUE),
+         Year = as.factor(year(Month))) |> 
+  # Change all variable names to be snake_case
+  janitor::clean_names() |> 
+  # Create a total operations column by year for the bar chart  
+  group_by(year) |> 
+  mutate(total_operations_year = sum(total_operations)) |> 
+  # ungroup the data 
+  ungroup()
+```
+
+
+## {#slide1-id data-menu-title="Audio check" background-image="images/audio_check.png" background-size="contain"}
+
+## {#slide2-id data-menu-title="Asking Questions" background-image="images/questions.png" background-size="contain"}
+
+## {#slide3-id data-menu-title="Recording" background-image="images/recording.png" background-size="contain"}
+
+# Week 6 Tutorial 
+
+Introduction to Data Science in Health and Social Care HEIN11037
+
+
+## Agenda 
+
+::: {.incremental}
+* tables vs figures 
+* `{ggplot2}`
+* practice document
+  - data storytelling with data visualisation 
+
+:::
+
+![](images/ggplot2knitr_hexes.png){.absolute top=10 right=0 width=400}
+
+
+## How are you feeling today?
+
+On this animal scale 
+
+![](images/Week6_checkin.jpg){fig-align="center"}
+
+# Do you think figures or tables are more useful for data visualisation? 
+
+## Why do graphs and tables matter? 
+
+::: {.incremental}
+* Both graphs *AND* tables are tools for communication 
+* *Informative* and well-presented graphs and tables ARE better communication 
+
+:::
+
+## When to use tables vs graphs? 
+
+![](images/TablesVGraphs.png)
+
+## When to use tables vs graphs? {transition="none"}
+
+![](images/TablesVGraphs_highlight.png)
+
+## `{ggplot2}` {.smaller}
+
+::::: {.columns}
+::: {.column width="50%"}
+* An application of Leland Wilkinson's [grammar of graphics](https://discovered.ed.ac.uk/permalink/44UOE_INST/1lk19of/alma9912442093502466) for R
+* A system for iteratively and declaratively creating graphics 
+* Just like grammar in a language constructs sentences, grammar of graphics constructs data visualisations 
+
+:::
+
+:::{.column width="50%"}
+
+![Credit: Cédric Sherer](images/ggplot2_overview.png)
+
+:::
+:::::
+
+## Building blocks of a `ggplot`
+
+::::: {.columns}
+::: {.column width="50%"}
+![](images/ggplot_buildingblocks.png)
+
+:::
+
+:::{.column width="50%" .incremental}
+
+![](images/ggplot_buildingblocks_code.png)
+:::
+:::::
+
+## The key ingredients {.smaller}
+
+```{r}
+#| echo: true
+#| output-location: fragment
+
+ggplot(data = cancelled) #<1>
+```
+
+1. Data Layer
+
+## The key ingredients {transition="none" .smaller .scrollable}
+
+```{r}
+#| echo: true
+#| output-location: fragment
+
+ggplot(data = cancelled, #<1>
+       aes(x = year, y = total_operations_year)) #<2>
+```
+
+1. Data Layer
+2. Aesthetics Layer
+
+## The key ingredients {transition="none" .scrollable}
+
+```{r}
+#| echo: true
+#| output-location: fragment
+
+ggplot(data = cancelled, #<1>
+       aes(x = year, y = total_operations_year)) + #<2>
+  geom_col() #<3>
+```
+
+1. Data Layer
+2. Aesthetics Layer
+3. Geometry Layer
+
+## The key ingredients {transition="none" .smaller .scrollable}
+
+```{r}
+#| echo: true
+#| output-location: slide
+#| code-line-numbers: "|1|2|3"
+
+ggplot(data = cancelled, #<1>
+       aes(x = year, y = total_operations_year)) + #<2>
+  geom_col() #<3>
+```
+
+1. Use the data cancelled THEN 
+2. Use the X axis to show "year" then the Y axis to show "total_cancelled_year" AND
+3. ... take all that and make a bar chart 
+
+## The key ingredients {transition="none" .smaller .scrollable}
+
+```{r}
+#| echo: true
+#| output-location: fragment
+
+ggplot(data = cancelled, #<1>
+       aes(x = total_operations)) + #<2>
+  geom_density() #<3>
+```
+
+1. Data Layer
+2. Aesthetics Layer
+3. Geometry Layer
+
+
+## The key ingredients {transition="none" .smaller .scrollable}
+
+```{r}
+#| echo: true
+#| output-location: fragment
+
+ggplot(data = cancelled, #<1>
+       aes(x = total_operations, y = total_cancelled)) + #<2>
+  geom_point() #<3>
+```
+
+1. Use the data cancelled THEN 
+2. Use the X axis to show "total_operations" then the Y axis to show "total_cancelled" AND
+3. ... take all that and make a scatter plot 
+
+## Aesthetics: Inside, Outside, or both 
+
+## {#slide21-id data-menu-title="aes inside" .scrollable}
+
+**Within** `aes()`: the argument changes based on the values of the variable
+
+```{r}
+#| echo: true
+#| output-location: fragment
+#| code-line-numbers: "|4"
+
+ggplot(data = cancelled, 
+       aes(x = total_operations, 
+           y = total_cancelled, 
+           color = year)) + 
+  geom_point() 
+```
+
+
+## {#slide22-id data-menu-title="aes outside" .scrollable}
+
+**Outside** `aes()`: (): the argument is given a single value and *doesn't* change based on the values of the variable
+
+
+```{r}
+#| echo: true
+#| output-location: fragment
+#| code-line-numbers: "|4"
+
+ggplot(data = cancelled, 
+       aes(x = total_operations, 
+           y = total_cancelled)) + 
+  geom_point(color = "mediumpurple")
+```
+
+
+## {#slide23-id data-menu-title="aes inside and outside" .scrollable}
+
+You can specify aesthetics both inside and outside `aes()`
+
+```{r}
+#| echo: true
+#| output-location: fragment
+#| code-line-numbers: "|4-5"
+
+ggplot(data = cancelled, 
+       aes(x = total_cancelled,
+           y = total_operations, 
+           color = year)) + 
+  geom_point(shape = 4)
+```
+
+[To learn more about the different aesthetic specifications](https://ggplot2.tidyverse.org/articles/ggplot2-specs.html)
+
+## Geoms... decisions, decisions 
+
+![](images/GeomsDecisions_1.png)
+
+## Geoms... decisions, decisions {transition="none"}
+
+![](images/GeomsDecisions_2.png)
+
+## `{ggplot2}` cheatsheet 
+
+::::: {.columns}
+::: {.column width="40%"}
+
+> Geoms are organised by the number and type of variables you have to plot 
+
+:::
+
+::: {.column width="60%"}
+![](images/ggplot2_cheatsheet_geoms.png)
+
+:::
+:::::
+
+## Visualising 3 variables 
+
+* Start with a 2-variable visualisation and then add color, shape, or size 
+
+## A note on the use of color in plots 🎨 {.smaller}
+
+::: {.incremental}
+
+✅color should be used with intent
+🚫 not as decoration
+
+::::: {.columns}
+::: {.column width="50%"}
+Use color to:
+
+1. To represent values 
+2. To distinguish groups
+  - Particularly nominal categorical data (no intrinsic order) 
+3. Emphasize information 
+  - Draw attention to what matters most: a specific group, range, threshold, etc. 
+  
+:::
+
+:::{.column width="50%"}
+
+Valid cases to break these rules: 
+
+* **Double encoding:** color repeats information already shown on an axis to reinforce information 
+* **Consistency across charts:** several charts show the same groups and you want the color story to match 
+
+:::
+:::::
+:::
+
+## Visualising 3+ variables {.smaller}
+
+Add another variable with facets!
+
+![A sketch illustrating the difference between the two faceting systems. Source: ggplot2 (2e) book](images/facetting.png)
+
+
+## Visualising 3+ variables {transition="none" .smaller} 
+
+:::{.incremental}
+::::: {.columns}
+::: {.column width="50%"}
+
+![Source: ggplot2 (2e) book](images/facetting.png)
+
+:::
+
+:::{.column width="50%"}
+
+* `facet_grid()` (left) is fundamentally 2D, being made up of two independent components. 
+  - `facet_grid(~row~column)` creates a matrix of panels by row & column faceting variables 
+* `facet_wrap()` (right) is 1D, but wrapped into 2D to save space.
+  - `facet_wrap(~variable)` makes a long ribbon of panels 
+
+:::
+:::::
+:::
+
+## Data storytelling with data visualisation {.smaller}
+
+> Use the POP method to make your key points stand out 
+
+:::{.incremental}
+* **P = Prioritize.** Establish which data point(s) are most important. 
+  - Add a headline/active title which is explanatory rather than descriptive 
+  
+* **O = Overstate.** Use visual emphasis like color, size contrast, annotations, etc. 
+  - Adjust color, thickness, sizes. Add labels or markers to highlight key points.
+
+* **P = Point.** Guide the audience to the focus point of your chart
+  - Add annotations or graphical cues (e.g., arrows, lines, circles, boxes, etc.). 
+
+:::
+
+## Further Resources 
+
+* [ggplot2: Elegant Graphics for Data Analysis (3e) (free!)](https://ggplot2-book.org)
+* [TidyTuesday Cookbook (free!)](https://nrennie.rbind.io/art-of-viz/)
+* [R Graph Gallery](https://r-graph-gallery.com)
+* [From Data to Viz](https://www.data-to-viz.com)
+* [Dataviz Caveats](https://www.data-to-viz.com/caveats.html)
+
+## Coding Time 🚀 
+
+1. Navigate to the **Tutorial/Live Session Material** on Learn
+2. Download the **Week 6 Tutorial Resources** (.qmd file and csv file)
+3. Open the qmd file in an **R Project**
+
+# Supplementary Material 
+
+## Aesthetics: Inside, Outside, or both 
+
+🛑 🚩 If you try and specify the color to represent the 3rd variable Year outside the `aes()` you get an error.
+
+* For example: `geom_point(color = Year)`
+* `Error: object 'Year' not found`
+
+## Aesthetics: Inside, Outside, or both {.scrollable}
+
+🛑 🚩 If you try and put a **single value** and not a **variable** within the `aes()` R thinks you meant it as a variable. This will not produce an error as such, but the plot will likely not be as you intended it. 
+
+```{r}
+#| echo: true
+#| output-location: fragment
+#| code-line-numbers: "|4"
+
+ggplot(data = cancelled, 
+       aes(x = total_cancelled,
+           y = total_operations, 
+           color = "mediumpurple")) + 
+  geom_point()
+```
+
+## `{ggplot2}` layers 
+
+* Stacked in the order of code appearance 
+* Important to keep in mind as elements written later in your code may hide or overwrite previous elements 
+
+```{r}
+#| echo: true
+#| output-location: slide
+#| code-line-numbers: "4-6"
+
+cancelled |>
+  ggplot(aes(x = year, y = total_operations,
+             color = year))+
+  geom_boxplot(whisker.linetype =  "dashed",
+               box.color = "black") +
+  geom_jitter(alpha = 0.4) 
+```
+
+---
+
+Layering `geom_boxplot()` over `geom_jitter()` hides the data points! 
+
+```{r}
+#| echo: true
+#| output-location: slide
+#| code-line-numbers: "4-6"
+
+cancelled |>
+  ggplot(aes(x = year, y = total_operations,
+             color = year))+
+  geom_jitter(alpha = 0.4) +
+  geom_boxplot(whisker.linetype =  "dashed",
+               box.color = "black") 
+```
+
+## A bit more on the faceting syntax {.smaller}
+
+Faceting follows formula syntax (denoted with the tilda `~`)
+
+`facet_wrap(~var1, nrow = 3)`
+
+  * Specify the split of rows with nrow argument
+
+`facet_grid(~var1~var2)`: var1 on x-axis (columns) and var2 on y-axis (rows)
+`facet_grid(.~var1)`: var1 on x-axis (columns)
+
+  * Dot operator optional in front of ~
+  
+`facet_grid(var1~.)`: var1 on y-axis (rows)
+  
+  * Must include dot operator after ~
+
+You can also control the scales of your subplots with the scales argument, which takes `“free”`, `“free_x”`, or `“free_y”`. By default they are fixed 
+
+
+## References {.smaller}
+
+1. [Leland Wilkinson's grammar of graphics](https://discovered.ed.ac.uk/permalink/44UOE_INST/1lk19of/alma9912442093502466)
+
+2. [ggplot2: Elegant Graphics for Data Analysis (3e)](https://ggplot2-book.org)
+
+3. [`{ggplot2}`cheatsheet](https://rstudio.github.io/cheatsheets/html/data-visualization.html)
+
+4. [TidyTuesday Cookbook](https://nrennie.rbind.io/art-of-viz/)
+
+5. [Cédric Sherer's A ggplot2 Tutorial for Beautiful Plotting in R](https://www.cedricscherer.com/2019/08/05/a-ggplot2-tutorial-for-beautiful-plotting-in-r/)
+
+6. [`{ggplot2}` aes specifications](https://ggplot2.tidyverse.org/articles/ggplot2-specs.html)
+
+7. [List of colors in R, by name and HEX code](https://r-charts.com/colors/)
+
+8. [R Graph Gallery](https://r-graph-gallery.com)
+
+9. [From Data to Viz](https://www.data-to-viz.com)
+
+10. [Dataviz Caveats](https://www.data-to-viz.com/caveats.html)

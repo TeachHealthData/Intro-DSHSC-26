@@ -1,0 +1,360 @@
+---
+title: "Week 5"
+subtitle: "Introduction to Data Science in Health and Social Care HEIN11037"
+author: Dr Brittany Blankinship
+format:
+  revealjs: 
+    theme: white
+    slide-number: c/t
+    incremental: true
+    transition: concave
+    embed-resources: true
+    logo: images/logo.png
+    footer: "[Course GitHub Repo](https://github.com/TeachHealthData/Intro-DSHSC-26)"
+    title-slide-attributes:
+     data-background-image: images/AnatomyMuseumEntrance.jpg
+     data-background-opacity: "0.5"
+---
+
+## Week 3 - Pre-Tutorial Task
+
+:::: {.columns}
+::: {.column width=50%}
+
+Which `{dplyr}` functions do you know?
+
+ \
+
+Explore the `{dplyr}` documentation: [dplyr.tidyverse.org](https://dplyr.tidyverse.org/)
+
+:::
+
+::: {.column width=50%}
+
+![](images/dplyr.png){.absolute width=200}
+
+:::
+::::
+
+
+## {#slide1-id data-menu-title="Audio check" background-image="images/audio_check.png" background-size="contain"}
+
+## {#slide2-id data-menu-title="Asking Questions" background-image="images/questions.png" background-size="contain"}
+
+## {#slide3-id data-menu-title="Recording" background-image="images/recording.png" background-size="contain"}
+
+
+# Week 5 Tutorial 
+
+Introduction to Data Science in Health and Social Care HEIN11037
+
+## Agenda 
+
+* Course/assessment updates
+* Function Bingo
+  - review of some key functions and principles 
+* Pair programming exercises 
+* Questions 
+
+![](images/tidyverse.png){.absolute top=10 right=0 width=200}
+
+
+## How are you feeling today?
+
+On this animal scale 
+
+![](images/Week5_checkin.jpg){fig-align="center"}
+
+## No new content next week 
+
+* Reading week 26 October to 30 October 
+  - Use this week to catch up, revise what we have covered, and start thinking about your Datathon project!
+  - Drop-in sessions Wednesday 28 October 10am and 6pm (usual tutorial times)
+* Week 6 will start on 2 November with our next tutorial on 4 November 
+
+## [📣 Mid-course feedback survey 📣](https://forms.cloud.microsoft/e/f0AQirXBU6)
+
+## See Discussion Board post and email from your Student Reps! 
+
+# Wrangling Bingo 
+
+![Artwork by Alison Horst](images/data_cowboy.png)
+
+## Subsetting Data (variables)
+
+::::: {.columns}
+::: {.column width="60%"}
+
+* `select()` 
+  - select columns by name 
+  
+:::
+
+::: {.column width="40%"}
+
+![](images/dplyr.png){.absolute width=200}
+
+:::
+::::: 
+
+## Subsetting Data (variables){transition="none"}
+
+![Credit: Coding TogetheR](images/select_ex.png)
+
+## Subsetting Data (observations)
+
+::::: {.columns}
+::: {.column width="60%"}
+
+* `filter()` 
+  - Extract rows of existing data that meeting logical conditions 
+* For more check out [this RStudio Data Manipulation video from Garrett Grolemund](https://www.youtube.com/watch?v=Zc_ufg4uW4U)
+
+:::
+
+::: {.column width="40%"}
+
+![](images/dplyr.png){.absolute width=200}
+
+:::
+::::: 
+
+
+## Subsetting Data (observations){transition="none"}
+
+![Credit: Coding TogetheR](images/filter_ex.png)
+
+## Logical Operators{.smaller}
+
+| Operator 	| Meaning               	|
+|----------	|-----------------------	|
+| <        	| less than             	|
+| >        	| greater than          	|
+| ==       	| equal to              	|
+| <=       	| less than equal to    	|
+| >=       	| greater than equal to 	|
+| !=       	| not equal to          	|
+| %in%     	| group membership      	|
+| &        	| and                   	|
+| \|       	| or                    	|
+
+## Logical Operators{transition="none"}
+
+![A set of commonly used Boolean operations. x is the left-hand circle, y is the right-hand circle, and the shaded regions show which parts each operator selects. Figure 12.1 from R for Data Science (2e)](images/BooleanOpp.png)
+
+## New Variables {.smaller}
+
+::::: {.columns}
+::: {.column width="60%"}
+
+* `mutate()` 
+  - Compute and append one or more new columns – changes an existing column or adds a new one
+
+* Original columns remain after being passed to mutate 
+
+* Technically speaking, a **vectorised function** 
+  - Meaning a vector is taken an input and a vector of the same length is returned as output 
+  
+:::
+
+::: {.column width="40%"}
+
+![](images/dplyr.png){.absolute width=200}
+
+:::
+::::: 
+
+## New Variables {transition="none"}
+
+![Credit: Coding TogetheR](images/mutate_ex.png)
+
+## Summarise 
+
+::::: {.columns}
+::: {.column width="60%"}
+
+* `summarise()` 
+  - Summarise data into single row of values
+
+* Drops variables not selected or created inside it
+  - drops columns after calculating the new one 
+
+* Use to compute a table of summaries rather than create a new variable 
+
+:::
+
+::: {.column width="40%"}
+
+![](images/dplyr.png){.absolute width=200}
+
+:::
+::::: 
+
+## Summarise {transition="none"}
+
+![Credit: Coding TogetheR](images/summarise_ex.png)
+
+## Data Formats & Tidy Data {.smaller} 
+
+::::: {.columns}
+::: {.column width="60%"}
+
+![Illustrations from the Openscapes blog Tidy Data for reproducibility, efficiency, and collaboration by Julia Lowndes and Allison Horst](images/TidyData.jpg)
+For more on tidy data see the above paper & Chapter 5 of the R for Data Science Book
+
+:::
+
+::: {.column width="40%"}
+Ways data can become untidy:
+
+* Column headers contain values, rather than names 
+* Multiple variables are stored in a single column 
+* Variables are stored in both rows and columns
+* Multiple observational types are stored in a single table 
+* A single observational unit is stored in multiple tables
+
+*Wickham, H. (2014). Tidy data. Journal of statistical software, 59(1), 1-23.* 
+
+:::
+:::::
+
+## Data Formats & Tidy Data {transition="none"}
+
+![The following three rules make a dataset tidy: variables are columns, observations are rows, and values are cells. Figure 5.1 from R for Data Science (2e)](images/tidy-1.png)
+
+## Long vs Wide Data 
+
+![](images/DataFormats.png){fig-align="center"}
+
+**Wide format** = generally untidy, but found in many datasets & useful for tables
+
+## Long vs Wide Data {transition="none"}
+
+It can be easier to think about reshaping data if we think about it column by column.
+
+![Wide data on the left, reshaped into long data on the right. Columns that are already variables need to be repeated, once for each column that is pivoted. Figure 5.3 from R for Data Science (2e)](images/longVwide.png)
+
+## Transforming Data (wide to long) {.smaller}
+
+::::: {.columns}
+::: {.column width="60%"}
+
+* `pivot_longer()` 
+
+* Requires: 
+  1. `data` = data you want to pivot 
+  2. `names_to` = name of the column you want to create to capture condition, requires a character string
+  3. `values_to` = name of column you want to contain data values, requires a character string 
+  4. `column X:column Y` = range of columns that you have and want to pivot longer, or that you do not want to pivot  
+
+:::
+
+::: {.column width="40%"}
+
+![](images/tidyr.png){.absolute width=200}
+
+:::
+::::: 
+
+## Transforming Data (wide to long) {transition="none"}
+
+![Credit: Coding TogetheR](images/pivotlonger.png)
+
+## Transforming Data (wide to long) {transition="none"}
+
+![Credit: Epidemiologist R Handbook](images/pivotlonger_2.png)
+
+## Transforming Data (long to wide) {.smaller}
+
+::::: {.columns}
+::: {.column width="60%"}
+
+* `pivot_wider()` 
+
+* Requires: 
+  1. `data` = data you want to pivot 
+  2. `names_from` = name of column you want to end up in several columns 
+  3. `values_from` = name of column that currently contains data values 
+
+:::
+
+::: {.column width="40%"}
+
+![](images/tidyr.png){.absolute width=200}
+
+:::
+::::: 
+
+## Transforming Data (long to wide) {transition="none"}
+
+![Credit: Coding TogetheR](images/pivotwider.png)
+
+## Transforming Data (long to wide) {transition="none"}
+
+![Credit: Epidemiologist R Handbook](images/pivotwider_2.png)
+
+## Pivoting Animation 
+
+![Credit: Garrick Aden-Buie & Mara Averick](images/tidyr-pivoting.gif)
+
+![](images/tidyr.png){.absolute top=10 right=0 width=100}
+
+## Joins 
+
+::::: {.columns}
+::: {.column width="33%"}
+
+* `left_join()`
+![](images/left-join.gif)
+
+:::
+
+::: {.column width="33%"}
+
+* `inner_join()`
+![](images/inner-join.gif)
+
+:::
+
+::: {.column width="33%"}
+
+* `full_join()`
+![](images/full-join.gif)
+
+:::
+::::: 
+
+![](images/dplyr.png){.absolute top=10 right=0 width=100}
+
+* Gif credit: [Garrick Aden Buie](https://www.garrickadenbuie.com/project/tidyexplain/)
+
+* For a fun explanation using The Beatles & Rolling Stones see [Nic Crane’s tweet](https://x.com/nic_crane/status/1064237554910806016)
+
+
+# Any questions? 
+
+## Coding Time 🚀 
+
+::: {.nonincremental}
+
+1. Navigate to the **Tutorial/Live Session Material** on Learn
+2. Download the **Week 5 Tutorial Resources** (.qmd file)
+3. Open the qmd file in an **R Project**
+
+:::
+
+## References 
+
+::: {.nonincremental}
+1. [`{dplyr}` Data Manipulation video from Garrett Grolemund](https://www.youtube.com/watch?v=Zc_ufg4uW4U)
+
+2. [R for Data Science (2e)](https://r4ds.hadley.nz/data-tidy.html), specifically Chapter 5 on data tidying 
+
+2. [The Epidemiologist R Handbook](https://epirhandbook.com/en/index.html)
+
+3. [Coding togetheR](https://ab604.github.io/docs/coding-together-2019/index.html#who-is-coding-together-for)
+
+4. [Garrick Aden-Buie TidyExplain](https://www.garrickadenbuie.com/project/tidyexplain/)
+
+5. Wickham, H. . (2014). Tidy Data. Journal of Statistical Software, 59(10), 1–23. [https://doi.org/10.18637/jss.v059.i10](https://doi.org/10.18637/jss.v059.i10)
+:::

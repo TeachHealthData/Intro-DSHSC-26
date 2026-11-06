@@ -1,0 +1,232 @@
+---
+title: "Week 1"
+subtitle: "Introduction to Data Science in Health and Social Care HEIN11037"
+author: Dr Brittany Blankinship
+format:
+  revealjs: 
+    theme: dracula
+    slide-number: c/t
+    incremental: true
+    transition: slide
+    transition-speed: slow
+    embed-resources: true 
+    logo: images/logo.png
+    footer: "[Course GitHub Repo](https://github.com/TeachHealthData/Intro-DSHSC-26)"
+    title-slide-attributes:
+     data-background-image: images/NewCollege.jpg
+     data-background-size: contain
+     data-background-opacity: "0.4"
+---
+
+## Audio Check {background-image="images/audio_check.png" background-size="contain"}
+
+## Asking Questions {background-image="images/questions.png" background-size="contain"}
+
+## Recording {background-image="images/recording.png" background-size="contain"}
+
+# Week 1 Tutorial 
+
+Introduction to Data Science in Health and Social Care HEIN11037
+
+## Agenda 
+::::: {.columns}
+::: {.column width="50%"}
+* Check-in
+* Welcome & Introductions 
+* Overview of
+	* course structure 
+	* assessment 
+	* course GenAI policy 
+	* course on LEARN 
+:::
+
+::: {.column width="50%"}
+* Cohort events of interest
+* Q&A 
+:::
+:::::
+
+## How are you feeling today?
+
+On this animal scale 
+
+![](images/Week1_checkin.jpg){fig-align="center"}
+
+## Course Entry Survey 
+
+[Complete the course entry survey, if you have not already](https://forms.cloud.microsoft/e/sSWFW1Qb8R)
+
+➡️ Many thanks to those of you have already completed it! 
+
+## Join our program Spotify playlist 
+
+**Data DJs 2026/27 🎵🥁🎸🎺**
+
+[Click here to join and add some music](https://open.spotify.com/playlist/7Icj5rsBC6ckIhujF3pKNb?si=a00bf1af671b4a40&pt=9033200a2b2d5ecd4b9d355f9fa42bf2)
+
+# Welcome to the Introduction to Data Science in Health and Social Care Course! 
+
+## Programme and Course "House Rules" 🔦
+
+On this course as well as the Data Science and Health and Social Care Programme more widely, we follow TORCH as our house rules or general code of conduct between students and staff.
+
+## T.O.R.C.H. 🔦
+
+* **Transparency:** you are here to learn, and we are here to help. We all will do our best, and share what we understand and what we still struggle with
+* **Optimism:** Providing contributions that are positive and solutions-focussed
+* **Respect:** Promoting a culture of tolerance and inclusivity
+* **Courage:** Be prepared to try new things and challenge yourself and others
+* **Humility:** Learning with and respecting other and their diverse views
+
+# Course Team 
+
+## Course Lead
+* Dr Brittany Blankinship
+![](images/team/Brittany Blankinship.jpeg){.absolute top=50 right=0 width=200}
+
+### Course Tutors
+* Ziska McManus 
+![](images/team/FranziskaMcManus.jpg){.absolute left=450 top=200 width=150}
+
+* Dr Richard Schmoetten 
+![](images/team/Richard Schmoetten.jpeg){.absolute right=250 top=200 width=170}
+
+### Programme & Course Administrator 
+* Adele Willoughby 
+![](images/team/Adele Willoughby.png){.absolute left=500 bottom=30 width=180}
+
+## Course Contributors 
+* John Wilson 
+![](images/team/John Wilson.jpg){.absolute top=100 right=100 width=200}
+
+* Dr Kasia Banas
+* Dr Chris Oldnall
+* Dr Holly Tibble
+
+## Now to you! 
+Share a bit about yourself: 
+
+* Where are you joining from in the world? 
+* A bit about your background 
+
+# Overview of Course Structure 
+
+## Weekly Content 
+* Released on Fridays 
+* Discussion boards 
+* Non-assessed quiz questions 
+& further optional readings + resources 
+
+## Live sessions & support 
+* Live tutorials (90 min) 
+	* **Mini-lecture** followed by a **workshop** including **additional content**, which expands on the materials from the week and give you hands-on practice/experience 
+* Drop-in sessions (60 min)
+	* Drop-in to **ask questions or discuss course content** 
+	* Each week we will have a prepared **theme/topic of discussion** related to the weekly content
+
+## Live sessions & support {transition="none"}
+* Live tutorials (90 min) 
+	* Wednesdays 10am or 6pm UK time (subject to change)
+* Drop-in sessions (60 min; TBD - fortnightly)
+* 1-1 office hours with a member of the teaching team (2 across the course)
+
+## Course Overview 
+::: {.nonincremental}
+::::: {.columns}
+::: {.column width="50%"}
+![](images/LiveSessionOverview.png)
+:::
+
+::: {.column width="50%"}
+See **course handbook** & course information on Learn for more details 
+:::
+:::::
+:::
+
+## Overview of assessments {.smaller}
+
+Two types of assessment:
+
+::::: {.columns}
+::: {.column width="50%"}
+1. **Formative** - check-ins, *no grade* attached but feedback provided 
+* Discussion Boards 
+* Weekly check your knowledge quizzes 
+* Dedicated formative Datathon discussion board
+:::
+
+::: {.column width="50"}
+2. **Summative** – formal assignment for a grade and feedback, what contributes to course mark
+* See next slide 
+* Datathon project presentation, report, and mini-weekly reports 
+:::
+:::::
+
+**BOTH** *formative* and *summative* assessment:
+
+* Assess learning 
+* Are used for feedback 
+* Are used for future planning and development 
+
+## Course summative assessments
+::: {.nonincremental}
+**Datathon Project**
+
+* Presentation (40%)
+* Project report (50%)
+
+**Mini-weekly reports**
+
+* 3 stars and a wish discussion boards (10%)
+::: 
+
+## Course AI Policy 
+
+* Generative AI is a **powerful tool when you have the expertise to critically engage with it**
+
+* Numerous accompanying ethical concerns and considerations, which cannot be ignored when using Gen AI tools 
+	* See *Learn Hub Pages Study ToolKit on Using Gen AI*
+
+## Course AI Policy {transition="none"}
+
+> "In introductory courses, **GAI code generation is actively harmful to student learning**, because students can generate code that meets specifications without understanding it" 
+>
+> – Cornell University, 2023 
+
+## Course AI Policy - Assessments {.smaller}
+
+* All submitted work (formative and summative assignments) must be **your own original work**
+* It is plagiarism and academic misconduct to pass off Gen AI-produced work as your own
+* If you use Gen AI you **must include an acknowledgement of use and where/how it was used** 
+	* This applies to both formative discussion boards and summative assignments 
+* All submitted work should be typed/written by you, your fingertips hitting the keys on your keyboard to produce your submission
+* **NEVER upload data** and have Gen AI produce an analysis – in this course or otherwise 
+
+## Overview of the course in LEARN 
+The learning platform or **V**irtual **L**earning **E**nvironment (VLE)
+
+📽️ See Navigating Course Learn Pages Video at the top of the course content page
+
+## Volunteer to be a Student Representative {.smaller}
+::: {.nonincremental}
+::::: {.columns}
+::: {.column width="50%"}
+![](images/PR_recruitment.jpg){width=400}
+:::
+::: {.column width="50%"}
+* Looking for 1-2 more volunteers to complete the representative team! 
+* Training is provided by EUSA (Edinburgh University Student Association) 
+* If you are interested, please let us know by emailing UsherTO.Admin@ed.ac.uk 
+:::
+:::::
+:::
+
+## ⏰ Elective session reminder ⏰
+
+Due 28 September 2026. Submit via course selector tool 
+
+![](images/course_selector_tool.png){fig-align="center" height=300}
+
+Any questions? 
+
+# Any questions?

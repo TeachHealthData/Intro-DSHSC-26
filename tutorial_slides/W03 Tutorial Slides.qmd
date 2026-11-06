@@ -1,0 +1,321 @@
+---
+title: "Week 3"
+subtitle: "Introduction to Data Science in Health and Social Care HEIN11037"
+author: Dr Brittany Blankinship
+format:
+  revealjs: 
+    theme: night
+    slide-number: c/t
+    incremental: true
+    transition: fade
+    embed-resources: true
+    logo: images/logo.png
+    footer: "[Course GitHub Repo](https://github.com/TeachHealthData/Intro-DSHSC-26)"
+    title-slide-attributes:
+     data-background-image: images/LibraryMeadows.jpg
+     data-background-opacity: "0.5"
+---
+
+## Week 3 - Pre-Tutorial Task
+
+:::: {.columns}
+::: {.column width=50%}
+
+Have you created an R Project before?
+
+ \
+
+If not, take a few minutes to review **Week 2 - Section 6.1  Getting started with R**.
+
+:::
+
+::: {.column width=50%}
+
+![](images/create-new-project.png){}
+
+:::
+::::
+
+
+## {#slide1-id data-menu-title="Audio check" background-image="images/audio_check.png" background-size="contain"}
+
+## {#slide2-id data-menu-title="Asking Questions" background-image="images/questions.png" background-size="contain"}
+
+## {#slide3-id data-menu-title="Recording" background-image="images/recording.png" background-size="contain"}
+
+# Week 3 Tutorial 
+
+Introduction to Data Science in Health and Social Care HEIN11037
+
+## Agenda 
+
+* Course updates
+* What is Quarto and why use it
+* Pair Programming Exercises
+* Resources for further study
+
+
+## How are you feeling today?
+
+On this animal scale 
+
+![](images/Week3_checkin.jpg){fig-align="center"}
+
+## Student Cohort Representative Team
+
+🤩 Burcu Çapraz Yavuz 
+
+🤩 Michaela Kapnias 
+
+🤩 Nathan Jjombwe
+
+🤩 Teboho Pelesa 
+
+Look out for a discussion board post on the course Learn pages from Burcu, Michaela, Nathan, and Teboho!  
+
+# Have you gone through Topics 6 and 7 from the Week 3 content yet? 
+
+## You might be thinking...
+
+> Okay, but why Quarto? Why should we use another tool to code in R? 
+
+## Why Quarto? {.smaller}
+
+::::: {.columns}
+::: {.column width="70%"}
+Combine your **code**, its **results**, and your **prose** into fully reproducible documents 
+
+* **unified ecosystem** allows you to create documents, books, websites, blogs, and presentations natively without any extension packages to additional tools 
+* **multi-language support** and **consistent syntax** across all supported programming languages (code written in the code blocks is what varies)
+
+:::
+
+::: {.column width="30%"}
+![](images/logo-quarto.png)
+:::
+
+::::: 
+
+
+## {#slide11-id data-menu-title="Why authoring tool"}
+
+A Quarto workflow is...
+
+::::: {.columns}
+::: {.column width="50%"}
+#### Less
+
+* Error-prone
+* Time consuming (once you get the hang of it)
+
+:::
+
+::: {.column width="50%"}
+#### More 
+
+* Dynamic 
+* Reproducible
+* Transparent 
+
+:::
+:::::
+
+![Artwork by Alison Horst](images/quarto-illustration-detail.png)
+
+## {#slide12-id data-menu-title="Why authoring tool continued"}
+
+The dynamic document holds code & narrative surrounding the data -- **an authoring framework for data science!**
+
+* Can be used to…
+  - Reproduce your analyses 
+  - Collaborate and share code with others 
+  - Communicate your findings with others (even those who do not understand code)
+
+## {#slide13-id data-menu-title="Why authoring tool continued still" transition="none"}
+
+::::: {.columns}
+::: {.column width="75%"}
+
+* Present analyses in **high quality** documents, reports, and presentations 
+* Support **dozens of output formats**, like HTMLs, PDFs, Word files, slideshows, and more
+* Documents are **fully reproducible** — you can update your document at any time by re-rendering the code blocks
+* Can use **multiple programming languages** including R, Python, and SQL
+
+:::
+
+:::{.column width="25%"}
+
+![](images/logo-quarto.png){.absolute top=150}
+
+:::
+:::::
+
+## Quarto as...
+
+::::: {.columns}
+::: {.column width="55%"}
+
+![Artwork by Alison Horst](images/quarto-illustration.png)
+
+:::
+
+::: {.column width="45%"}
+
+1. Literate Programming 
+2. A data product 
+3. A control document 
+4. A templating tool
+
+:::
+:::::
+
+# Ingredients in a Quarto recipe
+
+## (1) YAML = metadata 
+
+::::: {.columns}
+::: {.column width="55%"}
+
+* Save output options here 
+* Different syntax/language than the rest of the document - `key: value` pair syntax  
+* Watch out for your spaces!
+
+:::
+
+:::{.column width="45%"}
+
+![](images/YAML_ex1.png)
+
+![](images/YAML_ex2.png)
+
+:::
+:::::
+
+## (2) Text and (3) Code 
+
+* Text written following *Markdown*
+
+* Code blocks! 
+  - You can think of each block sort of like a mini-script file within the larger document
+
+![](images/together_at_last.png){fig-align="center"}
+
+## Markdown overview
+
+> A Markdown-formatted document should be publishable as-is, as plain text, without looking like it’s been marked up with tags or formatting instructions. – [John Gruber](https://daringfireball.net/projects/markdown/syntax#philosophy)
+
+See [Quarto Website](https://quarto.org/docs/authoring/markdown-basics.html) for more details/a reference on the markdown flavor used in Quarto (i.e., pandoc)
+
+## Code blocks
+
+::::: {.columns}
+::: {.column width="50%"}
+* 3 backticks to open and 3 to close to the code block
+* `{r}` specifies the language 
+
+::: 
+
+::: {.column width="50%"}
+![](images/codeblock-R.png)
+:::
+:::::
+
+## Code block options 
+
+* Specified in a special comment at the top of the block (`#|` called a "hashpipe")
+* Specify multiple options with multiple `#|` lines
+* Also follow YAML with `key: value` pairs 
+
+## Code block options  {transition="none"}
+
+::::: {.columns}
+::: {.column width="50%"}
+You can set **global block options** (default of how all code block behave) in the YAML with `execute`
+
+* You can (and should) use individual block options too 
+
+:::
+
+::: {.column width="50%"}
+![](images/execute_YAML.png)
+
+:::
+:::::
+
+## Code block options {transition="none" .smaller}
+
+| option       	| default 	| effect                                               	|
+|--------------	|---------	|------------------------------------------------------	|
+| `eval`       	| `true`  	| Whether to evaluate the code and include its results 	|
+| `echo`       	| `true`  	| Whether to display code along with its results       	|
+| `warning`    	| `true`  	| Whether to display warnings                          	|
+| `message`    	| `true`  	| Whether to display messages                          	|
+| `fig-width`  	| 7       	| Width in inches for plots created in the code block  	|
+| `fig-height` 	| 5       	| Height in inches for plots created in the code block 	| 
+
+[Reference page with the full list of options](https://quarto.org/docs/reference/cells/cells-knitr.html)
+
+## Block labels 
+
+| Good     	| Bad            	|
+|----------	|----------------	|
+| my-plot  	| my_plot        	|
+| myplot   	| my plot        	|
+| myplot1  	| anything else! 	|
+| myplot-1 	|                	|
+| MY-PLOT  	|                	|
+
+* *No duplicate* block labels! You will get an error
+* Automatic cross-reference code blocks that produce a figure or table with `fig-name` or `tbl-name`
+
+## Lets check our knowledge of the ingredients in our Quarto recipe
+
+## Quarto as a Postcard
+
+![Credit: Allison Hill https://www.apreshill.com/](images/quarto_postcard.png){fig-align="center"}
+
+# 💡💡 Top Tip! 💡💡
+
+Customise your RStudio interface to maximise joy potential in your learning journey 
+
+🎨 My preferred RStudio set-up and why I like to work that way 
+
+# Additional Resources 
+
+## Markdown 
+
+If you have not done so already, try following [this Markdown tutorial](https://commonmark.org/help/tutorial/). It takes about 10 minutes 
+
+## Quarto
+
+::: {.nonincremental}
+Everything you need to know (and lots more) on [quarto.org](quarto.org)
+
+  - ⚠️ leans *highly technical*, not ideal for first learning ⚠️ 
+  
+Instead, follow the course content and if you are looking for more try the open-source book [Quarto: A Practical Guide](https://quarto-tdg.org)
+:::
+
+# Let's practice! 
+
+## Pair Programming 
+
+* Structured group work 
+* 2 roles: **Driver** and **Navigator** 
+  1. **Driver** = active person typing, problem-solving, thinking out loud
+  2. **Navigator** = reflective person, looks out for bugs, offers advice 
+  
+![](images/C12_pair-programming-overview_keyboard_switch.png){fig-align="center"}
+
+## {#slide34-id data-menu-title="Pair Programming Visual" background-image="images/PP_graphic.png" background-size="contain"}
+
+
+## {#slide35-id data-menu-title="Pair Programming Visual Cont" background-image="images/PP_graphic2.png" background-size="contain"}
+
+## Coding Time 🚀
+1. Navigate to the **Tutorial/Live Session Material** on Learn
+2. Download the **Week 3 Tutorial Resources** (qmd file and image)
+3. Open the qmd file in an **R Project**
+
+
+

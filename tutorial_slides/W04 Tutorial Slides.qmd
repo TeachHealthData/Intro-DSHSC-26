@@ -1,0 +1,337 @@
+---
+title: "Week 4"
+subtitle: "Introduction to Data Science in Health and Social Care HEIN11037"
+author: Dr Brittany Blankinship
+format:
+  revealjs: 
+    theme: blood
+    slide-number: c/t
+    incremental: true
+    transition: convex
+    transition-speed: slow
+    embed-resources: true
+    logo: images/logo.png
+    footer: "[Course GitHub Repo](https://github.com/TeachHealthData/Intro-DSHSC-26)"
+    title-slide-attributes:
+     data-background-image: images/CaltonHill_View.jpg
+     data-background-opacity: "0.5"
+---
+
+## {#slide1-id data-menu-title="Audio check" background-image="images/audio_check.png" background-size="contain"}
+
+## {#slide2-id data-menu-title="Asking Questions" background-image="images/questions.png" background-size="contain"}
+
+## {#slide3-id data-menu-title="Recording" background-image="images/recording.png" background-size="contain"}
+
+# Week 4 Tutorial 
+
+Introduction to Data Science in Health and Social Care HEIN11037
+
+## Agenda 
+
+* Course updates
+* Datathon project assessments outline + Q&A
+* Data storytelling
+* More on R and Quarto 
+
+
+## How are you feeling today?
+
+On this animal scale 
+
+![](images/Week4_checkin.jpg){fig-align="center"}
+
+## Look out for messages from your Student Representatives 
+
+🤩 Burcu Çapraz Yavuz 
+
+🤩 Michaela Kapnias 
+
+🤩 Nathan Jjombwe
+
+🤩 Teboho Pelesa 
+
+## Cohort GitHub Repository 
+
+> Any suggestions for names? 
+
+This repo will follow your cohort throughout your studies on the program & be used in upcoming Git + GitHub content 
+
+`2026-intake` is a boring repo name 
+
+# Have you read the assessment handbook? 
+
+# Datathon Project 
+
+## Datathon components 
+
+2 assessed aspects 
+
+  1. Report (50% of overall mark)
+  2. Recorded presentation (40% of overall mark)
+
+## Datathon projects 
+
+Create a **data story** using OECD Health Data 
+
+* Entirely up to you to decide on your data story 
+  - Specific variables & covariates (dates, countries, demographics, etc.) are entirely up to you! 
+* You are invited to use other datasets, but must use some data from the [health care utilisation dataset](https://data-explorer.oecd.org/vis?df%5Bds%5D=DisseminateFinalDMZ&df%5Bid%5D=DSD_HEALTH_PROC%40DF_KEY_INDIC&df%5Bag%5D=OECD.ELS.HD&dq=.................&pd=,&to%5BTIME_PERIOD%5D=false&vw=ov)
+
+## Datathon projects {transition="none"}
+
+⚠️ Use of Generative AI tools **must be declared**
+
+* See Assessment Handbook Section 8 for details 
+* Declaration in submission coversheet does not count towards word count
+
+⚠️ Must use the unfiltered healthcare use dataset (RData file)
+
+* 610,881 data points/rows
+
+## Report 
+
+> Due: 14 December 2026, 2 pm GMT 
+
+1500 word Quarto report 
+
+⚖️ Evaulated on 4 aspects: 
+
+  1. Narrative and effective data storytelling (30%)
+  2. Critical thinking (30%)
+  3. Data wrangling and coding (20%)
+  4. Data visualisation (20%)
+
+## Report  {transition="none"}
+
+> Due: 14 December 2026, 2 pm GMT 
+
+* Be sure to show code chunks with default `echo: true` 
+* Code does not count towards the 1,500 word limit
+* Only need to show the code that you used to read in the data, wrangle it, and create your data visualisations 
+  - not all of the code you have written across the project   
+* 📬 Submit: HTML or PDF rendered file type, the QMD file, & completed submission declaration 
+
+## Recorded Presentation {.smaller}
+
+> Due: 4 January 2027, 2 pm GMT 
+
+* **5 minute** presentation with up to **8 content slides** (not including title slide)
+  - It is recorded, so you can practice and submit your best take! 
+* 2 key data visualisations 
+* Presentation made with Quarto slides (we will learn more how to do this in Week 7)
+* **Must select a new audience from your report and update your data story accordingly**
+  - As such, will submit a 300-word justification of the data visualisation used in your presentation 
+
+## Recorded Presentation {.smaller transition="none"}
+
+> Due: 4 January 2027, 2 pm GMT 
+
+::::: {.columns}
+::: {.column width="50%"}
+
+⚖️ Evaulated on 4 aspects:
+
+  1. Narrative and effective storytelling (30%)
+  2. Data visualisation (30%)
+  3. Professionalism and slides (10%)
+  4. Data visualization rationale (30%)
+  
+:::
+
+::: {.column width="50%"}
+
+📬 Submit: 
+
+  1. completed submisson declaration 
+  2. the video of your presentation
+  3. the slides HTML file
+  4. the code (.QMD file) used to produce the slides and visuals used in your presentation
+  5. PNGs of the visuals used in your report
+  6. 300-word justification presentation data visualisations 
+
+:::
+:::::
+
+## OECD Data Explorer Portal 
+
+::::: {.columns}
+::: {.column width="50%"}
+
+![OECD Data Explorer Tool: Themes](images/OECD Data Explorer.png)
+:::
+
+::: {.column width="50%"}
+
+For further guidance on how to access the data, on the Learn pages go to Assessment > Assessment Criteria and Submission Details. 
+
+* RData File provided with unfiltered Healthcare Use dataset that must be used in your assignments. 
+
+:::
+:::::
+
+## Formative Discussion Post 
+
+* **Available**: Next week on Monday (19 October 2026)
+  - Post by Week 9 to receive formative feedback 
+* **Topic**: Datathon project data and context 
+
+* Can view other posts after submitting yours – respond to your classmates! 
+* A member of the teaching team will give you feedback
+
+## Optional Datathon Peer Support Groups {footer=false}
+
+::::: {.columns}
+::: {.column width="50%"}
+
+Self-enrol group on Learn which will open a discussion board:
+
+* where students interested in the same theme within the data can work together and discuss their projects 
+
+:::
+
+::: {.column width="50%"}
+
+![9 themes/groupings of data](images/HealthcareUse_Themes.png)
+
+:::
+
+:::::
+
+# [Data Storytelling]{.r-fit-text}
+
+## {#slide21-id data-menu-title="2 Step Data Story Process" background-image="images/DataStory_Process.png" background-size="contain"}
+
+## {#slide22-id data-menu-title="2 Step Data Story Process Part 2" background-image="images/DataStory_Process2.png" background-size="contain"}
+
+## Data Storytelling 
+
+![](images/DataStorytelling_Venn.jpg){fig-align="center"}
+
+## Data Storytelling {transition="none"}
+
+![](images/DataStorytelling_Venn_W4.jpg){fig-align="center"}
+
+## {#slide25-id data-menu-title="Data Story vs Story with Data" background-image="images/DataStory_StorywithData.png" background-size="contain"}
+
+## 🥪 Data Story vs 🍕 Story with Data 
+
+* Datathon = 🥪 **data story – the foundation is data & data is revealing the story**
+* The narrative explains and contextualizes the data, making the findings accessible, understandable & engaging
+* Data stories are about inspiring change & clear, data-driven calls to action
+* You can read more about this distinction on [Brent Dykes effectivestorytelling blog](https://www.effectivedatastorytelling.com/post/data-stories-vs-stories-with-data-whats-the-difference)
+
+## {#slide26-id data-menu-title="Lydia Hooper's Data Story Framing" .smaller}
+
+::::: {.columns}
+::: {.column width="70%"}
+
+![](images/Hooper_DataStorytelling.jpeg){.lightbox}
+
+:::
+
+:::{.column width="30%"}
+
+You can read [Lydia Hooper’s blog here](https://venngage.com/blog/data-storytelling/). 
+
+Note that data storytelling and stories with data are used interchangeably in the blog post, but what is discussed is what we are calling data stories. 
+
+:::
+:::::
+
+## Things to consider *before* narrative and visualisations 
+
+* Who is your audience? 
+* What do you need your audience to know or do?
+* How will you communicate to your audience? (e.g., written report, presentation)
+* 🥪 Data drives the story. You are not looking for data to support a narrative you have already decided on 
+
+## Storyboarding can help! 
+
+* **Do not start with presentation software** when creating a data story 
+  - your presentation is a final product - not a work in progress 
+* **Storyboard** can be used to establish a structure & flow for your narrative
+  - a **visual outline** of the content you plan to develop 
+  - particularly useful when working in online &/or in teams  
+
+## Storyboarding {.nostretch}
+
+::::: {.columns}
+::: {.column width="50%"}
+
+* Whiteboard 
+* Post-it notes 
+* Software such as Padlet or Trello
+
+:::
+
+::: {.column width="50%"}
+:::{.r-stack}
+
+![](images/storyboard1.png){.fragment .fade-up width="550" height="450"}
+
+![](images/storyboard2.jpg){.fragment .fade-up}
+
+:::
+:::
+::::: 
+
+## {#slide31-id data-menu-title="Example of student storyboard" background-image="images/Ex_storyboard.png" footer="false"}
+
+## Storytelling techniques {.smaller}
+
+::::: {.columns}
+::: {.column width="50%"}
+
+1. **Lead statement**
+
+* Complete sentence 
+* Conveys the problem and articulates key insight
+
+:::
+
+::: {.column width="50%"}
+
+2. **Elevator pitch**
+
+* Short statements encapsulating your data story which captures your audience’s attention and sparks interest 
+* 5 steps 
+  - Understand your objective 
+  - Understand your audience 
+  - Outline the problem 
+  - Outline the solution 
+  - Call to action   
+
+:::
+:::::
+
+## 🗝️ Key features of a good pitch: 
+
+* Credible (no overblown claims) 
+* Customised to your audience 
+  - you’ll rarely give a pitch to the same audience twice 
+* Conversational for non-expert audience (avoid jargon) 
+* Clear 
+* Concise 
+ 
+## 💡💡 Pitch top tips 💡💡
+
+* Content, structure, delivery: all **equally** important 
+* Attention-grabbing start and solid conclusion 
+* Audience – language 
+* Have some notes, but don’t read from a script 
+* Thinking pauses. You need to breathe. The audience needs to think about what you are saying (we speak 135-150 words/minute at a natural pace). 
+* Use your own voice. Helps with credibility 
+
+
+# Any questions? 
+
+## Coding Time 🚀 
+
+::: {.nonincremental}
+
+1. Navigate to the **Tutorial/Live Session Material** on Learn
+2. Download the **Week 4 Tutorial Resources** (.qmd file and image)
+3. Open the qmd file in an **R Project**
+
+:::

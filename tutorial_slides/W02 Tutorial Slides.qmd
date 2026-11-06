@@ -1,0 +1,347 @@
+---
+title: "Week 2"
+subtitle: "Introduction to Data Science in Health and Social Care HEIN11037"
+author: Dr Brittany Blankinship
+format:
+  revealjs: 
+    theme: simple
+    slide-number: c
+    embed-resources: true 
+    logo: images/logo.png
+    footer: "[Course GitHub Repo](https://github.com/TeachHealthData/Intro-DSHSC-26)"
+    title-slide-attributes:
+     data-background-image: images/UsherBuilding2.jpg
+     data-background-opacity: "0.5"
+---
+
+## Audio Check {background-image="images/audio_check.png" background-size="contain"}
+
+## Asking Questions {background-image="images/questions.png" background-size="contain"}
+
+## Recording {background-image="images/recording.png" background-size="contain"}
+
+# Week 2 Tutorial 
+
+Introduction to Data Science in Health and Social Care HEIN11037
+
+## Agenda 
+
+::::: {.columns}
+::: {.column width="50%"}
+
+* Course updates
+* Data Science process
+* Introducing R 
+
+:::
+
+::: {.column width="50%"}
+
+* Example data flow presentation using health data
+* Tips for starting out with R
+* How to search for help online
+
+:::
+:::::
+
+## How are you feeling today?
+
+On this animal scale 
+
+![](images/Week2_checkin.jpg){fig-align="center"}
+
+## Health and Data Science Hub 
+
+Have you been able to access the **induction space** on Learn? 
+
+![](images/DSHub.png){fig-align="center" height=50%}
+
+## 3 Stars and a Wish ⭐⭐⭐🚀
+
+* Post your 3 stars and 1 wish at the end of each week to get points 
+* 10% of your final grade. 10 posts across 10 weeks 
+* All 10 are due at the end of the course on 7 December 2026 2pm GMT
+* Replying to your peers is encouraged, but you will only get the points when you post your own reflections from the week 
+
+## Drop-in this week 
+
+> Friday, 2 October 10am BST 
+
+Drop in to...
+
+::: {.incremental}
+
+* Discuss the course content so far 
+* Learn from the questions your peers ask 
+* Chat with the teaching team 
+* Troubleshoot anything related to R
+* Work through the course content with the teaching team on hand to answer any questions 
+
+:::
+
+## General feedback from last week 
+
+**Discussion Boards**
+
+::: {.incremental}
+
+* In-line references are good (and better than references just collected at the end), but it's often even better if some concrete piece of referenced information is reproduced in the text. 
+* This is what demonstrates *critical engagement* with the referenced sources 
+
+:::
+
+# The Data Science Process 
+
+##  A simplified way of thinking about the data science process: 
+
+![Figure by Florian Huber, 2026](images/fig_asemic_data_science_workflow.png){fig-align="center"}
+
+## Another condensed way of thinking about the data science process 
+
+![](images/Condense_DSProcess.png){fig-align="center"}
+
+## ASEMIC Data Science Process 
+
+Captures the essence of a typical data science project. Crucially, while presented linearly, **real-world data science is an iterative, cyclical process** 
+
+![Figure by Florian Huber, 2026](images/fig_asemic_data_science_workflow.png){fig-align="center"}
+
+## Data Science Workflow {.smaller}
+
+The data science process consists of a wide variety of **different phases or steps**, which ultimately also leads to the wide **variety of techniques and tools** that need to be used throughout such a process.
+
+* different skills and expertise are required for different phases of a typical data science project
+
+![Figure by Florian Huber, 2026](images/fig_asemic_workflow_example.png){fig-align="center"}
+
+## Data Science is Science ⚖️ 🔍
+
+::: {.incremental}
+⚖️ You might be used to science looking like this:
+
+* theory > hypothesis > data 
+* This is **confirmatory analysis**, a **deductive** approach to knowledge 
+* Asks: "Is this specific hypotheses supported by the data?"
+
+:::
+
+## Data Science is Science ⚖️ 🔍 {transition="none"}
+
+When doing data science projects, we are often using data we did not collect where we do not have to context to be testing pre-defined hypothesis. 
+
+What do we do? 
+
+# Explore! 🔍
+
+## Exploratory Data Analysis 🔍
+
+Finds patterns and generates new hypotheses from data
+
+::: {.incremental}
+* data > patterns > theory
+* This is an **inductive** approach to knowledge that generates hypotheses and leads to open-ended discovery
+* Asks: "What does the data suggest?"
+
+:::
+
+## Successful exploratory analysis starts with **context**
+
+* *not* data visualisation or narrative, these come later 
+* in this course we are learning about and using *data storytelling* techniques
+
+![Image by Brent Dykes](images/DataStorytelling.jpg){width=50%}
+
+## Data storytelling: a brief introduction
+
+Begin with the context around the need to communicate 
+
+* understand the circumstances around each metric in a given data set 
+* transition from data discovery (**exploratory analysis**) to data communication (**explanatory analysis**)
+
+## After exploring the data, move to explanatory thinking {.smaller}
+
+::::: {.columns}
+::: {.column width="50%"}
+* Exploration = observing patterns 
+* Before finalising data visualisations & composing your narrative, you must consider 
+
+  1. Who is your audience?
+  2. Who do you need your audience to know or do? 
+  3. How will you communicate to your audience?
+  
+:::
+
+::: {.column width="50%"}
+![](images/DataStorytelling_Venn.jpg)
+:::
+:::::
+
+# Building your data scientist tool kit ⚒️ 🛠️
+
+# Have you downloaded R + RStudio, or are you using Noteable? 
+
+## Organisations Behind R
+::::: {.columns}
+::: {.incremental}
+::: {.column width="50%"}
+1. The R Project 
+
+2. The R Foundation 
+
+3. Comprehensive R Archive Network (CRAN)
+
+4. Posit (rebranded from RStudio in November 2022)
+:::
+:::
+
+::: {.column width="50%"}
+![](images/org-behind-R.png){fig-align="center"}
+:::
+::::: 
+
+## {#slide23-id data-menu-title="R Pros and Cons" footer="false"}
+
+::: {.incremental}
+::::: {.columns}
+::: {.column width="50%"}
+### **Advantages**
+
+* Open Source Software 
+  - Free!!
+* New methods implemented faster 
+* More flexible/customizable 
+* Anyone can contribute 
+  - Do not have to work at R to contribute to R 
+  
+:::
+
+::: {.column width="50%" .smaller}
+### **Disadvantages**
+
+* No centralised support
+* Many find it harder to learn - but that is why we are here! 
+* Less consistency across procedures - other software you rely on the programmers
+* …Anyone can contribute (some packages are better than others)
+
+:::
+::::: 
+:::
+
+## Further (selected) reasons why R! {.smaller}
+
+::: {.incremental}
+::::: {.columns}
+::: {.column width="50%"}
+* High quality and robust data visualisation 
+  - e.g., `{ggplot2}` — covered in depth in week 6 
+* Go-to language for statistics and data science; used in almost every industry 
+* Vast R community support 
+  - Stack Overflow 
+  - #Rstats on social media  
+  - etc. 
+
+:::
+
+:::{.column width="50%"}
+* The most comprehensive statistical analysis package, new technology & ideas open appear first in R 
+* The `{tidyverse}` ecosystem
+* You can do many things beyond data analysis/processing…maps, calendars, etc.! 
+* It can be very satisfying and fun once you get the hang of it!
+
+:::
+::::: 
+:::
+
+## Into the `{tidyverse}`!
+
+> Streamlined data wrangling and data visualisation 
+
+![](images/into_tidyverse.png){fig-align="center"}
+
+## Into the `{tidyverse}`! {transition="none"}
+
+::::: {.columns}
+:::{.column width="45%"}
+A formalised set of packages and tools that have a consistently structured programming interface 
+
+* as opposed to base R which is more complex/varied and less user friendly 
+:::
+
+:::{.column width="55%"}
+![](images/tidyverse_packages_decoded.png){fig-align="center"}
+:::
+:::::
+
+## R Syntax 
+
+There are 3 main types of syntax you might come across in R:
+
+1. base R (`$`) 
+2. tidyverse (`%>%`)
+3. formula (`~`) 
+
+![](images/syntax_columns.png){fig-align="center"}
+
+## {#slide28-id data-menu-title="R Syntax Cheatsheet"}
+
+::::: {.columns}
+:::{.column width="70%"}
+![](images/syntax_cheat_sheet_pic.png)
+:::
+
+:::{.column width="30%"}
+Credit to Amelia McNamara
+
+[Full cheat sheet here](https://rstudio.github.io/cheatsheets/syntax.pdf)
+
+- Last updated 2018, needs some updating but still useful 
+
+:::
+:::::
+
+# Bar chart demonstration in R using health care data 
+
+# Top Tips in starting your R journey 
+
+## 💡💡 Top Tips 💡💡 {.smaller}
+
+::: {.incremental}
+
+* **Add comments to your code** 
+  - Use a `#` at the beginning of a line or at the end of the line 
+* **Avoid dots and spaces in variable names** 
+  - Instead use capital letters or underscore
+* **Always load packages at the start**
+* **Make sure everything is spelled correctly!**
+  - And capitalisation is consistent when loading in data 
+* **Check Cheatsheets, especially when using a new package** 
+  - Top menu Help > Cheatsheets or https://posit.co/resources/cheatsheets/ 
+  
+:::
+
+## 💡💡 Top Tips 💡💡 {transition="none" .smaller}
+
+::: {.incremental}
+
+* **If you are unsure of what something does, type into the console a question mark followed by the function or package**
+  - `?function` 
+  - for common functions, check the [introverse package help files](https://sjspielman.github.io/introverse/articles/introverse_online.html) 
+  - reading documentation is a skill that takes time to develop
+* General introduction to R as a programming language: [**A Succinct Introduction to R**](https://r-guide.steveharoz.com/index.html)
+* **Practice makes perfect. Build familiarity with the system and don’t be afraid to make mistakes**
+* When it doubt, **Google it!** 
+
+:::
+
+## How to search for help effectively online?
+
+* When in doubt, copy and paste the error into Google 
+  - Include the package name or “in R” in your search. If using GenAI tools, make it explicit “in the tidyverse” 
+* Built-in R help function `?function` 
+* [StackOverflow](https://stackoverflow.com/questions/tagged/r) 
+* [Posit Community](https://forum.posit.co) 
+* Be willing and ready to adapt code to your context 
+* See document with more details 
+
+# Any questions? 
+
