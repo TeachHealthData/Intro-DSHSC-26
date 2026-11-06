@@ -1,0 +1,469 @@
+---
+title: "Data Storytelling with Data Visualisation"
+subtitle: "Intro DS HSC Week 6"
+format: 
+  html:
+    theme: united
+    toc-location: left
+    code-fold: show
+---
+
+```{r}
+#| label: load-packages 
+#| message: false
+
+# load required packages
+library(tidyverse)
+library(scales)
+
+# you may need to install the scales library if you have not done so already with install.packages("scales")
+
+# you may also need to install the here package, used on line 57, with install.packages("here")
+```
+
+
+## Introduction
+
+This worksheet will explore data story telling with the assistance of data visualisation and `{ggplot2}`. What you choose to highlight to the reader in data storytelling and data visualisation is subjective and there is freedom in how you present data.
+
+:::{.callout-tip title="💡" icon=false}
+Your task begins on line 380. This QMD document will not knit until you edit this code chunk. 
+:::
+
+Below are some tools you can use to highlight different aspects of the data. Run each code chunk to see the code in action. There is no need for you to use all the tools available, pick one or two that are most relevant for your storytelling.
+
+In this worksheet, we will review storytelling with data visualisation using: 
+
+* color 
+* vertical lines 
+* horizontal lines 
+* other lines 
+* annotation 
+* labels and titles
+
+
+## Our Data
+
+We are using the `gbd_data` (Global Burden of Disease) data set which we have see in content across the course, as well as in the Wrangling and Summarising Practice Document from this week's content. For this activity though, we will be using a larger version of the data with more variables and observations in finer detail, so be sure to download the file from the tutorials folder on Learn.
+
+Run the code in the load-wrangle-data code chunk to create the wrangled `gbd_df` data frame. Remember, in order for the code to work on your device, you will need to have the file `gbd_data_plot.csv` in your working directory. I have my data in a folder called data, if you do not, remove the `data/` in the file path.
+
+The code below is quite advanced, but see if you can understand what is happening, using the comments to help guide you. Copy the code into another code chunk and play around with it to see if it works as you expect. 
+
+``` {r}
+#| label: load-wrangle-data 
+
+# define gbd_df and read in data
+gbd_df <- read_csv(here::here("data/gbd_data_plot.csv")) |>
+  # create decade variable from year variable 
+  mutate(decade = paste0(floor(year/10)*10, "'s"),
+  # round deaths, prevalence, incidence rates to 2 decimal places 
+  ## using across and tidy select helper ends_with
+         across(ends_with("_100k"), \(num) round(num, 2)),
+  # make all character variables into factors 
+  ## using across and tidy select helper where 
+         across(where(is.character), as.factor),
+  # recode/rename factor levels of cause to be shorter for visualisation
+         cause_plot = fct_recode(cause, 
+                                 "Communicable diseases" = "Communicable, maternal, neonatal, and nutritional diseases"),
+  # reorder location to be in order from highest to lowest for plotting
+         location_plot = fct_relevel(location, 
+                                     c("High SDI", 
+                                       "High-middle SDI", 
+                                       "Middle SDI", 
+                                       "Low-middle SDI", 
+                                       "Low SDI"))) |> 
+  # remove aggregate level from age variable 
+  filter(age != "Age-standardized")
+
+```
+
+The tibble should read in as having 5400 observations (rows) and 11 variables (columns). Note that if you wish to use the age standardized variable, in your task, you will need to edit the code above in load-wrangle-data to remove the filter statement. 
+
+```{r}
+#| label: check-data 
+
+glimpse(gbd_df)
+
+# summary is useful as we have all the correct datatypes for our columns from the load-wrangle-data code chunk 
+summary(gbd_df)
+
+skimr::skim(gbd_df)
+```
+
+The data frame contains many types of variables, categorical (discrete) and continuous. See the Data Dictionary file under tutorial materials to see the data dictionary. 
+
+
+## A quick note on formatting numbers 
+
+The data set we are working with has variables per 100,000 and quite large numbers, `{ggplot2}` will default to using scientific notation to save space. Even if scientific notation is not shown, it can be useful to add commas for a large number to make reading the axis easier (e.g., 20000 vs 20,000). You can change the scale with which the axes numbers are presented using `scale_y_continuous` or `scale_x_continuous` to change the scale in which the continuous data is represented. We then use the labels argument and functions from the `{scales}` package such as `label_comma()`. 
+
+So for examples, to change the scale of the y axis and force decimal display of numbers instead of scientific notation, we would use `scale_y_continuous(labels = scales::label_comma())`
+
+
+## Color
+
+### `aes(color = ___)`
+
+We can color and highlight certain points in the data using the `color` aesthetic (`colour` also works) as in @fig-color. This can be a single variable like `cause` or a comparison like `year > 2004` as in @fig-color-2. 
+
+```{r}
+#| label: fig-color
+
+ggplot(gbd_df, aes(x = prevalence_rate_100k, 
+                   y = deaths_rate_100k, 
+                   color = cause_plot)) + 
+  geom_point()
+```
+
+```{r}
+#| label: fig-color-2
+
+ggplot(gbd_df, aes(x = prevalence_rate_100k, 
+                   y = deaths_rate_100k, 
+                   color = year > 2004)) + 
+  geom_point()
+```
+
+
+In bar charts, the color can be changed using the `fill` aesthetic, as in @fig-fill. The `color` aesthetic defines the outline while `fill` defines the color which with a geom is filled in. 
+
+
+### `aes(fill = ___)`
+
+``` {r}
+#| label: fig-fill
+
+ggplot(gbd_df, 
+       aes(x = age,
+           y = prevalence_rate_100k,
+           fill = age)) + 
+  geom_col() + 
+  # rerun the code and comment out the line below to see how the scales are changed on the y axis
+  ## Or you can highlight the code from line 137 to 141, but not including the + 
+  scale_y_continuous(labels = scales::label_comma())
+```
+
+:::{.callout-caution title="📝 Note" icon="false"}
+*Note* in this case, adding color in the form of fill does not add any value to our plot as the same information is shown on the x-axis. In general, when using color, it should be to add information to the plot, rather than repeat information. This is for illustration purposes only and is an example of **double encoding** mentioned in the tutorial. Here, it would be best to remove the legend if we wish to use color for double encoding as the same information is shown as on the x-axis.  
+:::
+
+More info on color and fill: 
+
+* [`{ggplot2}` Color, Fill, Alpha documentation](https://ggplot2.tidyverse.org/reference/aes_colour_fill_alpha.html)
+
+* [`{introverse}` Color and fill scale tutorial](https://sjspielman.github.io/introverse/articles/color_fill_scales.html)
+
+
+## Vertical Lines
+
+We can add a vertical line using the `geom_vline` geometry, specifying where you want the line to placed with the `xintercept` argument. See @fig-vline and @fig-vline-multi for examples. 
+
+### `+ geom_vline(xintercept = ___)`
+
+```{r}
+#| label: fig-vline
+
+ggplot(gbd_df, aes(x = prevalence_rate_100k, 
+                   y = deaths_rate_100k)) + 
+  geom_point() + 
+  geom_vline(xintercept = 50000)
+```
+
+You can place multiple lines using the `c()` function.
+
+```{r}
+#| label: fig-vline-multi
+
+ggplot(gbd_df, aes(x = prevalence_rate_100k, 
+                   y = deaths_rate_100k)) + 
+  geom_point() + 
+  geom_vline(xintercept = c(3500, 50000, 80000))
+```
+
+[More info on adding lines to ggplots](https://ggplot2.tidyverse.org/reference/geom_abline.html)
+
+
+## Horizontal Lines 
+
+We can add a horizontal line using the `geom_hline` geometry, specifying where you want the line to placed with the `yintercept` argument. See @fig-hline and @fig-hlin-multi for examples. 
+
+### `+ geom_hline(yintercept = ___)`
+
+```{r}
+#| label: fig-hline
+
+ggplot(gbd_df, aes(x = prevalence_rate_100k, 
+                   y = deaths_rate_100k)) + 
+  geom_point() + 
+  geom_hline(yintercept = 11000)
+```
+
+You can place multiple lines using the `c()` function.
+
+```{r}
+#| label: fig-hline-multi
+
+ggplot(gbd_df, aes(x = prevalence_rate_100k, 
+                   y = deaths_rate_100k)) + 
+  geom_point() + 
+  geom_hline(yintercept = c(4500, 11000, 18000))
+```
+
+
+[More info on adding lines to ggplots](https://ggplot2.tidyverse.org/reference/geom_abline.html)
+
+
+## Other lines
+
+We can add a line anywhere on the plot using the `geom_abline` aesthetic, which takes two arguments `intercept` and `slope`, as in @fig-abline.
+
+### `+ geom_abline(intercept = ___, slope = ___)`
+
+```{r}
+#| label: fig-abline 
+
+ggplot(gbd_df, aes(x = prevalence_rate_100k, 
+                   y = deaths_rate_100k)) + 
+  geom_point() + 
+  geom_abline(intercept = 100000, slope = -1)
+```
+
+We can accurately model this line to best fit the data using the `geom_smooth` geometry with a "linear model" `lm` (i.e., a straight line). See @fig-lm. 
+
+#### `+ geom_smooth(method = "lm", se = FALSE)`
+
+```{r}
+#| label: fig-lm
+
+ggplot(gbd_df, aes(x = prevalence_rate_100k, 
+                   y = deaths_rate_100k)) + 
+  geom_point() + 
+  geom_smooth(method = "lm", se = FALSE)
+
+```
+
+[More info on `geom_smooth()`](https://ggplot2.tidyverse.org/reference/geom_smooth.html)
+
+
+## Annotate
+
+We can annotate the plot using the `annotate` layer. We can add text and rectangles to highlight areas of interest. See @fig-annotate-text, @fig-annotate-rect, and @fig-annotate-rect-text for examples. 
+
+
+### `+ annotate("text", x = ___, y = ___, label = "___")`
+
+To add text to the plot, use the `text` option, then specify where you want the text to appear using the `x` and `y` arguments.
+
+```{r}
+#| label: fig-annotate-text 
+
+ggplot(gbd_df, aes(x = prevalence_rate_100k, 
+                   y = deaths_rate_100k)) + 
+  geom_point() +
+  annotate("text", 
+           x = 65000, 
+           y = 10000, 
+           label = "This is interesting")
+```
+
+
+### `+ annotate("rect", xmin = ___, xmax = ___, ymin = ___, ymax = ___)`
+
+To add a rectangle to the plot, use the `rect` option, then specify where you want the rectangle to appear using the `xmin`, `xmax`, `ymin` and `ymax` arguments.
+
+```{r}
+#| label: fig-annotate-rect 
+
+ggplot(gbd_df, aes(x = prevalence_rate_100k, 
+                   y = deaths_rate_100k)) + 
+  geom_point() +
+  annotate("rect", 
+           xmin = 65000,
+           xmax = 95000,
+           ymin = 3500,
+           ymax = 10000,
+           # alpha to modify the transparency
+           alpha = 0.5)
+```
+
+As with most things in ggplot, you can layer annotations as well.
+
+```{r}
+#| label: fig-annotate-rect-text
+
+ggplot(gbd_df, aes(x = prevalence_rate_100k, 
+                   y = deaths_rate_100k)) + 
+  geom_point() +
+  annotate("rect", 
+           xmin = 65000,
+           xmax = 95000,
+           ymin = 3500,
+           ymax = 10000,
+           # alpha to modify the transparency
+           alpha = 0.5) + 
+  annotate("text", 
+           x = 78000, 
+           y = 11000, 
+           label = "This is interesting")
+```
+
+[More info on ggplot annotation layers](https://ggplot2.tidyverse.org/reference/annotate.html)
+
+
+## Labels and Titles
+
+A simple strategy to move your data visualisation into a data storytelling domain is to use an **active title** or **headline**. Instead of being some generic description of the variables in the data, an active title is filled with valuable insights. This communicates what you want to say to your audience immediately. 
+
+The `labs()` function is the one-stop-shop for all labels in your plot (e.g., titles, subtitles, axis labels, captions, etc.). It is good practice to include the data source in the caption. See the documentation to view all of the possible arguments (`?labs()`). 
+
+When you have specified a color or fill in the `aes()`, you can change the legend label within labs using `color = "new name"` or `fill = "new name"`, as shown in @fig-labs. 
+
+```{r}
+#| label: fig-labs 
+
+ggplot(gbd_df, aes(x = prevalence_rate_100k, 
+                   y = deaths_rate_100k,
+                   color = cause_plot)) + 
+  geom_jitter() + 
+  facet_grid(~decade) + 
+  labs(title = "Non-communicable diseases remain an area of concern across time",
+       x = "Prevalence rate per 100k population",
+       y = "Death rate per 100k population",
+       color = "Cause of death",
+       caption = "Data source: Global Burden of Disease Collaborative Network")
+```
+
+Compare the plot above (@fig-labs) to one with a descriptive title and default axis and legend labels (@fig-labs-descriptive). Having a headline/active title and a well labelled plot makes a world of difference!  
+
+```{r}
+#| label: fig-labs-descriptive
+
+ggplot(gbd_df, aes(x = prevalence_rate_100k, 
+                   y = deaths_rate_100k,
+                   color = cause_plot)) + 
+  geom_jitter() + 
+  facet_grid(~decade) + 
+  labs(title = "Prevalence rate by death rate and cause")
+```
+
+[More info on ggplot labs](https://ggplot2.tidyverse.org/reference/labs.html)
+
+
+To further fine tune our plot, we can format the numbers with commas and move our legend to the top to allow for more plotting space to be used for the charts themselves. We can also change the default background theme. 
+
+To change the spacing between the facets, we can use the `panel.spacing` argument within the `theme()` function, as in @fig-lab-total. 
+
+```{r}
+#| label: fig-lab-total
+
+ggplot(gbd_df, 
+       aes(x = prevalence_rate_100k, 
+           y = deaths_rate_100k,
+           color = cause_plot)) + 
+  geom_jitter() + 
+  facet_grid(~decade) + 
+  scale_y_continuous(labels = scales::label_comma()) + 
+  scale_x_continuous(labels = scales::label_comma()) + 
+  labs(title = "Non-communicable diseases remain an area of concern across time",
+       x = "Prevalence rate per 100k population",
+       y = "Death rate per 100k population",
+       color = "Cause of death",
+       caption = "Data source: Global Burden of Disease Collaborative Network") + 
+  theme_minimal() +
+  theme(legend.position = "top", panel.spacing = unit(1, "lines"))
+```
+
+
+## Create your own datastorytelling data visualisation 
+
+Task:
+
+1. Choose one or two variables to plot (you can choose more if you like!)
+2. Pick an appropriate geometry for your plot. Explore [From Data to Viz](https://www.data-to-viz.com/) for some inspiration on appropriate geometries given your selected data (and data types)
+3. Think of a single line story, this will be your active title/subtitle
+4. Using annotations, lines, and color, highlight this story in your visualisation
+5. (Optional) Manipulate data using `mutate()` or `filter()` for even more customised visualisations
+6. Share your data storytelling data visualisation on the dedicated discussion board! 
+
+:::{.callout-tip title="💡 POP Method 💡" icon=false}
+Try and use the POP method discussed in the tutorial: 
+
+**P = Prioritize.** Establish which data point(s) are most important. 
+
+  * Add a headline/active title which is explanatory rather than descriptive 
+  
+**O = Overstate.** Use visual emphasis like color, size contrast, annotations, etc. 
+  
+  * Adjust color, thickness, sizes. Add labels or markers to highlight key points.
+
+**P = Point.** Guide the audience to the focus point of your chart
+
+  * Add annotations or graphical cues (e.g., arrows, lines, circles, boxes, etc.). 
+  
+:::
+
+```{r}
+#| label: data-frame-wrangling 
+
+# optional
+gbd_plot_df <- gbd_df |>
+  mutate(
+    # add new column here
+    
+  ) |> 
+  filter(
+    # filter rows of the data frame here 
+  )
+```
+
+```{r}
+#| label: fig-storytelling 
+
+ggplot(
+  gbd_df, # change the data to gbd_plot_df if you did some wrangling in the code chunk above 
+  aes(
+    x = ____, # choose variable for x axis
+    y = ____  # choose variable for y axis
+    # color = ____ # color plot using this variable
+    )) +
+  
+  # uncomment one of the following geometries to make a plot
+  # geom_point() + # scatter plot
+  # geom_line() + # line plot
+  # geom_histogram() + # histogram (for 1 variable)
+  # geom_boxplot() + # box plot
+  # geom_bar() + # bar chart - use geom col if you have 1 variable 
+  
+  # use highlights as necessary
+  # geom_hline(yintercept = ___) + # horizontal line
+  # geom_vline(xintercept = ___) + # vertical line
+  # geom_abline(intercept = ___, slope = ___) + # straight line
+  # annotate("text", 
+  #          x = ___, 
+  #          y = ___,
+  #          label = "show this text") + # annotation text
+  # annotate("rect", 
+  #          xmin = ___, 
+  #          xmax = ___, 
+  #          ymin = ___, 
+  #          ymax = ___,
+  #          alpha = 0.5) + # annotation rectangle
+
+  # add informative title, subtitle, and axis labels
+  labs(
+    title    = "___",
+    subtitle = "___",
+    x        = "change me, x axis",
+    y        = "change me, y axis",
+    # color = "____",
+    # it is good practice to include a caption with the data source as well 
+    caption = "Data source: Global Burden of Disease Collaborative Network"
+  ) + 
+  # change theme away from the gray grid - uncomment one of the following themes 
+  # theme_bw() # black and white 
+  # theme_minimal() # black and white with no exterior boundary lines 
+  # theme_classic() # no grid lines 
+  # theme_dark() # dark background, useful to make thin colored lined pop
+  
+```
