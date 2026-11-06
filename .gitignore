@@ -61,3 +61,4 @@ rsconnect/
 
 # Quarto artifacts
 *_files/
+*.html
