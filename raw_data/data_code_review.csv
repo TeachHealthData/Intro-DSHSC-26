@@ -1,0 +1,34 @@
+﻿country,year,month,rainfall,windy_days,sunny_days
+Aldovia,2010,June,11,16,16
+Buranda,2010,April,100,23,25
+Buranda,2011,April,55,19,10
+Durhan,2010,January,29,11,29
+Durhan,2010,June,46,16,11
+Durhan,2011,January,16,27,26
+Durhan,2011,June,45,0,4
+Durhan,2012,January,63,12,13
+Durhan,2012,June,39,1,26
+Equatorial Kundu,2012,January,46,0,7
+Equatorial Kundu,2012,February,11,26,13
+Equatorial Kundu,2012,March,13,2,13
+Equatorial Kundu,2012,April,10,11,1
+Equatorial Kundu,2012,May,85,1,20
+Equatorial Kundu,2012,June,53,3,12
+Equatorial Kundu,2012,July,84,26,14
+Genovia,2011,August,33,5,6
+Genovia,2011,September,53,27,4
+Genovia,2011,October,20,22,13
+Genovia,2011,November,30,20,2
+Krakozhia,2009,January,89,19,14
+Krakozhia,2009,February,78,12,18
+Krakozhia,2009,March,69,12,15
+Krakozhia,2009,April,46,23,18
+Krakozhia,2009,May,45,7,19
+San Escobar,2010,March,85,23,23
+San Escobar,2010,April,93,24,0
+San Escobar,2010,May,63,6,7
+San Escobar,2010,June,8,10,10
+San Escobar,2010,July,96,1,11
+San Escobar,2010,August,63,19,11
+San Escobar,2010,September,73,16,5
+"Vyseni, Republic of",2010,January,19,11,2

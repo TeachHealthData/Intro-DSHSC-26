@@ -1,0 +1,380 @@
+---
+title: "Week 7"
+subtitle: "Introduction to Data Science in Health and Social Care HEIN11037"
+author: Dr Brittany Blankinship
+format:
+  revealjs: 
+    theme: dracula
+    slide-number: c/t
+    incremental: true
+    transition: slide
+    transition-speed: slow
+    embed-resources: true
+    logo: images/logo.png
+    footer: "[Course GitHub Repo](https://github.com/TeachHealthData/Intro-DSHSC-26)"
+    title-slide-attributes:
+     data-background-image: images/BristoSquare.jpg
+     data-background-opacity: "0.4"
+---
+
+
+## {#slide1-id data-menu-title="Audio check" background-image="images/audio_check.png" background-size="contain"}
+
+## {#slide2-id data-menu-title="Asking Questions" background-image="images/questions.png" background-size="contain"}
+
+## {#slide3-id data-menu-title="Recording" background-image="images/recording.png" background-size="contain"}
+
+# Week 7 Tutorial 
+
+Introduction to Data Science in Health and Social Care HEIN11037
+
+## Agenda 
+
+* Datathon Reminders 
+* Good Coding Practice 
+* Code Review Pair Programming 
+
+## How are you feeling today?
+
+On this animal scale 
+
+![](images/Week7_checkin.jpg){fig-align="center"}
+
+
+# Datathon Reminders
+
+## OECD Data {.smaller}
+
+To get information on data sources, definitions, and other details: 
+
+* Select **Sources and Methods** from the overview page of the Healthcare utilisation data 
+
+See also the [glossary of statistical terms](https://www.oecd.org/en/publications/oecd-glossary-of-statistical-terms_9789264055087-en.html) 
+
+  * 600+ page document, use as a glossary/reference
+
+> Reminder: you must use 1 variable from the healthcare use dataset, all other data in your data story is up to you to decide on. Unfiltered healthcare use dataset needs to be wrangled in R code 
+
+## {#slide9-id data-menu-title="OECD Sources and Methods" background-image="images/OECD_SourcesMethods.png" background-size="contain"}
+
+## Formative Discussion Post 
+
+* **Available**: NOW
+  - Post by Week 9 to receive formative feedback 
+* **Topic**: Datathon project data and context 
+
+* Can view other posts after submitting yours – respond to your classmates! 
+* A member of the teaching team will give you feedback
+
+## Further Support Offered in the Course 
+
+* Optional peer support groups! 
+* Discussion boards 
+* Drop in sessions 
+* 1-1 appointments: 2 per student across the course 
+  - [Booking page here](https://bookings.cloud.microsoft/book/IDSHSC2026@uoe.onmicrosoft.com/?ismsaljsauthenabled)
+
+## Further Support Offered in the Course {transition="none"}
+
+* Examples of previous[^1] lead statements, report structures, and presentation now available!
+
+[^1]: Not using the same dataset for the Datathon. See Assessment Folder on Learn 
+
+## Optional Datathon Peer Support Groups {footer=false}
+
+::::: {.columns}
+::: {.column width="50%"}
+
+:::{.nonincremental}
+Self-enrol group on Learn which will open a discussion board:
+
+* where students interested in the same theme within the data can work together and discuss their projects 
+
+:::
+:::
+
+::: {.column width="50%"}
+
+![9 themes/groupings of data](images/HealthcareUse_Themes.png)
+
+:::
+
+:::::
+
+# Good Coding Practice 
+
+## Fundamentals of Good Coding 
+
+::::: {.columns}
+::: {.column width="50%"}
+
+* Commenting & process documentation 
+* Folder structure 
+* File names 
+* Accessibility & version control
+* Scripts with a logical structure 
+
+:::
+
+::: {.column width="50%"}
+
+![](images/GoodProgramming.png)
+
+:::
+
+:::::
+
+## {#slide17-id data-menu-title="ONS Repro-Stack 1"}
+
+![Founding principles of good analysis. Figure 1 from the UK Office of National Statistics Quality Assurance of Code for Analysis and Research](images/repro_stack.png)
+
+## {#slide18-id data-menu-title="ONS Repro-Stack 2"}
+
+::::: {.columns}
+::: {.column width="50%"}
+
+![Founding principles of good analysis. Figure 1 from the UK Office of National Statistics Quality Assurance of Code for Analysis and Research](images/repro_stack.png)
+
+:::
+
+::: {.column width="50%"}
+
+**Reproducible**
+
+* Publicly available code or data 
+* Runs without error
+* No random element without seed 
+* Portable (machines and versions) 
+
+
+:::
+
+:::::
+
+## {#slide19-id data-menu-title="ONS Repro-Stack 3" .smaller}
+
+::::: {.columns}
+::: {.column width="50%"}
+
+![Founding principles of good analysis. Figure 1 from the UK Office of National Statistics Quality Assurance of Code for Analysis and Research](images/repro_stack.png)
+
+:::
+
+::: {.column width="50%"}
+
+**Auditable**
+
+* Owner named, with contact details 
+* Evidence-based (cited) decisions 
+
+:::{.nonincremental}
+**Reproducible**
+
+* Publicly available code or data 
+* Runs without error
+* No random element without seed 
+* Portable (machines and versions) 
+
+:::
+:::
+
+:::::
+
+## {#slide20-id data-menu-title="ONS Repro-Stack 4" .smaller}
+
+::::: {.columns}
+::: {.column width="50%"}
+
+![Founding principles of good analysis. Figure 1 from the UK Office of National Statistics Quality Assurance of Code for Analysis and Research](images/repro_stack.png)
+
+:::
+
+::: {.column width="50%"}
+:::{.nonincremental}
+**Assured**
+
+* Quality assured
+
+**Auditable**
+
+* Owner named, with contact details 
+* Evidence-based (cited) decisions 
+
+**Reproducible**
+
+* Publicly available code or data 
+* Runs without error
+* No random element without seed 
+* Portable (machines and versions) 
+
+:::
+:::
+
+:::::
+
+# Code Review Best Practices 
+
+## Approaches to Code Review 
+
+Method 1 
+
+* Total rewrite of code from initial protocol 
+* Paired review of differences 
+
+Method 2 
+
+* Antagonist review – try to create data that will break the code (important for code that will be used routinely)
+
+
+## {#slide22-id data-menu-title="Importance of testing" background-image="images/testing.jpg" background-size="contain" footer="false"}
+
+## Approaches to Code Review 
+
+:::{.nonincremental}
+Method 1 
+
+* Total rewrite of code from initial protocol 
+* paired review of differences 
+
+Method 2 
+
+* Antagonist review – try to create data that will break the code (important for code that will be used routinely)
+
+:::
+
+Method 3 
+
+* Review and comment on code 
+
+## Questions To Ask When Peer-Reviewing Code 
+
+::::: {.columns}
+::: {.column width="50%"}
+1. What does this code do?
+2. Does the code function as I expect it to?
+3. Does this code fulfill regulatory requirements?
+
+:::
+::: {.column width="50%"}
+4. How can this code be made more:
+  - understandable
+  - reliable
+  - future-proof
+  - efficient
+  - reusable
+
+:::
+:::::
+
+## Top Tip! ⏳
+
+Set a time or line-of-code limit per session, to prevent reviewing with tired eyes 
+
+## Code Indentation & Leaving Room For Your Code to Breathe 
+
+```{r}
+#| echo: true
+#| eval: false
+#| code-line-numbers: "|1-2|4-5|7-13"
+
+# NO indentation NO room to breathe 
+group_A<-data|>filter(group=="A")|>select(name,height,weight,age)
+
+# NO indentation YES room to breathe 
+group_A <- data |> filter(group == "A") |> select(name, height, weight, age)
+
+# YES indentation YES room to breathe 
+group_A <- data |> 
+  filter(group == "A") |> 
+  select(name, 
+         height, 
+         weight, 
+         age)
+```
+
+## Overwriting Objects 
+
+When exploring and wrangling data, avoid overwriting (`data <- data |> `) the data object until you are certain your wrangling code works as expected 
+
+* write, execute, and check your code without assigning it into an object 
+* create intermediate objects (`data_grouped`, `data_filtered`, etc)
+* AND THEN you can safely overwrite your data object 
+
+## Clearing Objects from Your Workspace 
+
+```{r}
+#| echo: true
+x <- 1 
+y <- 2 
+z <- 3 
+
+# list objects in your environment 
+ls()
+```
+
+## Clearing Objects from Your Workspace {transition="none"}
+
+Remove individual objects from your environment with `rm()`
+
+```{r}
+#| echo: true 
+
+# here removing x and y only 
+rm(x, y)
+
+ls()
+```
+
+## Clearing Objects from Your Workspace {transition="none"}
+
+Clear your whole environment with the broom icon 🧹 or 
+
+```{r}
+#| echo: true
+
+# remove all objects in your environment 
+rm(list = ls())
+
+ls() # nothing left! Environment is empty 
+```
+
+## Practicing Identifying and Fixing Errors 
+
+::::: {.columns}
+::: {.column width="40%"}
+
+**Step 1:** Identify 
+
+**Step 2:** Explain 
+
+**Step 3:** Fix 
+
+:::
+
+::: {.column width="60%"}
+
+![](images/Hurdles.png)
+
+:::
+:::::
+
+# Any questions? 
+
+## Coding Time 🚀 - Code Review 
+
+::: {.nonincremental}
+
+1. Navigate to the **Tutorial/Live Session Material** on Learn
+2. Download the **Week 7 Tutorial Resources** (.qmd and .csv file)
+3. Open the qmd file in an **R Project**
+
+*or you can*  
+
+🏅🏅 Pull the most recent notes from the Course GitHub repository if you have cloned it 
+
+:::
+
+## References 
+
+UK Government Analytical Community. (2020). Quality assurance of code for analysis and research (version 2026.1). Office for National Statistics, Analytical Standards and Pipelines hub: [https://best-practice-and-impact.github.io/qa-of-code-guidance/](https://best-practice-and-impact.github.io/qa-of-code-guidance/)
+

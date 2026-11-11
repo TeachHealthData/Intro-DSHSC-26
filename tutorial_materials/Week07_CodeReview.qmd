@@ -1,0 +1,54 @@
+---
+title: "Code Review Task"
+subtitle: "Intro DS HSC Week 7"
+author: Dr Brittany Blankinship & Dr Holly Tibble 
+format: 
+  html:
+    theme: sandstone
+    toc-location: left
+    code-fold: show
+---
+
+
+## Your Task 
+
+Coding mistakes which result in errors are an inherent part of the role of a data scientist, and your work will always involve some element of trial and error. To help you develop those skills, as well as to highlight to you some particularly common mistakes, we have created a test data set and a short section of code.
+
+This code contains 17 errors, some more obvious that others. There are also a couple coding style issues which could be improved. Your task, should you choose to accept it, is to identify the errors, explain (in a comment) why the error occurs, and fix the error. You will notice that the code does not have any useful comments, so trying to understand what the original author was attempting to do is quite difficult. This is one of the many reasons why comments are good practice! 
+
+:::{.callout-caution title="📝 Note" icon="false"}
+**Note** this QMD document *will not* knit as the code review code is full of errors, which is exactly your task to fix! 
+:::
+
+## The data 
+
+```{r}
+#| label: load-packages 
+
+library(tidyverse)
+```
+
+We have a data set called `weather_df`, with rows for `months`, and columns for the `year` and `country`, and aggregated weather data: `rainfall` (in mm), `windy_days`, and `sunny_days`. 
+
+
+## The code to review 
+
+```{r}
+#| label: code-review
+
+weather_df<-read.csv(data_code_review.csv)
+
+weather_df<-weather_df|> 
+  # hint: here we are trying to change variable class 
+  summarise(country_fct=categorical(country),year_fct=categorical(year),month_fct=categorical(month,levels=month.name)
+
+Ggplot(weather_df,x=rainfall,y=month,color=year)+geom_scatterplot()+titles(title="Rainfall across the year per month",x="Rainfall (in meters)",y ="Month",fill="Year")theme_bw()
+            
+weather_df|>select(year,countryrainfall)|>
+  group_by(year)summarise(mean_rainfall==mean(rainfall))
+
+weather_df|>select(mean_rainfall)|>summary() 
+
+```
+
+
