@@ -1,0 +1,118 @@
+---
+title: "Code Review - SAMPLE COMPLETED DOCUMENT"
+subtitle: "Intro DS HSC Week 7"
+author: Dr Brittany Blankinship & Dr Holly Tibble 
+format: 
+  html:
+    theme: sandstone
+    toc-location: left
+    code-fold: show
+---
+
+
+## Your Task 
+
+Coding mistakes which result in errors are an inherent part of the role of a data scientist, and your work will always involve some element of trial and error. To help you develop those skills, as well as to highlight to you some particularly common mistakes, we have created a test data set and a short section of code.
+
+This code contains 17 errors, some more obvious that others. There are also a couple coding style issues which could be improved. Your task, should you choose to accept it, is to identify the errors, explain (in a comment) why the error occurs, and fix the error. You will notice that the code does not have any useful comments, so trying to understand what the original author was attempting to do is quite difficult. This is one of the many reasons why comments are good practice! 
+
+:::{.callout-caution title="📝 Note" icon="false"}
+**Note** this QMD document *will not* knit as the code review code is full of errors, which is exactly your task to fix! 
+:::
+
+## The data 
+
+```{r}
+#| label: load-packages 
+
+library(tidyverse)
+```
+
+We have a data set called `weather_weather_df`, with rows for `months`, and columns for the `year` and `country`, and aggregated weather data: `rainfall` (in mm), `windy_days`, and `sunny_days`. 
+
+
+## The code to review 
+
+```{r}
+#| label: code-review
+
+weather_df<-read.csv(data_code_review.csv)
+
+weather_df<-weather_weather_df|> 
+  # hint: here we are trying to change variable class 
+  summarise(country_fct=categorical(country),year_fct=categorical(year),month_fct=categorical(month,levels=month.name)
+
+Ggplot(weather_df,x=rainfall,y=month,color=year)+geom_scatterplot()+titles(title="Rainfall across the year per month",x="Rainfall (in meters)",y ="Month",fill="Year")theme_bw()
+            
+weather_df|>select(year,countryrainfall)|>
+  group_by(year)summarise(mean_rainfall==mean(rainfall))
+
+weather_df|>select(mean_rainfall)|>summary() 
+
+```
+
+## Sample Solution 
+
+In general, it is good practice to have spaces around operators for readability, like `<-` or `=` or commas so I have added them here - letting our code breathe! Also in terms of style it is good practice to indent for code readability (after `|>` or `+` in ggplot code, and after commas in a function with many arguments), which I have done throughout. 
+
+```{r}
+#| label: sample-solution 
+
+# (1) the read.csv is the base R function. We want read_csv so that our data is read in a tibble 
+# (2) additionally, the input of the file path and name to read_csv needs to be in quotation marks 
+# (2b) here I have also updated to be the correct file path for my computer (i.e, in a folder called raw_data)
+# (2c) to be extra reproducible, you can also use the {here} package to read in the data 
+weather_df <- read_csv(here::here("raw_data", "data_code_review.csv")) 
+
+# solution without here
+weather_df <- read_csv("raw_data/data_code_review.csv")
+
+weather_df <- weather_df |> 
+  # (3) summarise is not appropriate here, we want mutate as we are changing or mutating variables in our data frame 
+  # (4) categorical variables are called factors in R. the function to make a variable a factor is factor() or fct()
+  mutate(country_fct = factor(country),
+         year_fct = factor(year),
+         # (5) missing closing bracket on the line below
+         # other than that no error here! month.name is a built-in R variable you can use. There is also month.abb
+         month_fct = factor(month, levels = month.name))
+
+# (6) function is ggplot not Ggplot
+# (7) x, y, and color aesthetics need to be defined within the aes() function 
+# (8) also we want to use our new factor variables called month_fct and year_fct
+ggplot(weather_df, aes(x = rainfall, 
+                       y = month_fct, 
+                       color = year_fct)) + 
+  # (9) geom_scatterplot does not exist, you need either geom_point() or geom_jitter()
+  geom_point() + 
+  # (10) titles is not a function, rather to change the labels in the plot we use labs()
+  labs(title = "Rainfall across the year per month",
+       # (11) rainfall is measured in mm not meters 
+       x = "Rainfall (in mm)", 
+       y = "Month", 
+       # (12) we use color in our aes not fill so changing fill label does nothing 
+       color = "Year") + 
+  # (13) the plus sign was missing on the line above to include the theme change layer 
+  theme_bw()
+
+weather_df_sum <- weather_df |>  
+  # good practice to indent after every pipe in a tidy pipeline 
+  # (14) missing comma after country in the select function 
+  select(year, country, rainfall) |> 
+  # (15) missing pipe after group_by line
+  group_by(year) |> 
+  # (16) should be = not == within the summarise function. == is a logical operator (called the equality operator) for comparison 
+  summarise(mean_rainfall = mean(rainfall)) 
+
+## Another valid option would be to group within the summarise function instead of using group_by()
+### I am not saving this into an object its an example of another approach 
+weather_df |>  
+  select(year, country, rainfall) |> 
+  summarise(mean_rainfall = mean(rainfall), .by = year) 
+
+# (17) the code above does not assign the output, so there is currently no such variable called mean_rainfall in data. 
+# we need to assign the output to a data object and then call it here in order to get the summary of mean_rainfall 
+weather_df_sum |>  
+  select(mean_rainfall) |> 
+  summary() 
+
+```
