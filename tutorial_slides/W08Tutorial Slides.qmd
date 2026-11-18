@@ -1,0 +1,183 @@
+---
+title: "Week 8"
+subtitle: "Introduction to Data Science in Health and Social Care HEIN11037"
+author: Dr Brittany Blankinship
+format:
+  revealjs: 
+    theme: blood
+    slide-number: c/t
+    incremental: true
+    transition: convex
+    transition-speed: slow
+    embed-resources: true
+    logo: images/logo.png
+    footer: "[Course GitHub Repo](https://github.com/TeachHealthData/Intro-DSHSC-26)"
+    title-slide-attributes:
+     data-background-image: images/McEwanHallCastle.jpg
+     data-background-opacity: "0.5"
+---
+
+## {#slide1-id data-menu-title="Audio check" background-image="images/audio_check.png" background-size="contain"}
+
+## {#slide2-id data-menu-title="Asking Questions" background-image="images/questions.png" background-size="contain"}
+
+## {#slide3-id data-menu-title="Recording" background-image="images/recording.png" background-size="contain"}
+
+# Week 8 Tutorial 
+
+Introduction to Data Science in Health and Social Care HEIN11037
+
+## Agenda 
+
+* Course/assessment updates and reminders 
+* Tidy Tuesday challenge paired programming 
+
+## How are you feeling today?
+
+On this animal scale 
+
+![](images/Week8_checkin.jpg){fig-align="center"}
+
+## Course Assessments 
+
+* **Week 10 tutorial:** no new content, structured time to work on your Datathon project
+* **Last course drop-in:** 3 December 2026 3pm UK time 
+* **1-1 support:** 2 appointments across the course [(booking page)](https://bookings.cloud.microsoft/book/IDSHSC2026@uoe.onmicrosoft.com/?ismsaljsauthenabled)
+
+> All the information is in the Assessments folder on Learn! 
+
+## Report 
+
+> Due: 14 December 2026, 2 pm GMT 
+
+1500 word Quarto report 
+
+⚖️ Evaluated on 4 aspects: 
+
+  1. Narrative and effective data storytelling (30%)
+  2. Critical thinking (30%)
+  3. Data wrangling and coding (20%)
+  4. Data visualisation (20%)
+
+## Report  {transition="none"}
+
+> Due: 14 December 2026, 2 pm GMT 
+
+* Be sure to show code chunks with default `echo: true` 
+* Code does not count towards the 1,500 word limit
+* Only need to show the code that you used to read in the data, wrangle it, and create your data visualisations 
+  - not all of the code you have written across the project   
+* 📬 Submit: HTML or PDF rendered file type, the QMD file, & completed submission declaration 
+
+## Recorded Presentation {.smaller}
+
+> Due: 4 January 2027, 2 pm GMT 
+
+* **5 minute** presentation with up to **8 content slides** (not including title slide)
+  - It is recorded, so you can practice and submit your best take! 
+* 2 key data visualisations 
+* Presentation made with Quarto slides (we will learn more how to do this in Week 7)
+* **Must select a new audience from your report and update your data story accordingly**
+  - As such, will submit a 300-word justification of the data visualisation used in your presentation 
+
+## Recorded Presentation {.smaller transition="none"}
+
+> Due: 4 January 2027, 2 pm GMT 
+
+::::: {.columns}
+::: {.column width="50%"}
+
+⚖️ Evaulated on 4 aspects:
+
+  1. Narrative and effective storytelling (30%)
+  2. Data visualisation (30%)
+  3. Professionalism and slides (10%)
+  4. Data visualization rationale (30%)
+  
+:::
+
+::: {.column width="50%"}
+
+📬 Submit: 
+
+  1. completed submisson declaration 
+  2. the video of your presentation
+  3. the slides HTML file
+  4. the code (.QMD file) used to produce the slides and visuals used in your presentation
+  5. PNGs of the visuals used in your report
+  6. 300-word justification presentation data visualisations 
+
+:::
+:::::
+
+## 💡💡 Datathon Top Tips 💡💡
+
+* See the Assessments section on Learn for (to-do list, sample report structures, etc.) 
+
+* Look through Questions about the Assessment discussion board for an FAQ as well as answers to other students’ questions which you may also be wondering 
+* Read the assessment handbook for detailed guidance on expectations!
+
+* Clarity should be the goal over and above complexity 
+
+## 💡💡 Datathon Top Tips 💡💡 {transition="none"}
+
+* What you **need to demonstrate** 
+
+  - Data storytelling  
+  - Data wrangling: `{tidyverse}` 
+  - Making a plots: `{ggplot2}`
+  - Code quality 
+  - Critical thinking in updating your data story for the 2nd audience in the presentation 
+  
+## Presentation ≠ a research paper {.smaller}
+::::: {.columns}
+::: {.column width="50%"}
+🚫 (Research Paper)
+
+* Background 
+* Methodology 
+* Analysis 
+* Results 
+* Conclusions 
+
+> This structure hides the most important information until the end, when you will typically have lost the attention of your audience 
+  
+:::
+
+::: {.column width="50%"}
+✅ (Presentation)
+
+* Recommendation - what should we do?
+* Key insight – why should we do it?
+* Supporting evidence – how do we know?
+* Next steps – how do we start?
+
+> Start with what matters most (lead statement), everything else is supporting material. Conclusion is the beginning of your presentation! 
+
+:::
+:::::
+
+## Recorded Presentation Suggested Structure {.smaller}
+
+* **Introduction/elevator pitch:** Begin with a captivating opening statement to grab the audience’s attention. Why should they care? 
+* **Clearly define the problem or context** your data story addresses and explain its significance
+* Present your **essential insights or findings** related to your topic (2 key visualisations) 
+* Discuss **practical solutions, recommendations, or strategies** based on the data story and insights presented 
+* Summarise the main points of your presentation and leave the audience with a **clear call to action or thought-provoking closing statement** 
+
+# Questions 
+
+
+## Coding Time 🚀 - Code Review 
+
+::: {.nonincremental}
+
+1. Navigate to the **Tutorial/Live Session Material** on Learn
+2. Download the **Week 8 Tutorial Resources** (.qmd file)
+3. Open the qmd file in an **R Project**
+
+*or you can*  
+
+🏅🏅 Pull the most recent notes from the Course GitHub repository if you have cloned it 
+
+:::
