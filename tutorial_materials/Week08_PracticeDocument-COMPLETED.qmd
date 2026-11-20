@@ -1,0 +1,653 @@
+---
+title: "Week 8 Tutorial - SAMPLE COMPLETED DOCUMENT"
+subtitle: "Intro DSHSC course" 
+format: 
+  html:
+    theme: paper 
+---
+
+
+You will need to load the required libraries first: `{tidyverse}`, `{here}`, `{knitr}`, `{kableExtra}`, and optionally `{gt}` if you wish to make tables with that package. 
+
+```{r}
+#| label: load-packages
+#| message: false 
+
+library(tidyverse)
+library(here)
+library(knitr)
+library(kableExtra)
+library(gt) # only needed if you want to try and use gt tables instead of kable tables (discussed in the optional Topic 4 of this week's content)
+```
+
+## The Data: TBI 
+
+We will be using traumatic brain injury (TBI) data from a Tidy Tuesday challenge. You can learn more about [the challenge and the data here](https://github.com/rfordatascience/tidytuesday/blob/master/data/2020/2020-03-24/readme.md) (spend 3-5 minutes looking at the linked page). 
+
+:::{.callout-important}
+Be sure to read over the data dictionary to make sure you understand what variables are included in the data sets and what they measure. 
+:::
+
+In the following tasks we will work through a data storytelling data flow. Imagine that you are preparing a brief for the local health authority, and they have asked you to answer the following questions. For each question, write a chunk of code that would provide the answer in a clean and reproducible way, following good coding practices we learned about last week.
+
+Let's start by loading in the data, which is available online:
+
+```{r}
+#| label: load-data
+
+tbi_age_raw <- read_csv("https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2020/2020-03-24/tbi_age.csv")
+
+tbi_year_raw <- read_csv("https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2020/2020-03-24/tbi_year.csv")
+```
+
+Last week we learned that as part of good coding practice, your folder structure plays a key role. Now, set up the following folders in your working directory: raw_data, scripts, figures, and tables. Put this Quarto document in your scripts folder. 
+
+TODO 
+
+If you are working with Projects (which is recommended), be sure that these folders are accessible by your R Project. You can do this by (a) creating a new project or (b) creating your folder structure within an existing R Project space. 
+
+## Tasks
+
+### Task 1
+
+Save both data sets in the raw_data folder (use the `{here}` package). Particularly when using data for an analysis that is available online and continually updated, it is a good idea to save a version of the raw data that you used.
+
+
+:::{.callout-tip}
+## ❓ Hint 
+
+What function do you need to use in order to write or save data? 
+:::
+
+```{r}
+#| label: task-1
+
+# solutions using the here package 
+write_csv(tbi_age_raw, file = here("raw_data", "tbi_age_raw.csv"))
+write_csv(tbi_year_raw, file = here("raw_data", "tbi_year_raw.csv"))
+
+# solution without the here package 
+write_csv(tbi_age_raw, file = "raw_data/tbi_age_raw.csv")
+write_csv(tbi_year_raw, file = "raw_data/tbi_year_raw.csv") 
+
+```
+
+Using the `{here}` package in the code makes it reproducible to anyone who has the same working directory folder set up, regardless of what type of computer they have! 
+
+### Task 2.1
+
+Use your favourite functions for eyeballing data and write a couple of sentences about each data set (its dimensions, the variables inside, types of data, etc.)
+
+```{r}
+#| label: task-2-1
+
+## tbi-age-raw data eyeballing 
+View(tbi_age_raw) # the same as clicking the data object in your global environment 
+
+glimpse(tbi_age_raw)
+summary(tbi_age_raw)
+str(tbi_age_raw)
+skimr::skim(tbi_age_raw)
+
+## tbi_year_raw data eyeballing 
+View(tbi_year_raw) # the same as clicking the data object in your global environment 
+
+glimpse(tbi_year_raw)
+summary(tbi_year_raw)
+str(tbi_year_raw)
+skimr::skim(tbi_year_raw)
+```
+
+➡️ **Answer**: The `tbi_age_raw` data set has 231 rows and 5 columns. It includes 5 variables: age group, type of outcome, injury mechanism, estimated number of injuries in total, and estimated rate per 100000 population. Estimated number and rate are numeric, type of outcome and injury mechanism, are categorical nominal variables stored as character strings, and age is a categorical ordinal variable, also stored as a string/character variable.
+
+The `tbi_year_raw` data set 216 rows and 5 columns. It includes 5 variables: injury mechanism, type of outcome, year, estimated number of injuries in total, and estimated rate per 100000 population. Year, estimated number and rate are numeric, type of outcome and injury mechanism, are categorical nominal variables stored as character strings.
+
+
+### Task 2.2
+
+Are there any variables in the 2 datasets that should be treated as factors? Decide which ones, and turn them into factors. 
+
+Once you've done that, think about the order of factor levels. Do they need to be changed? If so, change them.
+
+➡️ **Answer**: Based on results of Task 2.1 we know which variables we may want to change into factors. But to know if they need to be ordered, we need to check the variables of interest a bit more closely, which is where functions like `unique()` can help us!
+
+For each data frame, lets start by checking the distinct levels of our variables of interest and then we can change their data type and reorder the factor levels if needed.
+
+```{r}
+#| label: task-2-2-age-check
+
+tbi_age_raw |> 
+  select(type) |> 
+  unique() 
+# no need to reorder, nominal categorical variable
+
+tbi_age_raw |> 
+  select(injury_mechanism) |> 
+  unique() 
+# no need to reorder, nominal categorical variable
+
+tbi_age_raw |> 
+  select(age_group) |> 
+  unique() 
+# need to reorder to be aggregates at the end, namely 0-17 and total 
+```
+
+Now we can make our changes to the dataframe
+
+```{r}
+#| label: task-2-2-age-change 
+
+## Approach 1
+tbi_age <- tbi_age_raw |> 
+  # we could use factor or fct for type and injury_mechanism
+  mutate(type = fct(type),
+         injury_mechanism = fct(injury_mechanism),
+         # move aggregate levels to the end 
+         # here must use factor() not fct() to specify they levels 
+         age_group = factor(age_group, 
+                            levels = c("0-4", "5-14",
+                                       "15-24", "25-34", "35-44",
+                                       "45-54", "55-64", "65-74",
+                                       "75+", "0-17", "Total")))
+
+## Approach 2 - more advanced 
+# here I have not have the output into an object, but this does the same as Approach 1 above 
+tbi_age_raw |> 
+  # use tidyselect helpers and the fact that all the character columns in tbi_age_raw should be factors to our advantage
+  # across() (to apply the function across multiple columns) and where() (which is a tidy selection helper function)
+  mutate(across(where(is.character), fct),
+         # now address age_group levels using forcats::fct_relevel
+         # moving 0-17 to be after 75+ which is index position 9
+         age_group = fct_relevel(age_group, "0-17", after = 9))
+
+# now that we have the correct data types, the summary function is more useful
+tbi_age |> 
+  summary(maxsum = 20) # maxsum changes the max number of levels shown in the output 
+
+# we can also check that our reorder of age group has worked with the levels function
+tbi_age |> 
+  pull(age_group) |> 
+  levels() # success! 
+```
+
+And now for the `tbi_year_raw` data
+
+```{r}
+#| label: task-2-2-year-check
+
+tbi_year_raw |> 
+  select(injury_mechanism) |> 
+  unique()
+# no need to reorder, nominal categorical variable. Same as tbi_age_raw 
+
+tbi_year_raw |> 
+  select(type) |> 
+  unique() 
+# no need to reorder, nominal categorical variable. Same as tbi_age_raw 
+
+tbi_year_raw |> 
+  select(year) |> 
+  unique() 
+# currently a dbl but might be nice to have a factor version 
+```
+
+No reordering of factor levels needed here. 
+
+```{r}
+#| label: task-2-2-age-change 
+
+tbi_year <- tbi_year_raw |> 
+  mutate(injury_mechanism = fct(injury_mechanism),
+         type = fct(type),
+         # we may want year as a factor, but it could also be useful as a numeric variable so lets create a new factor year variable instead of overwriting it
+         year_f = factor(year))
+
+
+tbi_year |> 
+  summary(maxsum = 15) # succes! 
+
+tbi_year |> 
+  pull(year_f) |> 
+  levels() # all good 
+```
+
+
+### Task 3
+
+Which injury mechanism caused the most deaths in total, across all age groups?
+
+➡️ **Answer**: To answer this question we first need to think about what the outcome would look like. We could do a plot, but to answer the question all we really need is the row with the highest number of deaths according to the conditions specified. 
+
+The next step is to identify the data we need based on the question. Because the question is across age groups, we need to use the `tbi_age` dataframe. 
+
+```{r}
+#| label: task-3
+
+tbi_age |> 
+  filter(age_group == "Total" & type == "Deaths") |> 
+  # arrange in descending order
+  arrange(desc(number_est)) |> 
+  # show only the first row (highest number since we arranged the data in the line above)
+  head(n = 1) 
+
+```
+
+What if you wanted to know the injury mechanism with the most caused deaths *by* age group? 
+
+```{r}
+#| label: task-3-by-age
+
+tbi_age |> 
+  filter(type == "Deaths") |> 
+  group_by(age_group) |> 
+  arrange(desc(number_est), .by_group = TRUE) #.by_group argument within arrange orders the output by the grouping variable(s) set in group_by()
+
+## Another approach would be to use the .by argument in filter to tidy things up
+tbi_age |> 
+  filter(type == "Deaths", .by = age_group) |> 
+  arrange(desc(number_est), .by_group = TRUE)
+```
+
+
+### Task 4
+
+Looking just at the totals across age groups, what is the number of ED visits, hospitalisations and deaths associated with each injury mechanism? Present the results as a table. Save this table in your tables folder.
+
+:::{.callout-caution title="📝 Note" icon="false"}
+Reminder, a great resource for all of the different options around formatting with `{kable}` tables and `{kableExtra}` can be [found here](https://cran.r-project.org/web/packages/kableExtra/vignettes/awesome_table_in_html.html#Table_Styles). I reference it pretty much every time I go to make a table with this package! 
+:::
+
+:::{.callout-tip}
+## ❓ Which package for creating tables?
+If you have gone through the optional content this week and would like to use `{gt}` to make the table, feel free! The solutions document will include both `{kable}` and `{gt}` table answers. 
+:::
+
+➡️ **Answer**: There are a few approaches that could be taken to answer this question, I have outlined 2 below: 
+
+**Option 1** A good approach here is to pivot the table, so we get each injury type as a row, and each outcome as a column:
+
+```{r}
+#| label: task-4-approach-1-kable
+#| message: false
+
+# First lets check out data wrangling works as we expect
+tbi_age |> 
+  filter(age_group == "Total") |> 
+  select(-rate_est, -age_group) |> 
+  pivot_wider(names_from = "type", 
+              values_from = "number_est")
+
+# Now we can format this into a nice table 
+
+total_injuries_table <- tbi_age |> 
+  filter(age_group == "Total") |> 
+  select(-rate_est, -age_group) |> 
+  pivot_wider(names_from = "type", 
+              values_from = "number_est") |>
+  kbl(col.names = c("Injury Mechanism",
+                      "Emergency Department Visit", 
+                      "Hospitalizations", 
+                      "Deaths"),
+      caption = "TBI: Injury Mechanism by Type of Measure",
+      align = c("lrrr")) |> 
+  kable_classic_2(bootstrap_options = "striped", 
+                  full_width = FALSE) |>
+  # use the nicer spacing defaults, comment out the kable_styling() line and run the code again to see the difference 
+  kable_styling() |> 
+  footnote(general = "Data from CDC and TidyTuesday 2020-03-24",
+           symbol = "Values represent estimated observed cases in 2014",
+           footnote_as_chunk = TRUE, 
+           title_format = "italic")
+  
+total_injuries_table
+
+# And now saving the table with the helpful save_kable() function
+
+save_kable(total_injuries_table, file = here("tables", "total_injuries_table.pdf"))
+```
+
+If instead we wanted to use `{gt}` for our tables, a solution would be as follows: 
+
+```{r}
+#| label: task-4-approach-1-gt
+#| message: false
+
+# Same data wrangling, code to create and customise the table is different 
+total_injuries_tab_gt <- tbi_age |> 
+  filter(age_group == "Total") |> 
+  select(-rate_est, -age_group) |> 
+  pivot_wider(names_from = "type", 
+              values_from = "number_est") |>
+  gt() |> 
+  cols_label(injury_mechanism = "Injury Mechanism") |>
+  # we can use tidy select helper functions within cols_align! 
+  cols_align(align = "right", 
+             columns = where(is.numeric)) |>
+  cols_align(align = "left", 
+             columns = where(is.factor)) |> 
+  tab_header(title = "TBI: Injury Mechanism by Type of Measure") |> 
+  # gt has a specific function to add data sources
+  tab_source_note(source_note = "Data from CDC and TidyTuesday 2020-03-24") |>
+  # gt makes it super easy to add footnotes too! 
+  tab_footnote(footnote = "Values represent estimated observed cases in 2014", 
+               locations = cells_column_labels(columns = where(is.numeric)))
+
+total_injuries_tab_gt
+
+gtsave(total_injuries_tab_gt, file = here("tables", "total_injuries_table_gt.pdf"))
+
+```
+
+
+**Option 2** rather than having each outcome as a column, a more simple approach would be to keep the outcomes as rows, though our table is a bit more messy (and much longer) as the type of measure is repeated.  
+
+
+```{r}
+#| label: task-4-approach-2
+#| message: false
+
+# First lets check out data wrangling works as we expect
+tbi_age |> 
+  filter(age_group == "Total") |> 
+  select(-rate_est, 
+         -age_group) |> 
+  arrange(desc(number_est))
+
+# Now we can format this into a nice table 
+total_injuries_table_v2 <- tbi_age |> 
+  filter(age_group == "Total") |> 
+  select(-rate_est, 
+         -age_group) |> 
+  arrange(desc(number_est)) |> 
+  kbl(col.names = c("Type", 
+                    "Injury Mechanism",
+                    "Estimated observed cases in 2014"),
+      caption = "TBI: Injury Mechanism and Type of Measure") |> 
+  kable_classic(full_width = FALSE, 
+                html_font = "Arial Narrow") |>
+  kable_styling() |> 
+  footnote(general = "Data from CDC and TidyTuesday 2020-03-24",
+           footnote_as_chunk = TRUE, 
+           title_format = "italic")
+  
+total_injuries_table_v2
+
+save_kable(total_injuries_table_v2, file = here("tables", "total_injuries_table_v2.pdf"))
+```
+
+If instead we wanted to use `{gt}` for our tables, a solution would be as follows: 
+
+```{r}
+#| label: task-4-approach-2-gt
+#
+total_injuries_tab_v2_gt <- tbi_age |> 
+  filter(age_group == "Total") |> 
+  select(-rate_est, 
+         -age_group) |> 
+  arrange(desc(number_est)) |> 
+  gt() |>
+  cols_label(type = "Type",
+             injury_mechanism = "Injury Mechanism",
+             number_est = "Estimated observed cases in 2014") |> 
+  tab_header(title = "TBI: Injury Mechanism by Type of Measure") |> 
+  # gt has a specific function to add data sources
+  tab_source_note(source_note = "Data from CDC and TidyTuesday 2020-03-24") |> 
+  cols_align(align = "left", 
+             columns = where(is.factor)) 
+
+total_injuries_tab_v2_gt
+
+gtsave(total_injuries_tab_v2_gt, file = here("tables", "total_injuries_table_v2_gt.pdf"))
+
+```
+
+
+### Task 5
+
+Focusing on the oldest age group (75+), draw a bar chart illustrating the number of hospitalisations associated with each injury mechanism. Make sure that you add a title and appropriate axis labels. Save this chart in your figures folder.
+
+:::{.callout-caution title="📝 Note" icon="false"}
+*Note* A simple strategy to move your data visualisation into a data storytelling domain is to use an **active title**. Instead of being some generic description of the variables in the data, an active title is filled with valuable insights. This communicates what you want to say to your audience immediately. 
+:::
+
+Make the plot, and then add an active title. 
+
+➡️ **Answer**: In this case, an active title would be something like "Unintentional Falls are the leading case of injury in the 75+ age group" rather than a more static description of the variables plotted, such as "Injuries, by mechanism, in the 75+ age group". These more objective or static descriptions are appropriate for academic work, but when telling a story with data we want our message to be immediately clear! 
+
+The labels are very long, and [there are different ways to deal with that](https://stackoverflow.com/questions/1330989/rotating-and-spacing-axis-labels-in-ggplot2) I have outlined 3 potential options (which could be combined), though there are more! Below are 5 options of how to deal with this. 
+
+
+**Option 1**: `str_wrap()` to add a line break after every 15 characters 
+
+```{r}
+#| label: task-5-approach-1
+#| message: false
+
+p_injuryolder_v1 <- tbi_age |> 
+  filter(age_group == "75+" & type == "Hospitalizations") |> 
+  # the str_wrap function from stringr adds line breaks in our injury_mechanism
+  # labels, so they look better in the plot
+  mutate(injury_mechanism = str_wrap(injury_mechanism, 
+                                     width = 15)) |> 
+  # reorder will sort the bars by height, so that the injury mechanism
+  # with most cases is first
+  ggplot(aes(x = reorder(injury_mechanism, 
+                         desc(-number_est)), 
+             y = number_est)) +
+  geom_col(fill = "steelblue4") +  
+  # \n is a new line character which forces a line break in the title 
+  labs(title = "Unintentional falls are the leading case of hospitalizations\nin the 75+ age group",
+       x = "Injury mechanism", 
+       y = "Number of injuries in 2014") + 
+  theme_bw()
+
+p_injuryolder_v1
+
+ggsave(here("figures", "Injuries_oldest_group_1.pdf"))
+# ggsave saves the most recent plot by default, but you can specify the plot object with the 'plot' argument
+```
+
+
+**Option 2**: flip the coordinates so the labels do not overlap 
+
+```{r}
+#| label: task-5-approach-2
+#| message: false
+
+p_injuryolder_v2 <- tbi_age |> 
+  filter(age_group == "75+" & type == "Hospitalizations") |> 
+  ggplot(aes(x = reorder(injury_mechanism, 
+                         desc(-number_est)), 
+             y = number_est)) +
+  geom_col(fill = "steelblue4") +  
+  labs(title = "Unintentional falls are the leading case of hospitalizations\nin the 75+ age group",
+       x = "Injury mechanism", 
+       y = "Number of injuries in 2014") + 
+  theme_bw() + 
+  coord_flip() # this swaps x and y coordinates, making the labels more visible
+
+p_injuryolder_v2
+
+ggsave(filename = here("figures", "Injuries_oldest_group_2.pdf"),
+       plot = p_injuryolder_v2)
+```
+
+
+**Option 3**: rotate the x-axis labels so they do not overlap
+
+```{r}
+#| label: task-5-approach-3
+#| message: false
+
+p_injuryolder_v3 <- tbi_age |> 
+  filter(age_group == "75+" & type == "Hospitalizations") |> 
+  # if we remove the desc() the order will change of the columns which may be desirable
+  ggplot(aes(x = reorder(injury_mechanism, 
+                         -number_est), 
+             y = number_est)) +
+  geom_col(fill = "steelblue4") +  
+  scale_x_discrete(guide = guide_axis(angle = 70)) +
+  labs(title = "Unintentional falls are the leading case of injury\nin the 75+ age group",
+       x = "Injury mechanism", 
+       y = "Number of injuries in 2014") + 
+  theme_bw()
+
+p_injuryolder_v3
+
+ggsave(filename = here("figures", "Injuries_oldest_group_3.pdf"),
+       plot = p_injuryolder_v3)
+```
+
+
+**Option 4**: Lets combine the approaches in option 2 and 3 to make better use of our plotting space 
+
+```{r}
+#| label: task-5-approach-4
+
+p_injuryolder_v4 <- tbi_age |> 
+  filter(age_group == "75+" & type == "Hospitalizations") |> 
+  # use str_wrap 
+  mutate(injury_mechanism = str_wrap(injury_mechanism, 
+                                     width = 15)) |> 
+  ggplot(aes(x = reorder(injury_mechanism, 
+                         -number_est), 
+             y = number_est)) +
+  geom_col(fill = "steelblue4") +  
+  # and change the angle 
+  scale_x_discrete(guide = guide_axis(angle = 70)) +
+  labs(title = "Unintentional Ffalls are the leading case of hospitalizations\nin the 75+ age group",
+       x = "Injury mechanism", 
+       y = "Number of injuries in 2014") + 
+  theme_bw()
+
+p_injuryolder_v4
+
+ggsave(filename = here("figures", "Injuries_oldest_group_4.pdf"),
+       plot = p_injuryolder_v4)
+```
+
+
+**Option 5**: We could also combine the approaches in option 1 and 2
+
+```{r}
+#| label: task-5-approach-5
+#| message: false
+
+p_injuryolder_v5 <- tbi_age |> 
+  filter(age_group == "75+" & type == "Hospitalizations") |> 
+  mutate(injury_mechanism = str_wrap(injury_mechanism, 
+                                     width = 20)) |> 
+  ggplot(aes(x = reorder(injury_mechanism, 
+                         desc(-number_est)), 
+             y = number_est)) +
+  geom_col(fill = "steelblue4") +  
+  labs(title = "Unintentional Falls are the leading case of hospitalizations\nin the 75+ age group",
+       x = "Injury mechanism", 
+       y = "Number of injuries") + 
+  theme_bw() + 
+  coord_flip()
+
+p_injuryolder_v5
+
+ggsave(filename = here("figures", "Injuries_oldest_group_5.pdf"),
+       plot = p_injuryolder_v5)
+```
+
+
+### Task 6
+
+Plot a line chart that depicts the rate of deaths, per 100000 population, from traumatic brain injury in years 2006-2014. 
+
+Which data set do you think we will need to use for this? Add an active title to your figure. Save this chart in your figures folder.
+
+
+➡️ **Answer**: The question focusses on a specific year range, so we need to use the `tbi_year` dataframe.
+
+```{r}
+#| label: task-6
+#| message: false
+
+p_deathrates <- tbi_year |> 
+  filter(injury_mechanism == "Total" & type == "Deaths") |> 
+  ggplot(aes(x = year, 
+             y = rate_est)) +
+  geom_line() + 
+  geom_point() + # using two geoms makes the data points more visible
+  scale_x_continuous(breaks = seq(2006, 2014, 1)) + # to have each year shown on the x-axis
+  ylim(15, 20) + # to manual specify the y axis limits
+  labs(title = "Deaths from traumatic brain injury decline starting in 2007",
+       x = "Year", 
+       y = "Estimated rate of death (per 100000 population)") + 
+  theme_bw()
+
+p_deathrates
+
+ggsave(filename = here("figures", "Total_death_rates.pdf"),
+       plot = p_deathrates)
+```
+
+
+### Task 7
+
+The CDC produced a report, entitled the TBI Surveillance Report, which you can find at [this URL](https://www.cdc.gov/traumaticbraininjury/pdf/TBI-Surveillance-Report-FINAL_508.pdf). 
+
+On page 14 of the report (page 15 of the pdf document), you'll find Figure 2A, showing the rates, per 100000 population, of TBI-related ED visits, by year, and mechanism of injury, 2006-2014. Try and re-create this figure.
+
+Save the final version of your figure in your figures folder.
+
+:::{.callout-tip}
+## ❓ Hint 
+
+First, focus just on depicting the data (you can use the default settings of ggplot). If you still have time, try reproducing this figure as closely as possible (colors, style, etc.).
+:::
+
+
+```{r}
+#| label: task-7
+#| warning: false
+#| message: false
+#| fig-height: 8.5
+#| fig-width: 11
+
+p_EDvisits <- tbi_year |> 
+  filter(type == "Emergency Department Visit" & injury_mechanism != "Total") |> 
+  ggplot(aes(x = year, 
+             y = rate_est, 
+             colour = injury_mechanism)) +
+  geom_line(linewidth = 0.8) + 
+  geom_point() +
+  ylim(0, 400) +  
+  labs(title = "FIGURE 2A: ESTIMATED AGE-ADJUSTED RATES, PER 100,000 POPULATION,OF TRAUMATIC BRAIN INJURY–\nRELATED EMERGENCY DEPARTMENT VISITS, BY YEAR AND MECHANISM OF INJURY, 2006-2014",
+       y = "Age-adjusted rates of TBI-related ED visits", 
+       x = NULL) +
+  scale_x_continuous(breaks = seq(2006, 2014, 1)) + 
+  scale_color_manual(values = c("#ed9338", "#fec836", "#7d3484", "#16928a", 
+                                "#8ab9d2", "#1f6db2", "#16716e")) + 
+  theme_bw() + 
+  theme(panel.border = element_blank(), 
+        panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(), 
+        plot.title = element_text(face = "bold", 
+                                  hjust = 0.5), #hjust centers the title 
+        #the value of hjust and vjust are only defined between 0 and 1: 0 = left-justified & 1 = right-justified
+        axis.line = element_line(colour = "black"),
+        axis.title = element_text(face = "bold"),
+        axis.text = element_text(face = "bold",
+                                 color = "#000000"), 
+        #instead of the hex code for black, you could also use the default color "black" as in line 307 
+        legend.position = "bottom",
+        legend.title = element_blank()) 
+
+p_EDvisits 
+
+ggsave(filename = here("figures", "TBI_related_ED_visits.pdf"), 
+       plot = p_EDvisits,
+       width = 11,
+       height = 8.5)
+
+```
+
+
+:::{.callout-important}
+**Note:** to get the exact color palette used in the report, I used the Chrome eye dropper extension to read the specific colors in the plot. From there, I took the HEX codes and put them into my ggplot code using the `scale_color_manual()` function as I wanted to manually tell R the color palette to use. This is largely unnecessary, but wanted to emphasis that I *did not* just happen to know the HEX codes for the colors. 
+:::
