@@ -1,0 +1,185 @@
+---
+title: "Week 9"
+subtitle: "Introduction to Data Science in Health and Social Care HEIN11037"
+author: "Dr Richard Schmoetten"
+format:
+  revealjs:
+    html-math-method: mathjax
+    theme: blood
+    slide-number: c/t
+    incremental: true
+    embed-resources: true
+    logo: images/logo.png
+    footer: "[Course GitHub Repo](https://github.com/TeachHealthData/Intro-DSHSC-26)"
+    # title-slide-attributes:
+    #  data-background-image: images/McEwanHallCastle.jpg
+    #  data-background-opacity: "0.5"
+---
+
+## {#slide1-id data-menu-title="Audio check" background-image="images/audio_check.png" background-size="contain"}
+
+## {#slide2-id data-menu-title="Asking Questions" background-image="images/questions.png" background-size="contain"}
+
+## {#slide3-id data-menu-title="Recording" background-image="images/recording.png" background-size="contain"}
+
+# Week 9 Tutorial 
+
+Introduction to Data Science in Health and Social Care HEIN11037
+
+## Agenda 
+
+* Who am I?
+* Intro/Recap: Causal Reasoning
+* Confounders: Smoking
+* Bias analysis\
+[(Technical, but have no fear!)]{style="font-size: 0.5em;"}
+* Pair Programming:\
+Waiting Times for Cancer Treatment (and Covid-19)
+
+## Who am I? {.smaller}
+
+::::: {.columns}
+::: {.column width="25%"}
+![](images/w9/jcmb.jpg)
+:::
+
+::: {.column width="60%"}
+Studied Mathematical Physics at UoE,
+which means a lot of theoretical particle physics.
+:::
+:::::
+
+. . .
+
+::::: {.columns}
+::: {.column width="60%"}
+MSc and PhD in Informatics, also at UoE.
+Formalisation (theorem proving on a computer), mostly about
+differential geometry and algebraic quantum field theory.
+:::
+
+::: {.column width="25%"}
+![](images/w9/if-outside.jpeg)
+:::
+:::::
+
+. . .
+
+::::: {.columns}
+::: {.column width="25%"}
+![](images/w9/usher_small.jpg.webp)
+:::
+
+::: {.column width="50%"}
+Postdoc at Usher Institute,
+improving NHS unscheduled care with data.
+Currently forecasting demand for A&E using time series and GLMs.
+:::
+:::::
+
+## Pearl's Causal Ladder {.smaller}
+
+::::: {.columns}
+::: {.column width="35%"}
+Is there an association between a symptom and a disease?
+:::
+
+::: {.column width="33%"}
+If I take a drug, will the disease be cured?
+:::
+
+::: {.column width="32%"}
+<!-- Given I have taken the drug and the disease is cured, -->
+Would the disease have continued if I had not taken the drug?
+:::
+:::::
+
+<!-- <embed src="Week 9 Slides.pdf#page=7" type="application/pdf" width="100%" height="500px" /> -->
+<!-- ![](images/w9/w9-07.png) -->
+<!-- <img src="images/w9/w9-07.png" width="1920"> -->
+![](images/w9/causal-ladder.png)
+
+## Causal Graphs
+
+::::: {.columns}
+:::{.column width = "58%"}
+![Edges without direction.](images/w9/dag-expl-1.png)
+:::
+::: {.column width = "38%"}
+![Directed graph with cycle.](images/w9/dag-expl-2.png)
+:::
+:::::
+
+## Causal Graphs {transition="none"}
+
+![**D**irected **A**cyclic **G**raph](images/w9/dag-expl-3.png)
+
+## Confounders & Mediators {.smaller}
+
+<!-- ![](images/w9/dag-allergy.jpg) -->
+<img src="images/w9/dag-allergy.jpg" height="450"/>
+
+Peng Z, Apfelbacher C, Brandstetter S, et al. 2024. Directed acyclic graph for epidemiological studies in childhood food allergy: Construction, user's guide, and application. [https://doi.org/10.1111/all.16025](doi:10.1111/all.16025)
+
+## Smoking in the multiverse of madness...
+![](images/w9/confounder-smoking.png)
+<!-- <img src="images/w9/confounder-smoking.png" height="300"> -->
+
+## Smoking in the multiverse of madness... {transition="none"}
+
+[TONG and GLANTZ, 2007](https://doi.org/10.1161/CIRCULATIONAHA.107.715888). *Tobacco Industry Efforts Undermining Evidence Linking Secondhand Smoke With Cardiovascular Disease.*
+
+"The tobacco industry attempted to undermine the evidence that SHS causes CVD to fight smoke-free regulations [...]. The industry interest [...] has affected the design and interpretation of their cardiovascular studies [...]."
+
+## Quantitative Bias Analysis
+
+* What if you become aware of a confounder after the data collection happens?
+* Obtain estimates of the confounder's prevalence (in all exposure strata) and association with outcome.
+<!-- E.g. internal validation studies, expert guesses, external estimates from literature. -->
+* Impute ( = calculate a best guess) numbers of exposed and affected subjects for each value of the confounder.
+* This usually requires simplifying assumptions (i.e. a *model*), and can be done using a formula (e.g. for risk ratio), step-by-step, or in simulation.
+
+## QBA Example
+Source: [Fox MP, MacLehose R, Lash TL. *Applying Quantitative Bias Analysis to Epidemiologic Data.*  Springer. 2021. 2nd Edition.](https://sites.google.com/site/biasanalysis/)
+
+|           | $E_1$ | $E_0$ |
+|    :---   | :---: | :---: |
+| **$D_+$** |  $a$  |  $b$  |
+| **$D_-$** |  $c$  |  $d$  |
+|           |  $m$  |  $n$  |
+
+
+## QBA Example {transition="none"}
+Source: [Fox MP, MacLehose R, Lash TL. *Applying Quantitative Bias Analysis to Epidemiologic Data.*  Springer. 2021. 2nd Edition.](https://sites.google.com/site/biasanalysis/)
+
+| | **Total** $E_1$ | **Total** $E_0$ | **$C_1$** $E_1$ | **$C_1$** $E_0$ | **$C_0$** $E_1$ | **$C_0$** $E_0$ |
+| :--- | :---: | :---: | :---: | :---: | :---: | :---: |
+| **$D_+$** | $a$ | $b$ | $A_1$ | $B_1$ | $A_0$ | $B_0$ |
+| **$D_-$** | $c$ | $d$ | $C_1$ | $D_1$ | $C_0$ | $D_0$ |
+| | $m$ | $n$ | $M_1$ | $N_1$ | $M_0$ | $N_0$ |
+
+
+## Other methods
+
+* [E-values](https://journals.sagepub.com/doi/10.1177/25152459251326571)
+* [g-formula/methods](https://pmc.ncbi.nlm.nih.gov/articles/PMC6074945/)
+* [simulations for bias analysis](https://pubmed.ncbi.nlm.nih.gov/27576907/)
+* [Instrumental Variables](https://pubmed.ncbi.nlm.nih.gov/35810980/)
+
+# Questions 
+
+> Once Brittany joins us.
+
+## Coding Time 🚀
+
+::: {.nonincremental}
+
+1. Navigate to the **Tutorial/Live Session Material** on Learn
+2. Download the **Week 9 > Practice document files** (both `.qmd` and `.csv` file)
+3. Open the `.qmd` file in an **R Project**
+
+*or you can*  
+
+🏅🏅 Pull the most recent notes from the Course GitHub repository if you have cloned it!
+
+:::

@@ -1,0 +1,92 @@
+---
+title: "Causal Inference in Practice"
+subtitle: "Intro DS HSC Week 9"
+author: Chris Oldnall and Richard Schmoetten
+format: 
+  html:
+    theme: sandstone
+    toc-location: left
+    code-fold: show
+---
+
+Welcome to the ninth tutorial of the Introduction to Data Science in Health and Social Care module. This is the next script in developing your skills in R, whilst learning about the use of Causal Inference for Data Driven Innovation. This quarto file contains a mix of programming and writing exercises - ensure you read the question carefully to find out what is needed.
+
+### Load What You Need
+
+#### Load Packages
+As usual, we will need the tidyverse, go ahead and load this as your first task.
+
+Your Answer:
+```{r}
+#| label: load-packages
+
+library()
+```
+
+#### Read in Data
+This week, to put causal inference into context, we will be working on a data set derived from Public Health Scotland's (PHS) monitoring of cancer waiting times within Scotland. More information about the cancer waiting times data collected by PHS can be found here (with an example report): https://publichealthscotland.scot/publications/cancer-waiting-times/cancer-waiting-times-1-april-to-30-june-2023/
+
+For our purposes we will be using a 'cleaned' set of this data. This can be downloaded from Learn under the same place you found this script. It is called, '31days.csv' Go ahead and load this in below.
+
+```{r}
+#| label: read-data
+
+ThirtyOneDays <- read_csv()
+```
+
+-------------
+
+### Data Exploration
+Use your favourite functions to explore the data. Write a small summary of the data, including what variables are involved. In particular comment on the last three columns - what do each of these represent?
+
+```{r}
+#| label: explore-data
+
+```
+
+-------------
+
+### Thinking about Associations and DAGs
+Start to consider candidate variables for exposure (independent variable) and outcome (dependent variable). Which variables may be confounders and which may be mediators? Come up with two different set-ups which follow the causal inference framework and list them below. Additionally if you have some pen and paper nearby, draw the directed acyclic graph (DAG) which goes with them.
+
+*INSERT YOUR ANSWER HERE*
+
+-------------
+
+### Working with the Data
+
+#### A Simple 2x2 Table
+Choose a health board and cancer type <!-- (or sum over them) -->, and draw up a simple table with the following structure.
+
+| Quarter | Referrals Treated (<31 Days) | Referrals Not Treated (<31 Days) |
+|---------|------------------------------|----------------------------------|
+| 2019Q3  |                              |                                  |
+| 2020Q3  |                              |                                  |
+
+Include an additional row and column for marginal sums (e.g. the row should contain the sum total of the column above it).
+This kind of table often forms the basis of answering an epidemiological question about the strength of an association (e.g. between `Pandemic` and `NumberOfEligibleReferralsTreatedWithin31Days`).
+
+```{r}
+#| label: epi-table
+
+ThirtyOneDays %>% 
+  filter(Quarter %in% c("2019Q3", "2020Q3"),
+         ### INSERT CONDITIONS OF YOUR CHOICE HERE
+         ) %>% 
+  ### AND CONTINUE YOUR ANALYSIS
+```
+
+#### Potential Confounding
+Try to determine whether the proportion of eligible patients who were treated within 31 days is vastly different between cancer types. If it is, this might suggest that it is indeed a confounder of the association between the number of referrals and treatment within 31 days.
+
+Hint: there are a multitude of ways you could attempt this task, and it is deliberately left open for you to attempt; if you are wanting a starting point, consider creating a line graph of some sort for all the health boards per cancer type. 
+
+```{r}
+#| label: investigate-confounder-1
+
+```
+
+-------------
+
+You have reached the end of the exercises. If you are interested in work which looked more closely at modelling this data you can have a look at the following: http://chrisoldnall.github.io/files/publichealthscotland2022.pdf
+Recommended citation: Brunet-Guasch, Meritxell and Oldnall, Christopher A and Verhees, Sofie. (2022). “Understanding the Public Health Waiting Times Landscape in Scotland: Finding Key Drivers and Forecasting Demand.” Unpublished.
