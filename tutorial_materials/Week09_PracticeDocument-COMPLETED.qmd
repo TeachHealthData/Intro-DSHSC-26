@@ -1,0 +1,232 @@
+---
+title: "Causal Inference in Practice"
+subtitle: "Intro DS HSC Week 9"
+author: Chris Oldnall and Richard Schmoetten
+format: 
+  html:
+    theme: sandstone
+    toc-location: left
+    code-fold: show
+---
+
+Welcome to the ninth tutorial of the Introduction to Data Science in Health and Social Care module. This is the next script in developing your skills in R, whilst learning about the use of Causal Inference for Data Driven Innovation. This quarto file contains a mix of programming and writing exercises - ensure you read the question carefully to find out what is needed.
+
+### Load What You Need
+
+#### Load Packages
+As usual, we will need the tidyverse, go ahead and load this as your first task.
+
+Your Answer:
+```{r}
+#| label: load-packages
+
+library(tidyverse)
+library(skimr)
+library(gt)
+library(here)
+```
+
+#### Read in Data
+This week, to put causal inference into context, we will be working on a data set derived from Public Health Scotland's (PHS) monitoring of cancer waiting times within Scotland. More information about the cancer waiting times data collected by PHS can be found here (with an example report): https://publichealthscotland.scot/publications/cancer-waiting-times/cancer-waiting-times-1-april-to-30-june-2023/
+
+For our purposes we will be using a 'cleaned' set of this data. This can be downloaded from Learn under the same place you found this script. It is called, '31days.csv' Go ahead and load this in below.
+
+```{r}
+#| label: read-data
+
+ThirtyOneDays <- read_csv(here('raw_data', '31days.csv'))
+```
+
+-------------
+
+### Data Exploration
+Use your favourite functions to explore the data. Write a small summary of the data, including what variables are involved. In particular comment on the last three columns - what do each of these represent?
+
+```{r}
+#| label: explore-data
+
+str(ThirtyOneDays)
+
+skimr::skim(ThirtyOneDays)
+
+ThirtyOneDays %>% 
+  select(Quarter) %>% 
+  distinct() %>% 
+  arrange(Quarter) %>% 
+  slice(-(2:38))
+
+ThirtyOneDays %>% 
+  filter(Pandemic_cat != 0) %>%
+  # select Quarter and all the variables with "andemic" in the name (so the Pandemic variables)
+  select(Quarter, contains("andemic")) %>% 
+  distinct()
+```
+
+The data set `31days.csv` is constructed to see how many cases of different types of cancers successfully started their treatment plans within 31 days of diagnosis. This is a Scottish reporting standard. There are 4999 records, and 12 variables. The first variable is an index, then we have 'Quarter' representing the year and quarter, 'HB' representing healthboard, 'CancerType' to represent which type of cancer it is. These three variables are characters. Next there are a range of numerical variables which represent case numbers, number treated, an increasing indicator of the date/time period, an indicator as to whether the date period was during the pandemic and then population size. Following this there are three variables which differ based on attributes of the pandemic. These detail:
+
+<!-- - 'Pandemic_cat': This indicates time from and after the pandemic (1 = this time) -->
+<!-- - 'JustPandemic': This indicates the time period that the pandemic happened, increasing and continuing after. -->
+<!-- - 'PandemicRecovery': This is to indicate the time period after the pandemic occured. -->
+- 'Pandemic_cat': `1` indicates any time after the start of the pandemic
+- 'JustPandemic': Values `>0` match `Pandemic_cat == 1`, but this variable is an increasing integer index
+- 'PandemicRecovery': Similar to JustPandemic, this indicates the time period after the pandemic occured. Given our data ends in `2021Q3`, this ignores the Omicron variant.
+
+-------------
+
+### Thinking about Associations and DAGs
+Start to consider candidate variables for exposure (independent variable) and outcome (dependent variable). Which variables may be confounders and which may be mediators? Come up with two different set-ups which follow the causal inference framework and list them below. Additionally if you have some pen and paper nearby, draw the directed acyclic graph (DAG) which goes with them.
+
+One option to think about: the outcome could be 'NumberOfEligibleReferralsTreatedWithin31Days' and the exposure could be 'NumberOfEligibleReferrals31DayStandard'. With this confounders would potentially be 'CancerType' and 'HB': some types of cancer may be more difficult to diagnose, and also faster or slower to start treatment; while different health boards may have different screening and treatment facilities. In terms of mediators, it might be that pandemic is some sort of mediator between our two variables (along with the other pandemic type variables) -- this would be due to it not affecting the diagnosis but only ability to 'convert' to treatment within 31 days. However, consider that maybe the pandemic caused a change in screenings, so it could also potentially be a confounder.
+
+-------------
+
+### Working with the Data
+
+#### A Simple 2x2 Table
+Choose a health board and cancer type <!-- (or sum over them) -->, and draw up a simple table with the following structure.
+
+| Quarter | Referrals Treated (<31 Days) | Referrals Not Treated (<31 Days) |
+|---------|------------------------------|----------------------------------|
+| 2019Q3  |                              |                                  |
+| 2020Q3  |                              |                                  |
+
+Include an additional row and column for marginal sums (e.g. the row should contain the sum total of the column above it).
+This kind of table often forms the basis of answering an epidemiological question about the strength of an association (e.g. between `Pandemic` and `NumberOfEligibleReferralsTreatedWithin31Days`).
+
+```{r}
+#| label: epi-table-minimal
+
+ThirtyOneDays %>% 
+  filter(Quarter %in% c("2019Q3", "2020Q3"),
+         CancerType == "Colorectal",
+         HB == "S08000024") %>% 
+  mutate(NumberOfEligibleReferralsNotTreatedWithin31Days =
+           NumberOfEligibleReferrals31DayStandard -
+           NumberOfEligibleReferralsTreatedWithin31Days) %>% 
+  select(Quarter,
+         `Referrals Treated (<31 Days)` =
+           NumberOfEligibleReferralsTreatedWithin31Days,
+         `Referrals Not Treated (<31 Days)` = NumberOfEligibleReferralsNotTreatedWithin31Days) %>% 
+  gt()
+```
+
+```{r}
+#| label: epi-table-with-marginal-totals
+
+ThirtyOneDays %>% 
+  filter(Quarter %in% c("2019Q3", "2020Q3"), 
+         CancerType == "Colorectal", 
+         HB == "S08000024") %>% 
+  mutate(NumberOfEligibleReferralsNotTreatedWithin31Days =
+           NumberOfEligibleReferrals31DayStandard -
+           NumberOfEligibleReferralsTreatedWithin31Days) %>% 
+  select(Quarter,
+         treated = NumberOfEligibleReferralsTreatedWithin31Days,
+         not_treated = NumberOfEligibleReferralsNotTreatedWithin31Days,
+         total = NumberOfEligibleReferrals31DayStandard) %>% 
+  add_row(
+    Quarter = "Total",
+    treated = sum(.$treated),
+    not_treated = sum(.$not_treated),
+    total = sum(.$total)
+  ) %>% 
+  gt() %>%
+  cols_label(
+    treated = "Treated (<31 Days)",
+    not_treated = "Not Treated (<31 Days)",
+    total = "Total Referrals"
+  )
+```
+
+#### Potential Confounding
+Try to determine whether the proportion of eligible patients who were treated within 31 days is vastly different between cancer types. If it is, this might suggest that it is indeed a confounder of the association between the number of referrals and treatment within 31 days.
+
+Hint: there are a multitude of ways you could attempt this task, and it is deliberately left open for you to attempt; if you are wanting a starting point, consider creating a line graph of some sort for all the health boards per cancer type. 
+
+```{r}
+#| label: investigate-confounder-1
+
+# Calculate the proportion of eligible patients treated within 31 days per cancer type and health board
+proportion_data <- ThirtyOneDays %>%
+  mutate(Proportion_Treated_31days =
+           NumberOfEligibleReferralsTreatedWithin31Days /
+           NumberOfEligibleReferrals31DayStandard) %>%
+  group_by(HB, CancerType) %>%
+  summarise(Average_Proportion_Treated_31days = mean(Proportion_Treated_31days,
+                                                     na.rm = TRUE)) %>%
+  ungroup()
+
+
+# Plot the line graph
+ggplot(proportion_data, aes(x = CancerType, 
+                            y = Average_Proportion_Treated_31days, 
+                            color = HB, 
+                            group = HB)) +
+  geom_line() +
+  geom_point() +
+  labs(title = "Proportion of Eligible Patients Treated within 31 Days by Cancer Type",
+       x = "Cancer Type", 
+       y = "Proportion Treated within 31 Days") +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+```
+
+```{r}
+#| label: investigate-confounder-2
+
+# Calculate the overall average proportion treated within 31 days per cancer type
+average_proportion <- ThirtyOneDays %>%
+  mutate(Proportion_Treated_31days =
+           NumberOfEligibleReferralsTreatedWithin31Days /
+           NumberOfEligibleReferrals31DayStandard) %>%
+  group_by(CancerType) %>%
+  summarise(Average_Proportion_Treated_31days = mean(Proportion_Treated_31days,
+                                                     na.rm = TRUE))
+
+
+# Plot the bar chart
+ggplot(average_proportion, aes(x = CancerType, 
+                               y = Average_Proportion_Treated_31days, 
+                               fill = CancerType)) +
+  geom_bar(stat = "identity") +
+  labs(title = "Average Proportion of Eligible Patients Treated within 31 Days by Cancer Type",
+       x = "Cancer Type", 
+       y = "Average Proportion Treated within 31 Days") +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+```
+
+
+```{r}
+#| label: investigate-confounder-3
+
+# Calculate the proportion of patients treated within 31 days per cancer type, health board, and quarter
+time_data <- ThirtyOneDays %>%
+  mutate(Proportion_Treated_31days =
+           NumberOfEligibleReferralsTreatedWithin31Days /
+           NumberOfEligibleReferrals31DayStandard) %>%
+  group_by(Quarter, HB, CancerType) %>%
+  summarise(Average_Proportion_Treated_31days = mean(Proportion_Treated_31days,
+                                                     na.rm = TRUE)) %>%
+  ungroup()
+
+
+# Plot the faceted line graph
+ggplot(time_data, aes(x = Quarter, 
+                      y = Average_Proportion_Treated_31days, 
+                      color = HB, 
+                      group = HB)) +
+  geom_line() +
+  geom_point() +
+  facet_wrap(~CancerType) +
+  labs(title = "Trends in Proportion of Eligible Patients Treated within 31 Days by Cancer Type",
+       x = "Quarter", 
+       y = "Proportion Treated within 31 Days") +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+```
+
+-------------
+
+You have reached the end of the exercises. If you are interested in work which looked more closely at modelling this data you can have a look at the following: http://chrisoldnall.github.io/files/publichealthscotland2022.pdf
+Recommended citation: Brunet-Guasch, Meritxell and Oldnall, Christopher A and Verhees, Sofie. (2022). “Understanding the Public Health Waiting Times Landscape in Scotland: Finding Key Drivers and Forecasting Demand.” Unpublished.
